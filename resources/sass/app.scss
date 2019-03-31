@@ -9,4 +9,51 @@
 @import '~materialize-css/sass/materialize';
 
 //Snotify
-@import '~vue-snotify/styles/material'
+@import '~vue-snotify/styles/material';
+
+.content-begin{
+  padding-top: 1em;
+}
+
+.logo-begin{
+  padding: 6em 1em 0 0;
+}
+
+.form-register{
+  border-left: 1px solid #66bb6a;
+}
+
+.sidenav{
+    width: 250px
+}
+.top-menu, .content{
+    padding-left: 250px;
+}
+#logoMobile{
+  display: none;
+}
+#logoDesk{
+  margin-left: 1em;;
+}
+
+@media only screen and (max-width : 992px) {
+  
+  .logo-begin{
+    padding: 0;
+  }
+  
+  .form-register{
+    border-left: 0;
+  }
+
+  .top-menu, .content {
+    padding-left: 0;
+  }
+
+  #logoDesk{
+    display: none;
+  }
+  #logoMobile{
+    display: inline;
+  }
+}

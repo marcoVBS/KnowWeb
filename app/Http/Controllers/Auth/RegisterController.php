@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Setor;
 
 class RegisterController extends Controller
 {
@@ -40,6 +41,12 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    public function showRegistrationForm()
+    {
+        $setores = Setor::all();
+        return view('auth.register', ['setores'=> $setores]);
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -49,9 +56,20 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'nome' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:tb_usuario'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'nome' => ['required', 'max:80'],
+            'email' => ['required', 'email', 'max:80', 'unique:tb_usuario'],
+            'password' => ['required', 'min:8', 'confirmed'],
+        ], 
+        [
+            'nome.required' => 'O campo nome é obrigatório!',
+            'nome.max'=>'O campo nome deve conter no máximo 80 caracteres!',
+            'email.required'=>'O campo email é obrigatório!',
+            'email.email'=>'Informe um email válido!',
+            'email.max'=>'O campo email deve conter no máximo 80 caracteres!',
+            'email.unique'=>"O email informado já existe no sistema!",
+            'password.required'=>'O campo senha é obrigatório!',
+            'password.min'=>'O campo senha deve conter no mínimo 8 caracteres!',
+            'password.confirmed'=>'As senhas informadas não conferem!'
         ]);
     }
 
@@ -66,7 +84,11 @@ class RegisterController extends Controller
         return User::create([
             'nome' => $data['nome'],
             'email' => $data['email'],
+            'telefone' => $data['telefone'],
+            'cpf' => $data['cpf'],
             'password' => Hash::make($data['password']),
+            'tipo_usuario'=> $data['tipo_usuario'],
+            'setor_id'=>$data['setor_id']
         ]);
     }
 }

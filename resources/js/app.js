@@ -18,3 +18,14 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app'
 });
+
+$(document).ready(function(){
+    $('select').formSelect();
+    $('.sidenav').sidenav();
+    $('.dropdown-trigger').dropdown();
+    $('.collapsible').collapsible();
+
+    $('#telefone_user').mask('(00) 00000-0000');
+    $('#cpf_user').mask('000.000.000-00');
+
+});
