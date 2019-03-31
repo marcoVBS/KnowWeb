@@ -13,8 +13,10 @@ class CreateCategoriaArquivoTable extends Migration
      */
     public function up()
     {
-        Schema::table('tb_categoria_arquivo', function (Blueprint $table) {
-            //
+        Schema::create('tb_categoria_arquivo', function (Blueprint $table) {
+            $table->increments('id_categoria_arquivo');
+            $table->string('nome', 45);
+            $table->string('descricao', 100)->nullable();
         });
     }
 

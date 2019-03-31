@@ -13,8 +13,9 @@ class CreateExtensaoArquivoTable extends Migration
      */
     public function up()
     {
-        Schema::table('tb_extensao_arquivo', function (Blueprint $table) {
-            //
+        Schema::create('tb_extensao_arquivo', function (Blueprint $table) {
+            $table->increments('id_extensao_arquivo');
+            $table->string('extensao', 45);
         });
     }
 

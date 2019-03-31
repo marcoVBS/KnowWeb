@@ -13,8 +13,16 @@ class CreateRespostaAtendimentoTable extends Migration
      */
     public function up()
     {
-        Schema::table('tb_resposta_atendimento', function (Blueprint $table) {
-            //
+        Schema::create('tb_resposta_atendimento', function (Blueprint $table) {
+            $table->increments('id_resposta_atendimento');
+            $table->integer('usuario_id')->unsigned();
+            $table->foreign('usuario_id')->references('id_usuario')->on('tb_usuario')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('atendimento_id')->unsigned();
+            $table->foreign('atendimento_id')->references('id_atendimento')->on('tb_atendimento')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->text('resposta', 500);
+            $table->timestamps();
         });
     }
 

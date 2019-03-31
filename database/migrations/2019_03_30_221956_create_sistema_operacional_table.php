@@ -13,8 +13,11 @@ class CreateSistemaOperacionalTable extends Migration
      */
     public function up()
     {
-        Schema::table('tb_sistema_operacional', function (Blueprint $table) {
-            //
+        Schema::create('tb_sistema_operacional', function (Blueprint $table) {
+            $table->increments('id_sistema_operacional');
+            $table->string('nome', 80);
+            $table->string('versao', 45);
+            $table->string('arquiterura', 20);
         });
     }
 

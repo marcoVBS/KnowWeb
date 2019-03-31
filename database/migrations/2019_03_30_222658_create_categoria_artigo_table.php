@@ -13,8 +13,10 @@ class CreateCategoriaArtigoTable extends Migration
      */
     public function up()
     {
-        Schema::table('tb_categoria_artigo', function (Blueprint $table) {
-            //
+        Schema::create('tb_categoria_artigo', function (Blueprint $table) {
+            $table->increments('id_categoria_artigo');
+            $table->string('nome', 45);
+            $table->string('descricao', 100)->nullable();
         });
     }
 

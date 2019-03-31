@@ -13,13 +13,9 @@ class CreateTagTable extends Migration
      */
     public function up()
     {
-        Schema::table('tb_tag', function (Blueprint $table) {
-            //
-        });
-
-        Schema::dropIfExists('tb_artigo_tag');
-        Schema::create('tb_artigo_tag', function (Blueprint $table) {
-            
+        Schema::create('tb_tag', function (Blueprint $table) {
+            $table->increments('id_tag');
+            $table->string('nome', 45);
         });
     }
 
@@ -29,8 +25,7 @@ class CreateTagTable extends Migration
      * @return void
      */
     public function down()
-    {
-       Schema::dropIfExists('tb_artigo_tag');  
+    {  
        Schema::dropIfExists('tb_tag');  
     }
 }

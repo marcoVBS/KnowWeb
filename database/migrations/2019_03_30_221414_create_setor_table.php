@@ -13,7 +13,7 @@ class CreateSetorTable extends Migration
      */
     public function up()
     {
-        Schema::table('tb_setor', function (Blueprint $table) {
+        Schema::create('tb_setor', function (Blueprint $table) {
             $table->increments('id_setor');
             $table->string('nome', 45);
             $table->string('descricao', 100)->nullable();
