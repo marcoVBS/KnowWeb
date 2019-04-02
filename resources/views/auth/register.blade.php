@@ -6,11 +6,14 @@
 <div class="container">
     <div class="row">
         <div class="col s12 m4">
+            <h3 class="header grey-text center-align">Registrar-se</h3>
+            <div class="divider"></div>
             <img class="responsive-img logo-begin" src="{{ asset('img/begin/logo4.png') }}" alt="logo_knowweb">
         </div>
 
         <div class="col s12 m8 form-register">
             <div class="row">
+                
                 <form class="col s12" method="POST" action="{{ route('register') }}">
                     @csrf
                     <div class="row">
@@ -82,6 +85,8 @@
                         </div>
 
                     </div>    
+
+                    <div class="divider"></div><br>
                     <div class="row center-align">    
                         <button class="btn waves-effect waves-light green" type="submit">Enviar
                             <i class="material-icons right">send</i>
@@ -93,8 +98,7 @@
                     </div>
                    
                 </form>
-            </div>
-                
+            </div>   
         </div>
     </div>
 </div>
