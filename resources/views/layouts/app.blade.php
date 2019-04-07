@@ -51,30 +51,26 @@
                         <div class="background">
                             <img src="{{ asset('img/app/back_user.jpg') }}">
                         </div>
-                        <a href="#user"><img class="circle" src="{{ asset('img/app/usuario-icon.png') }}"></a>
-                        <h5 class="white-text">Fulano de Tal</h5>
+
+                        @if (Auth::user()->foto)
+                            <a href="#user"><img class="circle" src="{{ Auth::user()->foto }}"></a>
+                        @else    
+                            <a href="#user"><img class="circle" src="{{ asset('img/app/usuario-icon.png') }}"></a>                     
+                        @endif
+
+                        <h5 class="white-text">{{ Auth::user()->nome }}</h5>
                         <div class="divider"></div>
                         <a href="#email"><i class="material-icons">build</i> Editar Perfil</a>
                     </div>
                 </li>
-                <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">cloud</i>Item com Icone</a></li>
-                <li><a class="subheader">Item Desabilitado</a></li>
-                <li><a class="waves-effect" href="#!">Item com efeito Waves</a></li>
-                <li class="no-padding">
-                    <ul class="collapsible collapsible-accordion">
-                        <li>
-                        <a class="collapsible-header">Dropdown<i class="material-icons">arrow_drop_down</i></a>
-                        <div class="collapsible-body">
-                            <ul class="green darken-3">
-                            <li><a href="#!">First</a></li>
-                            <li><a href="#!">Second</a></li>
-                            <li><a href="#!">Third</a></li>
-                            <li><a href="#!">Fourth</a></li>
-                            </ul>
-                        </div>
-                        </li>
-                    </ul>
-                </li>
+                <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">library_books</i>Artigos</a></li>
+                <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">computer</i>Computadores</a></li>
+                <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">archive</i>Arquivos</a></li>
+                <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">router</i>Equipamentos</a></li>
+                <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">security</i>Senhas</a></li>
+                <li><a class="waves-effect white-text" href="{{ route('helpdesk') }}"><i class="material-icons white-text">help_outline</i>Atendimentos</a></li>
+                <li><a class="waves-effect white-text" href="{{ route('categories') }}"><i class="material-icons white-text">more</i>Categorias</a></li>
+                <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">supervisor_account</i>Usuários</a></li>
             </ul>
         </div>
         

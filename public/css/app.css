@@ -9269,6 +9269,30 @@ input[type=range]::-ms-thumb {
   }
 }
 
+.tabs .tab a {
+  color: green;
+}
+
+.tabs .tab a.active {
+  color: green;
+}
+
+.tabs .tab a:hover {
+  color: green;
+}
+
+.tabs .tab a:focus {
+  background-color: #EFE9E9;
+}
+
+.tabs .tab a:focus.active {
+  background-color: #EFE9E9;
+}
+
+.tabs .indicator {
+  background-color: gray;
+}
+
 .snotifyToast {
   -webkit-animation-fill-mode: both;
           animation-fill-mode: both;

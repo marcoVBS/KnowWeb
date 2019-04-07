@@ -18,3 +18,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/atendimento', 'HelpDesk\HelpDeskController@index')->name('helpdesk');
+
+
+Route::get('/categorias', function() {
+    return view('categories');
+})->middleware('auth')->name('categories');

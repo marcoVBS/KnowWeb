@@ -11,8 +11,13 @@ Vue.use(Snotify, {toast: {showProgressBar: false, timeout: 5000}})
 import Axios from 'axios'
 Vue.use(Axios)
 
-//Exemplo de importação de componentes
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+//Importação de componentes
+Vue.component('form-helpdesk-component', require('./components/helpdesk/FormHelpDeskComponent.vue').default);
+Vue.component('categorie-helpdesk-component', require('./components/categories/CategorieHelpDeskComponent.vue').default);
+Vue.component('categorie-archive-component', require('./components/categories/CategorieArchiveComponent.vue').default);
+Vue.component('categorie-article-component', require('./components/categories/CategorieArticleComponent.vue').default);
+Vue.component('categorie-equipament-component', require('./components/categories/CategorieEquipamentComponent.vue').default);
+Vue.component('form-categorie-component', require('./components/categories/FormCategorieComponent.vue').default);
 
 
 const app = new Vue({
@@ -24,6 +29,8 @@ $(document).ready(function(){
     $('.sidenav').sidenav();
     $('.dropdown-trigger').dropdown();
     $('.collapsible').collapsible();
+    $('.tabs').tabs();
+    $('.modal').modal();
 
     $('#telefone_user').mask('(00) 00000-0000');
     $('#cpf_user').mask('000.000.000-00');

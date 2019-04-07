@@ -8,52 +8,48 @@
 //Materialize
 @import '~materialize-css/sass/materialize';
 
+// TABS COLORS
+.tabs {
+  .tab {
+    a {
+      color: green;
+      &.active {color: green;}
+      &:hover {color: green;}
+      &:focus {
+        background-color: #EFE9E9;
+        &.active{background-color:#EFE9E9;}
+      }
+    }
+  }
+  .indicator {background-color: gray;}
+}
+
 //Snotify
 @import '~vue-snotify/styles/material';
 
-.content-begin{
-  padding-top: 1em;
-}
+.content-begin{ padding-top: 1em;}
 
-.logo-begin{
-  padding: 6em 1em 0 0;
-}
+.logo-begin{ padding: 6em 1em 0 0;}
 
-.form-register{
-  border-left: 1px solid #66bb6a;
-}
+.form-register{ border-left: 1px solid #66bb6a;}
 
-.sidenav{
-    width: 250px
-}
-.top-menu, .content{
-    padding-left: 250px;
-}
-#logoMobile{
-  display: none;
-}
-#logoDesk{
-  margin-left: 1em;;
-}
+.sidenav{  width: 250px}
+
+.top-menu, .content{ padding-left: 250px;}
+
+#logoMobile{ display: none;}
+
+#logoDesk{  margin-left: 1em;}
 
 @media only screen and (max-width : 992px) {
   
-  .logo-begin{
-    padding: 0;
-  }
+  .logo-begin{ padding: 0; }
   
-  .form-register{
-    border-left: 0;
-  }
+  .form-register{ border-left: 0; }
 
-  .top-menu, .content {
-    padding-left: 0;
-  }
+  .top-menu, .content { padding-left: 0; }
 
-  #logoDesk{
-    display: none;
-  }
-  #logoMobile{
-    display: inline;
-  }
+  #logoDesk{ display: none; }
+
+  #logoMobile{ display: inline; }
 }
