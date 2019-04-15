@@ -21,7 +21,7 @@ Vue.component('form-categorie-component', require('./components/categories/FormC
 
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
 });
 
 $(document).ready(function(){
