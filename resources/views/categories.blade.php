@@ -26,7 +26,7 @@
                 <categorie-article-component></categorie-article-component>
             </div>
             <div id="equipamento" class="col s12">
-                <categorie-equipament-component></categorie-equipament-component>
+                <categorie-equipment-component></categorie-equipment-component>
             </div>
         </div>
     </div>

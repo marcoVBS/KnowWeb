@@ -16,7 +16,7 @@ Vue.component('form-helpdesk-component', require('./components/helpdesk/FormHelp
 Vue.component('categorie-helpdesk-component', require('./components/categories/CategorieHelpDeskComponent.vue').default);
 Vue.component('categorie-archive-component', require('./components/categories/CategorieArchiveComponent.vue').default);
 Vue.component('categorie-article-component', require('./components/categories/CategorieArticleComponent.vue').default);
-Vue.component('categorie-equipament-component', require('./components/categories/CategorieEquipamentComponent.vue').default);
+Vue.component('categorie-equipment-component', require('./components/categories/CategorieEquipmentComponent.vue').default);
 Vue.component('form-categorie-component', require('./components/categories/FormCategorieComponent.vue').default);
 
 

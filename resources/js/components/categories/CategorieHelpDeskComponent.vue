@@ -97,10 +97,10 @@ export default {
                                 })
                                 .catch((error) => (vm.$snotify.error('Falha ao excluir a categoria', 'Erro')))
                 },
-                loadForm: function(categorie){
+                loadForm(categorie){
                         this.update = true
                         this.categorieUpdate = categorie
-                        this.route = '/KnowWeb/public/categorias/helpdesk/update/'
+                        this.route = '/KnowWeb/public/categorias/helpdesk/update'
                 },
                 newRoute(){
                         this.route = '/KnowWeb/public/categorias/helpdesk/create'

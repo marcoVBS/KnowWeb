@@ -29,6 +29,24 @@ Route::get('/categorias', function() {
 Route::post('/categorias/helpdesk/create', 'HelpDesk\HelpDeskCategorieController@create');
 Route::get('/categorias/helpdesk/all', 'HelpDesk\HelpDeskCategorieController@getCategories');
 Route::delete('/categorias/helpdesk/delete/{id}', 'HelpDesk\HelpDeskCategorieController@delete');
-Route::put('/categorias/helpdesk/update/', 'HelpDesk\HelpDeskCategorieController@update');
+Route::put('/categorias/helpdesk/update', 'HelpDesk\HelpDeskCategorieController@update');
+
+//Categorias de Equipamento
+Route::post('/categorias/equipamento/create', 'Equipment\EquipmentCategorieController@create');
+Route::get('/categorias/equipamento/all', 'Equipment\EquipmentCategorieController@getCategories');
+Route::delete('/categorias/equipamento/delete/{id}', 'Equipment\EquipmentCategorieController@delete');
+Route::put('/categorias/equipamento/update', 'Equipment\EquipmentCategorieController@update');
+
+//Categorias de arquivo
+Route::post('/categorias/arquivo/create', 'Archive\ArchiveCategorieController@create');
+Route::get('/categorias/arquivo/all', 'Archive\ArchiveCategorieController@getCategories');
+Route::delete('/categorias/arquivo/delete/{id}', 'Archive\ArchiveCategorieController@delete');
+Route::put('/categorias/arquivo/update', 'Archive\ArchiveCategorieController@update');
+
+//Categorias de artigo
+Route::post('/categorias/artigo/create', 'Article\ArticleCategorieController@create');
+Route::get('/categorias/artigo/all', 'Article\ArticleCategorieController@getCategories');
+Route::delete('/categorias/artigo/delete/{id}', 'Article\ArticleCategorieController@delete');
+Route::put('/categorias/artigo/update', 'Article\ArticleCategorieController@update');
 
 Auth::routes();

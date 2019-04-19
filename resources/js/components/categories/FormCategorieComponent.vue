@@ -3,7 +3,7 @@
         <form @submit.prevent="onSubmit" action="#"  method="post" id="form_cat">
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="nome" type="text" name="nome" v-model="categorie.nome" required v-bind:class="{validate: !update}">
+                    <input id="nome" type="text" name="nome" v-model="categorie.nome" required>
                     <label for="nome" v-bind:class="{active: update}">Nome</label>
                 </div>
 

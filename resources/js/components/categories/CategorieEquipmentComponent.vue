@@ -1,14 +1,14 @@
 <template>
         <div class="row">
-           <h5 class="header grey-text center-align">Categorias de arquivo
-                <a class="waves-effect waves-light btn modal-trigger" href="#modalarchive" @click="newRoute()">
+           <h5 class="header grey-text center-align">Categorias de equipamento
+                <a class="waves-effect waves-light btn modal-trigger" href="#modalequipament" @click="newRoute()">
                 <i class="material-icons left">add_circle</i>Nova</a>
            </h5>
            <!-- Modal Structure -->
-                <div id="modalarchive" class="modal">
+                <div id="modalequipament" class="modal">
                         <div class="modal-content">
-                                <h5 v-if="update"  class="header grey-text center-align">Edição de categoria de arquivo</h5>
-                                <h5 v-else class="header grey-text center-align">Cadastro de categoria de arquivo</h5>
+                                <h5 v-if="update"  class="header grey-text center-align">Edição de categoria de equipamento</h5>
+                                <h5 v-else class="header grey-text center-align">Cadastro de categoria de equipamento</h5>
                                 
                                 <form-categorie-component @getCategories="getCategories" @closeModal="closeModal" 
                                         :route="route"
@@ -27,17 +27,17 @@
                     </thead>
                     <tbody>
                         <tr v-for="(categorie, index) in categories" :key="index">
-                            <td> {{categorie.id_categoria_arquivo}} </td>
+                            <td> {{categorie.id_categoria_equipamento}} </td>
                             <td> {{categorie.nome}} </td>
                             <td> {{categorie.descricao}} </td>
                             <td class="row">
-                                <a href="#modalarchive" class="modal-trigger" @click="loadForm(categorie)"><i class="material-icons">edit</i></a>
-                                <a href="#" @click.prevent="confirmDelete(categorie.id_categoria_arquivo, categorie.nome)"><i class="material-icons">delete</i></a>
+                                <a href="#modalequipament" class="modal-trigger" @click="loadForm(categorie)"><i class="material-icons">edit</i></a>
+                                <a href="#" @click.prevent="confirmDelete(categorie.id_categoria_equipamento, categorie.nome)"><i class="material-icons">delete</i></a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-
+                
         </div>
 </template>
 
@@ -63,7 +63,7 @@ export default {
                 getCategories(){
                         let vm = this
                         
-                        axios.get("/KnowWeb/public/categorias/arquivo/all")
+                        axios.get("/KnowWeb/public/categorias/equipamento/all")
                         .then(function(response){
                                 vm.categories = response.data.categories
                         })
@@ -81,7 +81,7 @@ export default {
                 },
                 deleteCategorie(id){
                         let vm = this
-                        axios.delete(`/KnowWeb/public/categorias/arquivo/delete/${id}`)
+                        axios.delete(`/KnowWeb/public/categorias/equipamento/delete/${id}`)
                                 .then(function(response){
                                         let stored = response.data.deleted
                                         let message = response.data.message
@@ -98,10 +98,10 @@ export default {
                 loadForm(categorie){
                         this.update = true
                         this.categorieUpdate = categorie
-                        this.route = '/KnowWeb/public/categorias/arquivo/update'
+                        this.route = '/KnowWeb/public/categorias/equipamento/update'
                 },
                 newRoute(){
-                        this.route = '/KnowWeb/public/categorias/arquivo/create'
+                        this.route = '/KnowWeb/public/categorias/equipamento/create'
                         this.update = false
                         this.categorieUpdate = {}
                 }

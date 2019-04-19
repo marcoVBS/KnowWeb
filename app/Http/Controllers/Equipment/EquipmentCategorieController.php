@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\HelpDesk;
+namespace App\Http\Controllers\Equipment;
 
 use Illuminate\Http\Request;
-use App\Models\HelpDesk\HelpDeskCategorie;
 use App\Http\Controllers\Controller;
+use App\Models\Equipment\EquipmentCategorie;
 
-class HelpDeskCategorieController extends Controller
+class EquipmentCategorieController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
     }
 
     public function create(Request $request){
-        $categoria = new HelpDeskCategorie();
+        $categoria = new EquipmentCategorie();
         $categoria->nome = $request->nome;
         $categoria->descricao = $request->descricao;
         if($categoria->save()){
@@ -33,12 +32,12 @@ class HelpDeskCategorieController extends Controller
 
     public function getCategories(){
         return response()->json([
-            'categories' => HelpDeskCategorie::all()
+            'categories' => EquipmentCategorie::all()
         ]);
     }
 
     public function delete($id){
-        $categorie = HelpDeskCategorie::find($id);
+        $categorie = EquipmentCategorie::find($id);
         
         if($categorie->delete()){
             return response()->json([
@@ -54,7 +53,7 @@ class HelpDeskCategorieController extends Controller
     }
 
     public function update(Request $request){
-        $categorie = HelpDeskCategorie::find($request->id_categoria_atendimento);
+        $categorie = EquipmentCategorie::find($request->id_categoria_equipamento);
         $categorie->nome = $request->nome;
         $categorie->descricao = $request->descricao;
         if($categorie->save()){
@@ -69,5 +68,4 @@ class HelpDeskCategorieController extends Controller
             ]);
         }
     }
-
 }

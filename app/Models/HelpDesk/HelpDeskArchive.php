@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\HelpDesk;
 
 use Illuminate\Database\Eloquent\Model;
 
