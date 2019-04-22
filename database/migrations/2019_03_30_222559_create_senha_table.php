@@ -18,7 +18,7 @@ class CreateSenhaTable extends Migration
             $table->string('descricao', 70);
             $table->string('login', 50);
             $table->string('senha', 60);
-            $table->text('observacoes', 300)->nullable();
+            $table->text('observacoes')->nullable();
             $table->integer('equipamento_id')->unsigned()->nullable();
             $table->foreign('equipamento_id')->references('id_equipamento')->on('tb_equipamento')
                 ->onDelete('cascade')->onUpdate('cascade');

@@ -24,7 +24,7 @@ class CreateComputadorTable extends Migration
             $table->string('senha_usuario_adm', 60)->nullable();
             $table->string('nome_computador', 50)->nullable();
             $table->string('identificador_computador', 50)->nullable();
-            $table->text('programas_especificos', 400)->nullable();
+            $table->text('programas_especificos')->nullable();
             $table->integer('sistema_operacional_id')->unsigned();
             $table->foreign('sistema_operacional_id')->references('id_sistema_operacional')->on('tb_sistema_operacional')
                 ->onDelete('cascade')->onUpdate('cascade');

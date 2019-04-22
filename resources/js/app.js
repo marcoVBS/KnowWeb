@@ -5,7 +5,7 @@ window.Vue = require('vue');
 
 //importa Snotify
 import Snotify from 'vue-snotify'
-Vue.use(Snotify, {toast: {showProgressBar: false, timeout: 5000}})
+Vue.use(Snotify, {toast: {showProgressBar: false, timeout: 4000}})
 
 //importa Axios
 import Axios from 'axios'

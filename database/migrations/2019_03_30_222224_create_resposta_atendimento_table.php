@@ -21,7 +21,7 @@ class CreateRespostaAtendimentoTable extends Migration
             $table->integer('atendimento_id')->unsigned();
             $table->foreign('atendimento_id')->references('id_atendimento')->on('tb_atendimento')
                 ->onDelete('cascade')->onUpdate('cascade');
-            $table->text('resposta', 500);
+            $table->text('resposta');
             $table->timestamps();
         });
     }

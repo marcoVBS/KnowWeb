@@ -6,7 +6,7 @@
 
     <div class="container">
         {{-- Mudar para a página de listagem de chamados --}}
-        <form-helpdesk-component></form-helpdesk-component>
+        <form-helpdesk-component :categories="{{  $categories  }}" token="{{ csrf_token() }}"></form-helpdesk-component>
     </div>
 
 @endsection

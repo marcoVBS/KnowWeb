@@ -16,7 +16,7 @@ class CreateArtigoTable extends Migration
         Schema::create('tb_artigo', function (Blueprint $table) {
             $table->increments('id_artigo');
             $table->string('titulo', 100);
-            $table->text('descricao', 500)->nullable();
+            $table->text('descricao')->nullable();
             $table->integer('categoria_artigo_id')->unsigned();
             $table->foreign('categoria_artigo_id')->references('id_categoria_artigo')->on('tb_categoria_artigo')
                 ->onDelete('cascade')->onUpdate('cascade');

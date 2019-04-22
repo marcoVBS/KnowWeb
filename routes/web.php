@@ -18,9 +18,10 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/atendimento', 'HelpDesk\HelpDeskController@index')->name('helpdesk');
+Route::post('/atendimento/imagem/upload', 'HelpDesk\HelpDeskArchiveController@uploadImage');
 
 
-//Categorias
+//Gestão de Categorias
 Route::get('/categorias', function() {
     return view('categories');
 })->middleware('auth')->name('categories');

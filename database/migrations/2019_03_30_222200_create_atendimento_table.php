@@ -16,7 +16,7 @@ class CreateAtendimentoTable extends Migration
         Schema::create('tb_atendimento', function (Blueprint $table) {
             $table->increments('id_atendimento');
             $table->string('titulo', 80);
-            $table->text('descricao', 500);
+            $table->text('descricao');
             $table->string('prioridade', 45)->nullable();
             $table->string('status', 45);
             $table->integer('categoria_atendimento_id')->unsigned();

@@ -25,7 +25,7 @@
                             <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="categories.length > 0">
                         <tr v-for="(categorie, index) in categories" :key="index">
                             <td> {{categorie.id_categoria_artigo}} </td>
                             <td> {{categorie.nome}} </td>
@@ -35,6 +35,9 @@
                                 <a href="#" @click.prevent="confirmDelete(categorie.id_categoria_artigo, categorie.nome)"><i class="material-icons">delete</i></a>
                             </td>
                         </tr>
+                    </tbody>
+                    <tbody v-else>
+                        <tr><td class="green-text">Nenhuma categoria cadastrada...</td></tr>
                     </tbody>
                 </table>
                 
@@ -63,7 +66,7 @@ export default {
                 getCategories(){
                         let vm = this
                         
-                        axios.get("/KnowWeb/public/categorias/artigo/all")
+                        axios.get("categorias/artigo/all")
                         .then(function(response){
                                 vm.categories = response.data.categories
                         })
@@ -81,7 +84,7 @@ export default {
                 },
                 deleteCategorie(id){
                         let vm = this
-                        axios.delete(`/KnowWeb/public/categorias/artigo/delete/${id}`)
+                        axios.delete(`categorias/artigo/delete/${id}`)
                                 .then(function(response){
                                         let stored = response.data.deleted
                                         let message = response.data.message
@@ -98,10 +101,10 @@ export default {
                 loadForm(categorie){
                         this.update = true
                         this.categorieUpdate = categorie
-                        this.route = '/KnowWeb/public/categorias/artigo/update'
+                        this.route = 'categorias/artigo/update'
                 },
                 newRoute(){
-                        this.route = '/KnowWeb/public/categorias/artigo/create'
+                        this.route = 'categorias/artigo/create'
                         this.update = false
                         this.categorieUpdate = {}
                 }

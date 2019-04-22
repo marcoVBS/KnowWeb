@@ -26,17 +26,20 @@
                             <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr v-for="(categorie, index) in categories" :key="index">
-                            <td> {{categorie.id_categoria_atendimento}} </td>
-                            <td> {{categorie.nome}} </td>
-                            <td> {{categorie.descricao}} </td>
-                            <td class="row">
-                                <a href="#modalhelpdesk" class="modal-trigger" @click="loadForm(categorie)"><i class="material-icons">edit</i></a>
-                                <a href="#" @click.prevent="confirmDelete(categorie.id_categoria_atendimento, categorie.nome)"><i class="material-icons">delete</i></a>
-                            </td>
-                        </tr>
-                    </tbody>
+                        <tbody v-if="categories.length > 0">
+                                <tr v-for="(categorie, index) in categories" :key="index">
+                                <td> {{categorie.id_categoria_atendimento}} </td>
+                                <td> {{categorie.nome}} </td>
+                                <td> {{categorie.descricao}} </td>
+                                <td class="row">
+                                        <a href="#modalhelpdesk" class="modal-trigger" @click="loadForm(categorie)"><i class="material-icons">edit</i></a>
+                                        <a href="#" @click.prevent="confirmDelete(categorie.id_categoria_atendimento, categorie.nome)"><i class="material-icons">delete</i></a>
+                                </td>
+                                </tr>
+                        </tbody>
+                        <tbody v-else>
+                                <tr><td class="green-text">Nenhuma categoria cadastrada...</td></tr>
+                        </tbody>
                 </table>
 
         </div>
@@ -65,7 +68,7 @@ export default {
                 getCategories(){
                         let vm = this
                         
-                        axios.get("/KnowWeb/public/categorias/helpdesk/all")
+                        axios.get("categorias/helpdesk/all")
                         .then(function(response){
                                 vm.categories = response.data.categories
                         })
@@ -83,7 +86,7 @@ export default {
                 },
                 deleteCategorie(id){
                         let vm = this
-                        axios.delete(`/KnowWeb/public/categorias/helpdesk/delete/${id}`)
+                        axios.delete(`categorias/helpdesk/delete/${id}`)
                                 .then(function(response){
                                         let stored = response.data.deleted
                                         let message = response.data.message
@@ -100,16 +103,16 @@ export default {
                 loadForm(categorie){
                         this.update = true
                         this.categorieUpdate = categorie
-                        this.route = '/KnowWeb/public/categorias/helpdesk/update'
+                        this.route = 'categorias/helpdesk/update'
                 },
                 newRoute(){
-                        this.route = '/KnowWeb/public/categorias/helpdesk/create'
+                        this.route = 'categorias/helpdesk/create'
                         this.update = false
                         this.categorieUpdate = {}
                 }
         },
         mounted() {
-                this.getCategories()       
+                this.getCategories()  
         }
 }
 </script>

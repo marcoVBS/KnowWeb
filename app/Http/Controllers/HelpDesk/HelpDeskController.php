@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HelpDesk;
 use App\HelpDesk;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\HelpDesk\HelpDeskCategorie;
 
 class HelpDeskController extends Controller
 {
@@ -15,7 +16,8 @@ class HelpDeskController extends Controller
 
     public function index()
     {
-        return view('helpdesk.helpdesk');
+        $categories = HelpDeskCategorie::all();
+        return view('helpdesk.helpdesk', ['categories' => json_encode($categories)]);
     }
 
     
