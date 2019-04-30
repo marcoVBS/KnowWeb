@@ -22,9 +22,6 @@ class CreateAtendimentoTable extends Migration
             $table->integer('categoria_atendimento_id')->unsigned();
             $table->foreign('categoria_atendimento_id')->references('id_categoria_atendimento')->on('tb_categoria_atendimento')
                 ->onDelete('cascade')->onUpdate('cascade');
-            $table->integer('setor_id')->unsigned()->nullable();
-            $table->foreign('setor_id')->references('id_setor')->on('tb_setor')
-                ->onDelete('cascade')->onUpdate('cascade');
             $table->integer('usuario_solicitante_id')->unsigned();
             $table->foreign('usuario_solicitante_id')->references('id_usuario')->on('tb_usuario')
                 ->onDelete('cascade')->onUpdate('cascade');

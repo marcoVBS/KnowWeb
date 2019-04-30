@@ -17,11 +17,15 @@ Route::get('/', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+//GESTÃO DE HELP DESK
 Route::get('/atendimento', 'HelpDesk\HelpDeskController@index')->name('helpdesk');
-Route::post('/atendimento/imagem/upload', 'HelpDesk\HelpDeskArchiveController@uploadImage');
+Route::post('/atendimento/create', 'HelpDesk\HelpDeskController@create');
+Route::post('/atendimento/upload', 'HelpDesk\HelpDeskController@uploadFiles');
+Route::post('/atendimento/imagem/upload', 'HelpDesk\HelpDeskController@uploadImage');
 
 
-//Gestão de Categorias
+//GESTÃO DE CATEGORIAS
 Route::get('/categorias', function() {
     return view('categories');
 })->middleware('auth')->name('categories');

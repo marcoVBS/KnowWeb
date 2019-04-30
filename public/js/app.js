@@ -2853,45 +2853,93 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['categories', 'token'],
+  props: ['categories'],
   data: function data() {
     return {
       skin: 'skin/ui/oxide',
       titulo: '',
       categoria_id: '',
-      descricao: ''
+      descricao: '',
+      imagens: [],
+      arquivos: []
     };
   },
   methods: {
-    onSubmit: function onSubmit() {},
-    upload_handler: function upload_handler(blobInfo, success, failure, folderName) {
-      var xhr, formData;
-      xhr = new XMLHttpRequest();
-      xhr.withCredentials = false;
-      xhr.open('POST', 'atendimento/imagem/upload');
-      xhr.setRequestHeader("X-CSRF-Token", this.token);
-
-      xhr.onload = function () {
-        var json;
-
-        if (xhr.status != 200) {
-          failure('HTTP Error: ' + xhr.status);
-          return;
-        }
-
-        json = JSON.parse(xhr.responseText);
-
-        if (!json || typeof json.path != 'string') {
-          failure('Invalid JSON: ' + xhr.responseText);
-          return;
-        }
-
-        success(json.path);
-      };
-
+    onSubmit: function onSubmit() {
+      this.createHelpDesk();
+    },
+    upload_handler: function upload_handler(blobInfo, success, failure) {
+      var formData;
       formData = new FormData();
       formData.append('file', blobInfo.blob(), blobInfo.filename());
-      xhr.send(formData);
+      var vm = this;
+      axios.post('atendimento/imagem/upload', formData).then(function (response) {
+        var path = response.data.path;
+        var name = response.data.name;
+        success(path);
+        vm.imagens.push({
+          caminho: path,
+          nome: name
+        });
+      }).catch(function (error) {
+        failure('HTTP Error: ' + error);
+      });
+    },
+    changeFiles: function changeFiles() {
+      var uploadedFiles = this.$refs.files.files;
+
+      for (var i = 0; i < uploadedFiles.length; i++) {
+        this.arquivos.push(uploadedFiles[i]);
+      }
+    },
+    uploadFiles: function uploadFiles(id_atendimento) {
+      var success = true;
+
+      for (var i = 0; i < this.arquivos.length; i++) {
+        var formData = new FormData();
+        formData.append('file', this.arquivos[i]);
+        formData.append('id', id_atendimento);
+        axios.post('atendimento/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (response) {
+          if (!response.data.upload) {
+            return false;
+          }
+        }).catch(function (error) {
+          return false;
+        });
+      }
+
+      return true;
+    },
+    createHelpDesk: function createHelpDesk() {
+      var vm = this;
+      axios.post('atendimento/create', {
+        titulo: vm.titulo,
+        descricao: vm.descricao,
+        categoria_id: vm.categoria_id,
+        imagens: vm.imagens
+      }).then(function (response) {
+        var stored = response.data.stored;
+
+        if (stored == true) {
+          var upload = vm.uploadFiles(response.data.id);
+
+          if (upload) {
+            vm.$snotify.success('Sua solicitação foi enviada com sucesso!', 'Sucesso');
+          }
+        } else {
+          vm.$snotify.error('Falha ao enviar solicitação de atendimento', 'Erro');
+        }
+      }).catch(function (error) {
+        vm.$snotify.error('Falha ao enviar solicitação de atendimento', 'Erro');
+      }).finally(function () {
+        $('#form_help').each(function () {
+          this.reset();
+        });
+      });
     }
   },
   components: {
@@ -54703,7 +54751,7 @@ var render = function() {
       _c(
         "form",
         {
-          attrs: { action: "#", method: "post", id: "form_cat" },
+          attrs: { action: "#", method: "post", id: "form_help" },
           on: {
             submit: function($event) {
               $event.preventDefault()
@@ -54801,7 +54849,7 @@ var render = function() {
               { staticClass: "col s12" },
               [
                 _c("label", { staticStyle: { "font-size": "16px" } }, [
-                  _vm._v("Assunto: ")
+                  _vm._v("Descrição: ")
                 ]),
                 _vm._v(" "),
                 _c("editor", {
@@ -54835,7 +54883,28 @@ var render = function() {
               1
             ),
             _vm._v(" "),
-            _vm._m(0)
+            _c("div", { staticClass: "col s12 file-field input-field" }, [
+              _c("div", { staticClass: "btn" }, [
+                _c("span", [_vm._v("Enviar arquivos...")]),
+                _vm._v(" "),
+                _c("input", {
+                  ref: "files",
+                  attrs: {
+                    type: "file",
+                    name: "arquivo",
+                    id: "arquivos",
+                    multiple: ""
+                  },
+                  on: {
+                    change: function($event) {
+                      return _vm.changeFiles()
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _vm._m(0)
+            ])
           ]),
           _vm._v(" "),
           _vm._m(1)
@@ -54849,19 +54918,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col s12 file-field input-field" }, [
-      _c("div", { staticClass: "btn" }, [
-        _c("span", [_vm._v("Enviar arquivos...")]),
-        _vm._v(" "),
-        _c("input", { attrs: { type: "file", name: "arquivos", multiple: "" } })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "file-path-wrapper" }, [
-        _c("input", {
-          staticClass: "file-path validate",
-          attrs: { type: "text" }
-        })
-      ])
+    return _c("div", { staticClass: "file-path-wrapper" }, [
+      _c("input", {
+        staticClass: "file-path validate",
+        attrs: { type: "text" }
+      })
     ])
   },
   function() {
