@@ -19,10 +19,19 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 //GESTÃO DE HELP DESK
-Route::get('/atendimento', 'HelpDesk\HelpDeskController@index')->name('helpdesk');
-Route::post('/atendimento/create', 'HelpDesk\HelpDeskController@create');
-Route::post('/atendimento/upload', 'HelpDesk\HelpDeskController@uploadFiles');
-Route::post('/atendimento/imagem/upload', 'HelpDesk\HelpDeskController@uploadImage');
+Route::get('/atendimento', 'HelpDesk\HelpDeskController@index')->name('helpdesks');
+Route::get('/atendimento/novo', 'HelpDesk\HelpDeskController@new');
+Route::post('/atendimento/novo/create', 'HelpDesk\HelpDeskController@create');
+Route::post('/atendimento/novo/upload', 'HelpDesk\HelpDeskController@uploadFiles');
+Route::post('/atendimento/novo/imagem/upload', 'HelpDesk\HelpDeskController@uploadImage');
+Route::get('/atendimento/{id}', 'HelpDesk\HelpDeskController@view');
+Route::post('/atendimento/prioridade', 'HelpDesk\HelpDeskController@changePriority');
+Route::post('/atendimento/status', 'HelpDesk\HelpDeskController@changeStatus');
+Route::get('/atendimento/download/{id}', 'HelpDesk\HelpDeskController@downloadFile');
+Route::post('/atendimento/resposta/imagem/upload', 'HelpDesk\HelpDeskResponseController@uploadImage');
+Route::post('/atendimento/resposta/upload', 'HelpDesk\HelpDeskResponseController@uploadFiles');
+Route::post('/atendimento/resposta/create', 'HelpDesk\HelpDeskResponseController@create');
+Route::get('/atendimento/respostas/{id}', 'HelpDesk\HelpDeskResponseController@getResponses');
 
 
 //GESTÃO DE CATEGORIAS

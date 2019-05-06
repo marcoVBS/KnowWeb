@@ -5,7 +5,7 @@
 @section('content')
 
     <div class="container">
-        <helpdesk-component :helpdesk="{{  $helpdesk  }}"></helpdesk-component>
+        <form-helpdesk-component :categories="{{  $categories  }}"></form-helpdesk-component>
     </div>
 
 @endsection

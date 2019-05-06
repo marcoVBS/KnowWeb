@@ -13,6 +13,8 @@ Vue.use(Axios)
 
 //Importação de componentes
 Vue.component('form-helpdesk-component', require('./components/helpdesk/FormHelpDeskComponent.vue').default);
+Vue.component('helpdesks-component', require('./components/helpdesk/HelpDesksComponent.vue').default);
+Vue.component('helpdesk-component', require('./components/helpdesk/HelpDeskComponent.vue').default);
 Vue.component('categorie-helpdesk-component', require('./components/categories/CategorieHelpDeskComponent.vue').default);
 Vue.component('categorie-archive-component', require('./components/categories/CategorieArchiveComponent.vue').default);
 Vue.component('categorie-article-component', require('./components/categories/CategorieArticleComponent.vue').default);

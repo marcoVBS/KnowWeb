@@ -8,6 +8,7 @@ use App\Models\HelpDesk\HelpDeskCategorie;
 use Illuminate\Support\Facades\Auth;
 use App\Models\HelpDesk\HelpDesk;
 use App\Models\HelpDesk\HelpDeskArchive;
+use App\User;
 
 class HelpDeskController extends Controller
 {
@@ -18,15 +19,28 @@ class HelpDeskController extends Controller
 
     public function index()
     {
+        $helpdesks = HelpDesk::all();
+        foreach ($helpdesks as $helpdesk) {
+            $helpdesk->autor = User::find($helpdesk->usuario_solicitante_id)->nome;
+            $helpdesk->categoria = HelpDeskCategorie::find($helpdesk->categoria_atendimento_id)->nome;
+            if($helpdesk->atendente_responsavel_id){
+                $helpdesk->responsavel = User::find($helpdesk->atendente_responsavel_id)->nome;
+            }
+        }
+        return view('helpdesk.listhelpdesks', ['helpdesks'=> json_encode($helpdesks)]);
+    }
+
+    public function new()
+    {
         $categories = HelpDeskCategorie::all();
-        return view('helpdesk.helpdesk', ['categories' => json_encode($categories)]);
+        return view('helpdesk.newhelpdesk', ['categories' => json_encode($categories)]);
     }
 
     public function create(Request $request){
         $helpdesk = new HelpDesk();
         $helpdesk->titulo = $request->titulo;
         $helpdesk->descricao = $request->descricao;
-        $helpdesk->prioridade = 'Baixa';
+        $helpdesk->prioridade = 'Média';
         $helpdesk->status = 'Aberto';
         $helpdesk->categoria_atendimento_id = $request->categoria_id;
         $helpdesk->usuario_solicitante_id = Auth::id();
@@ -50,12 +64,9 @@ class HelpDeskController extends Controller
         }
     }
 
-    public function saveArchive($atendimento_id, $name, $caminho, $resposta_id = null){
+    public function saveArchive($atendimento_id, $name, $caminho){
         $archive = new HelpDeskArchive();
         $archive->atendimento_id = $atendimento_id;
-        if($resposta_id){
-            $archive->resposta_atendimento_id = $resposta_id;
-        }
         $archive->nome = $name;
         $archive->caminho = $caminho;
         if($archive->save()){
@@ -68,14 +79,18 @@ class HelpDeskController extends Controller
     public function uploadImage(Request $request){
         $extension = $request->file->getClientOriginalExtension();
         $name = time().'id-'.Auth::id().'.'.$extension;
-        $path = 'storage/atendimentos/imagens/' . $name;
+        $path = '/KnowWeb/public/storage/atendimentos/imagens/' . $name;
         
-        $upload = $request->file->storeAs('/atendimentos/imagens/', $name);
-        if($upload){
-            return response()->json([
-                'path' => $path,
-                'name' => $name
-            ]);
+        if($request->hasFile('file') && $request->file('file')->isValid()){
+            $upload = $request->file->storeAs('/atendimentos/imagens/', $name);
+            if($upload){
+                return response()->json([
+                    'path' => $path,
+                    'name' => $name
+                ]);
+            }else{
+                return false;
+            }
         }else{
             return false;
         }
@@ -85,14 +100,21 @@ class HelpDeskController extends Controller
         $id_atendimento = $request->id;
         $name = $request->file('file')->getClientOriginalName();
         $path = 'storage/atendimentos/arquivos/'.$id_atendimento.'/'. $name;
-        $upload = $request->file('file')->storeAs('/atendimentos/arquivos/'.$id_atendimento.'/', $name);
 
-        if($upload){
-            $save = $this->saveArchive($id_atendimento, $name, $path);
-            if($save){
-                return response()->json([
-                    'upload' => true
-                ]);
+        if($request->hasFile('file') && $request->file('file')->isValid()){
+            $upload = $request->file('file')->storeAs('/atendimentos/arquivos/'.$id_atendimento.'/', $name);
+
+            if($upload){
+                $save = $this->saveArchive($id_atendimento, $name, $path);
+                if($save){
+                    return response()->json([
+                        'upload' => true
+                    ]);
+                }else{
+                    return response()->json([
+                        'upload' => false
+                    ]);
+                }
             }else{
                 return response()->json([
                     'upload' => false
@@ -103,6 +125,51 @@ class HelpDeskController extends Controller
                 'upload' => false
             ]);
         }
+    }
+
+    public function view(Request $request){
+        $helpdesk = HelpDesk::find($request->id);
+        $user = User::find($helpdesk->usuario_solicitante_id);
+        $helpdesk->autor = $user->nome;
+        $helpdesk->autor_foto = $user->foto;
+        $helpdesk->categoria = HelpDeskCategorie::find($helpdesk->categoria_atendimento_id)->nome;
+        $arquivos = HelpDeskArchive::where('atendimento_id', $request->id)->whereNull('resposta_atendimento_id')->get();
+        $helpdesk->arquivos = $arquivos;
+        return view('helpdesk.helpdesk', ['helpdesk'=> json_encode($helpdesk)]);
+    }
+
+    public function changePriority(Request $request){
+        $helpdesk = HelpDesk::find($request->id_atendimento);
+        $helpdesk->prioridade = $request->prioridade;
+        if($helpdesk->save()){
+            return response()->json([
+                'success' => true
+            ]);
+        }else{
+            return response()->json([
+                'success' => false
+            ]);
+        }
+    }
+
+    public function changeStatus(Request $request){
+        $helpdesk = HelpDesk::find($request->id_atendimento);
+        $helpdesk->status = $request->status;
+        $helpdesk->atendente_responsavel_id = Auth::id();
+        if($helpdesk->save()){
+            return response()->json([
+                'success' => true
+            ]);
+        }else{
+            return response()->json([
+                'success' => false
+            ]);
+        }
+    }
+
+    public function downloadFile(Request $request){
+        $arquivo = HelpDeskArchive::find($request->id);
+        return response()->download($arquivo->caminho);
     }
     
 }

@@ -8,4 +8,7 @@ class HelpDeskResponse extends Model
 {
     protected $table = 'tb_resposta_atendimento';
     protected $primaryKey = 'id_resposta_atendimento';
+    protected $casts = [
+        'created_at' => 'datetime:d/m/Y H:i'
+    ];
 }

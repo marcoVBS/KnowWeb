@@ -2850,13 +2850,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['categories'],
   data: function data() {
     return {
-      skin: 'skin/ui/oxide',
+      skin: '/KnowWeb/public/skin/ui/oxide',
       titulo: '',
       categoria_id: '',
       descricao: '',
@@ -2873,7 +2876,7 @@ __webpack_require__.r(__webpack_exports__);
       formData = new FormData();
       formData.append('file', blobInfo.blob(), blobInfo.filename());
       var vm = this;
-      axios.post('atendimento/imagem/upload', formData).then(function (response) {
+      axios.post('novo/imagem/upload', formData).then(function (response) {
         var path = response.data.path;
         var name = response.data.name;
         success(path);
@@ -2887,9 +2890,25 @@ __webpack_require__.r(__webpack_exports__);
     },
     changeFiles: function changeFiles() {
       var uploadedFiles = this.$refs.files.files;
+      var max = false;
 
-      for (var i = 0; i < uploadedFiles.length; i++) {
-        this.arquivos.push(uploadedFiles[i]);
+      if (uploadedFiles.length <= 10) {
+        for (var i = 0; i < uploadedFiles.length; i++) {
+          if (uploadedFiles[i].size < 8388608) {
+            this.arquivos.push(uploadedFiles[i]);
+          } else {
+            max = true;
+          }
+        }
+      } else {
+        $("#arquivos").val('');
+        this.$snotify.error('Aquantidade máxima de arquivos para upload é de 10!', 'Erro');
+      }
+
+      if (max) {
+        $("#arquivos").val('');
+        this.arquivos = [];
+        this.$snotify.error('O tamanho máximo de um arquivo para upload é 8MB!', 'Erro');
       }
     },
     uploadFiles: function uploadFiles(id_atendimento) {
@@ -2899,7 +2918,7 @@ __webpack_require__.r(__webpack_exports__);
         var formData = new FormData();
         formData.append('file', this.arquivos[i]);
         formData.append('id', id_atendimento);
-        axios.post('atendimento/upload', formData, {
+        axios.post('novo/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -2916,7 +2935,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     createHelpDesk: function createHelpDesk() {
       var vm = this;
-      axios.post('atendimento/create', {
+      axios.post('novo/create', {
         titulo: vm.titulo,
         descricao: vm.descricao,
         categoria_id: vm.categoria_id,
@@ -2929,22 +2948,350 @@ __webpack_require__.r(__webpack_exports__);
 
           if (upload) {
             vm.$snotify.success('Sua solicitação foi enviada com sucesso!', 'Sucesso');
+            setTimeout(function () {
+              window.location.href = "/KnowWeb/public/atendimento";
+            }, 3000);
           }
         } else {
-          vm.$snotify.error('Falha ao enviar solicitação de atendimento', 'Erro');
+          vm.$snotify.error('Falha ao enviar solicitação de atendimento!', 'Erro');
         }
       }).catch(function (error) {
-        vm.$snotify.error('Falha ao enviar solicitação de atendimento', 'Erro');
-      }).finally(function () {
-        $('#form_help').each(function () {
-          this.reset();
-        });
+        vm.$snotify.error('Falha ao enviar solicitação de atendimento!', 'Erro');
       });
     }
   },
   components: {
     Editor: _tinymce_tinymce_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDeskComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helpdesk/HelpDeskComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var tinymce_tinymce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tinymce/tinymce */ "./node_modules/tinymce/tinymce.js");
+/* harmony import */ var tinymce_tinymce__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tinymce_tinymce__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _tinymce_tinymce_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @tinymce/tinymce-vue */ "./node_modules/@tinymce/tinymce-vue/lib/es2015/index.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['helpdesk'],
+  data: function data() {
+    return {
+      skin: '/KnowWeb/public/skin/ui/oxide',
+      respostas: [],
+      resposta: '',
+      imagens: [],
+      arquivos: []
+    };
+  },
+  methods: {
+    onSubmit: function onSubmit() {
+      this.createResponse();
+    },
+    changePriority: function changePriority() {
+      var vm = this;
+      axios.post('prioridade', {
+        id_atendimento: vm.helpdesk.id_atendimento,
+        prioridade: vm.helpdesk.prioridade
+      }).then(function (response) {
+        var stored = response.data.success;
+
+        if (stored == true) {
+          vm.$snotify.success('Prioridade alterada com sucesso!', 'Sucesso');
+        } else {
+          vm.$snotify.error('Falha ao alterar prioridade!', 'Erro');
+        }
+      }).catch(function (error) {
+        vm.$snotify.error('Falha ao alterar prioridade!', 'Erro');
+      });
+    },
+    changeStatus: function changeStatus(status) {
+      var vm = this;
+      axios.post('status', {
+        id_atendimento: vm.helpdesk.id_atendimento,
+        status: status
+      }).then(function (response) {
+        var stored = response.data.success;
+
+        if (stored == true) {
+          vm.helpdesk.status = status;
+        } else {
+          vm.$snotify.error('Falha ao alterar prioridade!', 'Erro');
+        }
+      }).catch(function (error) {
+        if (status == 'Em andamento') {
+          vm.$snotify.error('Falha ao atender solicitação!', 'Erro');
+        } else if (status = 'Finalizado') {
+          vm.$snotify.error('Falha ao finalizar solicitação!', 'Erro');
+        }
+      });
+    },
+    upload_handler: function upload_handler(blobInfo, success, failure) {
+      var formData;
+      formData = new FormData();
+      formData.append('file', blobInfo.blob(), blobInfo.filename());
+      var vm = this;
+      axios.post('resposta/imagem/upload', formData).then(function (response) {
+        var path = response.data.path;
+        var name = response.data.name;
+        success(path);
+        vm.imagens.push({
+          caminho: path,
+          nome: name
+        });
+      }).catch(function (error) {
+        failure('HTTP Error: ' + error);
+      });
+    },
+    changeFiles: function changeFiles() {
+      var uploadedFiles = this.$refs.files.files;
+      var max = false;
+
+      if (uploadedFiles.length <= 10) {
+        for (var i = 0; i < uploadedFiles.length; i++) {
+          if (uploadedFiles[i].size < 8388608) {
+            this.arquivos.push(uploadedFiles[i]);
+          } else {
+            max = true;
+          }
+        }
+      } else {
+        $("#arquivos").val('');
+        this.$snotify.error('Aquantidade máxima de arquivos para upload é de 10!', 'Erro');
+      }
+
+      if (max) {
+        $("#arquivos").val('');
+        this.arquivos = [];
+        this.$snotify.error('O tamanho máximo de um arquivo para upload é 8MB!', 'Erro');
+      }
+    },
+    uploadFiles: function uploadFiles(id_atendimento, id_resposta) {
+      var success = true;
+
+      for (var i = 0; i < this.arquivos.length; i++) {
+        var formData = new FormData();
+        formData.append('file', this.arquivos[i]);
+        formData.append('id_atendimento', id_atendimento);
+        formData.append('id_resposta', id_resposta);
+        axios.post('resposta/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (response) {
+          if (!response.data.upload) {
+            return false;
+          }
+        }).catch(function (error) {
+          return false;
+        });
+      }
+
+      return true;
+    },
+    createResponse: function createResponse() {
+      var vm = this;
+      axios.post('resposta/create', {
+        atendimento_id: vm.helpdesk.id_atendimento,
+        resposta: vm.resposta,
+        imagens: vm.imagens
+      }).then(function (response) {
+        var stored = response.data.stored;
+
+        if (stored == true) {
+          var upload = vm.uploadFiles(response.data.id_atendimento, response.data.id_resposta);
+
+          if (upload) {
+            $('.modal').modal('close');
+            vm.$snotify.success('Sua resposta foi enviada com sucesso!', 'Sucesso');
+          }
+        } else {
+          vm.$snotify.error('Falha ao enviar resposta!', 'Erro');
+        }
+      }).catch(function (error) {
+        vm.$snotify.error('Falha ao enviar resposta!', 'Erro');
+        $('.modal').modal('close');
+      }).finally(function () {
+        $('#form_response').each(function () {
+          this.reset();
+        });
+      });
+    },
+    getResponses: function getResponses() {
+      var vm = this;
+      axios.get("respostas/".concat(vm.helpdesk.id_atendimento)).then(function (response) {
+        var responses = response.data.responses;
+
+        if (responses) {
+          vm.respostas = responses;
+        }
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.getResponses();
+  },
+  components: {
+    Editor: _tinymce_tinymce_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['helpdesks']
 });
 
 /***/ }),
@@ -54860,14 +55207,11 @@ var render = function() {
                     init: {
                       language: "pt_BR",
                       language_url: "/KnowWeb/public/js/tiny_pt_BR.js",
-                      images_upload_url:
-                        "/KnowWeb/public/atendimento/imagem/upload",
                       images_upload_handler: _vm.upload_handler,
-                      height: "600px",
                       skin_url: _vm.skin
                     },
                     plugins:
-                      "print preview fullpage searchreplace fullscreen image link \n                            hr insertdatetime advlist lists imagetools textpattern  ",
+                      "autoresize print preview fullpage searchreplace fullscreen image link \n                            hr insertdatetime advlist lists imagetools textpattern  ",
                     toolbar:
                       "formatselect | bold italic forecolor backcolor | link image | \n                            alignleft aligncenter alignright alignjustify | numlist bullist outdent indent"
                   },
@@ -54922,7 +55266,11 @@ var staticRenderFns = [
       _c("input", {
         staticClass: "file-path validate",
         attrs: { type: "text" }
-      })
+      }),
+      _vm._v(" "),
+      _c("span", { staticClass: "helper-text grey-text" }, [
+        _vm._v("Máximo de upload por arquivo é 8mb.")
+      ])
     ])
   },
   function() {
@@ -54951,6 +55299,589 @@ var staticRenderFns = [
         [
           _vm._v("Limpar\n                    "),
           _c("i", { staticClass: "material-icons right" }, [_vm._v("clear")])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        { staticClass: "btn", attrs: { href: "/KnowWeb/public/atendimento" } },
+        [_vm._v("Cancelar")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDeskComponent.vue?vue&type=template&id=5cb61699&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helpdesk/HelpDeskComponent.vue?vue&type=template&id=5cb61699& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col s12" }, [
+        _c(
+          "ul",
+          { staticClass: "collection" },
+          [
+            _c(
+              "li",
+              { staticClass: "collection-item avatar" },
+              [
+                _vm.helpdesk.autor_foto
+                  ? _c("img", {
+                      staticClass: "circle",
+                      attrs: {
+                        src: _vm.helpdesk.autor_foto,
+                        alt: "Foto usuário"
+                      }
+                    })
+                  : _c("img", {
+                      staticClass: "circle",
+                      attrs: {
+                        src: "/KnowWeb/public/img/app/usuario-icon.png",
+                        alt: "Foto usuário"
+                      }
+                    }),
+                _vm._v(" "),
+                _c("span", { staticClass: "title" }, [
+                  _c("b", [_vm._v(_vm._s(_vm.helpdesk.titulo))])
+                ]),
+                _vm._v(" "),
+                _c("p", { staticClass: "grey-text darken-4" }, [
+                  _vm._v(
+                    "Autor: " +
+                      _vm._s(_vm.helpdesk.autor) +
+                      " - " +
+                      _vm._s(_vm.helpdesk.created_at)
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "\n                    Categoria: " +
+                      _vm._s(_vm.helpdesk.categoria)
+                  ),
+                  _c("br")
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v("Prioridade:\n                        "),
+                  _c("label", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.helpdesk.prioridade,
+                          expression: "helpdesk.prioridade"
+                        }
+                      ],
+                      attrs: {
+                        name: "prioridade",
+                        type: "radio",
+                        value: "Baixa"
+                      },
+                      domProps: {
+                        checked: _vm._q(_vm.helpdesk.prioridade, "Baixa")
+                      },
+                      on: {
+                        change: [
+                          function($event) {
+                            return _vm.$set(_vm.helpdesk, "prioridade", "Baixa")
+                          },
+                          function($event) {
+                            return _vm.changePriority()
+                          }
+                        ]
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("span", [_vm._v("Baixa")])
+                  ]),
+                  _vm._v(" - \n                    \n                        "),
+                  _c("label", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.helpdesk.prioridade,
+                          expression: "helpdesk.prioridade"
+                        }
+                      ],
+                      attrs: {
+                        name: "prioridade",
+                        type: "radio",
+                        value: "Média"
+                      },
+                      domProps: {
+                        checked: _vm._q(_vm.helpdesk.prioridade, "Média")
+                      },
+                      on: {
+                        change: [
+                          function($event) {
+                            return _vm.$set(_vm.helpdesk, "prioridade", "Média")
+                          },
+                          function($event) {
+                            return _vm.changePriority()
+                          }
+                        ]
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("span", [_vm._v("Média")])
+                  ]),
+                  _vm._v(" - \n                    \n                        "),
+                  _c("label", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.helpdesk.prioridade,
+                          expression: "helpdesk.prioridade"
+                        }
+                      ],
+                      attrs: {
+                        name: "prioridade",
+                        type: "radio",
+                        value: "Alta"
+                      },
+                      domProps: {
+                        checked: _vm._q(_vm.helpdesk.prioridade, "Alta")
+                      },
+                      on: {
+                        change: [
+                          function($event) {
+                            return _vm.$set(_vm.helpdesk, "prioridade", "Alta")
+                          },
+                          function($event) {
+                            return _vm.changePriority()
+                          }
+                        ]
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("span", [_vm._v("Alta")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm.helpdesk.arquivos.length > 0
+                  ? _c(
+                      "p",
+                      [
+                        _vm._v("Arquivos: \n                        "),
+                        _vm._l(_vm.helpdesk.arquivos, function(arquivo, index) {
+                          return _c(
+                            "a",
+                            {
+                              key: index,
+                              attrs: {
+                                href:
+                                  "download/" + arquivo.id_arquivo_atendimento
+                              }
+                            },
+                            [_vm._v(" " + _vm._s(arquivo.nome) + " ")]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.helpdesk.status == "Aberto"
+                  ? _c(
+                      "a",
+                      {
+                        staticClass:
+                          "waves-effect waves-light green btn secondary-content",
+                        on: {
+                          click: function($event) {
+                            return _vm.changeStatus("Em andamento")
+                          }
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "material-icons left" }, [
+                          _vm._v("open_in_new")
+                        ]),
+                        _vm._v("Atender")
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.helpdesk.status == "Em andamento"
+                  ? _c(
+                      "a",
+                      {
+                        staticClass:
+                          "waves-effect waves-light green btn secondary-content",
+                        on: {
+                          click: function($event) {
+                            return _vm.changeStatus("Finalizado")
+                          }
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "material-icons left" }, [
+                          _vm._v("check_box")
+                        ]),
+                        _vm._v("Finalizar")
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "black-text",
+                    staticStyle: { "font-size": "16px" }
+                  },
+                  [_vm._v("Descrição: ")]
+                ),
+                _vm._v(" "),
+                _c("editor", {
+                  attrs: {
+                    name: "descricao",
+                    "api-key":
+                      "k9nq1pz5sirugp247sm9bg2tb42ks18ttmcxjxni7iknoisv",
+                    init: {
+                      language: "pt_BR",
+                      language_url: "/KnowWeb/public/js/tiny_pt_BR.js",
+                      skin_url: _vm.skin,
+                      menubar: false,
+                      toolbar: false
+                    },
+                    "initial-value": _vm.helpdesk.descricao,
+                    disabled: true,
+                    plugins: "autoresize"
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _vm._l(_vm.respostas, function(resp, index) {
+              return _c(
+                "li",
+                { key: index, staticClass: "collection-item avatar" },
+                [
+                  _vm.helpdesk.autor_foto
+                    ? _c("img", {
+                        staticClass: "circle",
+                        attrs: { src: resp.autor_foto, alt: "Foto usuário" }
+                      })
+                    : _c("img", {
+                        staticClass: "circle",
+                        attrs: {
+                          src: "/KnowWeb/public/img/app/usuario-icon.png",
+                          alt: "Foto usuário"
+                        }
+                      }),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "grey-text darken-4" }, [
+                    _vm._v(_vm._s(resp.autor) + " - " + _vm._s(resp.created_at))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      staticClass: "black-text",
+                      staticStyle: { "font-size": "16px" }
+                    },
+                    [_vm._v("Resposta: ")]
+                  ),
+                  _vm._v(" "),
+                  _c("editor", {
+                    attrs: {
+                      name: "res",
+                      "api-key":
+                        "k9nq1pz5sirugp247sm9bg2tb42ks18ttmcxjxni7iknoisv",
+                      init: {
+                        language: "pt_BR",
+                        language_url: "/KnowWeb/public/js/tiny_pt_BR.js",
+                        skin_url: _vm.skin,
+                        menubar: false,
+                        toolbar: false
+                      },
+                      "initial-value": resp.resposta,
+                      disabled: true,
+                      plugins: "autoresize"
+                    }
+                  })
+                ],
+                1
+              )
+            }),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "modal-trigger btn",
+                attrs: { href: "#modal-response" }
+              },
+              [_vm._v("Responder")]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "modal", attrs: { id: "modal-response" } },
+              [
+                _c(
+                  "form",
+                  {
+                    attrs: { action: "#", method: "post", id: "form_response" },
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.onSubmit($event)
+                      }
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "modal-content" }, [
+                      _c("h5", [_vm._v("Nova resposta")]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "col s12" },
+                        [
+                          _c(
+                            "label",
+                            { staticStyle: { "font-size": "16px" } },
+                            [_vm._v("Resposta: ")]
+                          ),
+                          _vm._v(" "),
+                          _c("editor", {
+                            attrs: {
+                              name: "resposta",
+                              "api-key":
+                                "k9nq1pz5sirugp247sm9bg2tb42ks18ttmcxjxni7iknoisv",
+                              init: {
+                                language: "pt_BR",
+                                language_url:
+                                  "/KnowWeb/public/js/tiny_pt_BR.js",
+                                images_upload_handler: _vm.upload_handler,
+                                skin_url: _vm.skin
+                              },
+                              plugins:
+                                "autoresize print preview fullpage searchreplace fullscreen image link \n                                            hr insertdatetime advlist lists imagetools textpattern  ",
+                              toolbar:
+                                "formatselect | bold italic forecolor backcolor | link image | \n                                            alignleft aligncenter alignright alignjustify | numlist bullist outdent indent"
+                            },
+                            model: {
+                              value: _vm.resposta,
+                              callback: function($$v) {
+                                _vm.resposta = $$v
+                              },
+                              expression: "resposta"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "col s12 file-field input-field" },
+                        [
+                          _c("div", { staticClass: "btn" }, [
+                            _c("span", [_vm._v("Enviar arquivos...")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              ref: "files",
+                              attrs: {
+                                type: "file",
+                                name: "arquivo",
+                                id: "arquivos",
+                                multiple: ""
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.changeFiles()
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _vm._m(0)
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(1)
+                  ]
+                )
+              ]
+            )
+          ],
+          2
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "file-path-wrapper" }, [
+      _c("input", {
+        staticClass: "file-path validate",
+        attrs: { type: "text" }
+      }),
+      _vm._v(" "),
+      _c("span", { staticClass: "helper-text grey-text" }, [
+        _vm._v("Máximo de upload por arquivo é 8mb.")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "waves-effect waves-green btn green",
+          attrs: { type: "submit" }
+        },
+        [
+          _c("i", { staticClass: "material-icons left" }, [_vm._v("send")]),
+          _vm._v("Enviar")
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "modal-close waves-effect waves-green btn red",
+          attrs: { href: "#!" }
+        },
+        [
+          _c("i", { staticClass: "material-icons left" }, [_vm._v("clear")]),
+          _vm._v("Cancelar")
+        ]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "row" },
+    [
+      _vm._m(0),
+      _c("div", { staticClass: "divider" }),
+      _vm._v(" "),
+      _vm._l(_vm.helpdesks, function(helpdesk, index) {
+        return _c("div", { key: index, staticClass: "col s12 m6 l4" }, [
+          _c(
+            "a",
+            { attrs: { href: "atendimento/" + helpdesk.id_atendimento } },
+            [
+              _c("div", { staticClass: "card black-text" }, [
+                _c(
+                  "div",
+                  { staticClass: "card-content waves-effect waves-block" },
+                  [
+                    _c("span", { staticClass: "card-title" }, [
+                      _c("b", [_vm._v(_vm._s(helpdesk.titulo))])
+                    ]),
+                    _c("div", { staticClass: "divider" }),
+                    _vm._v(" "),
+                    _c("p", [
+                      _c("b", [_vm._v("Autor:")]),
+                      _vm._v(
+                        " " +
+                          _vm._s(helpdesk.autor) +
+                          " - " +
+                          _vm._s(helpdesk.created_at)
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("p", [
+                      _c("b", [_vm._v("Categoria:")]),
+                      _vm._v(" " + _vm._s(helpdesk.categoria) + " ")
+                    ]),
+                    _vm._v(" "),
+                    _c("p", [
+                      _c("b", [_vm._v("Status:")]),
+                      _vm._v(" " + _vm._s(helpdesk.status) + " - "),
+                      _c("b", [_vm._v("Prioridade:")]),
+                      _vm._v(" " + _vm._s(helpdesk.prioridade))
+                    ]),
+                    _vm._v(" "),
+                    helpdesk.responsavel
+                      ? _c("p", [
+                          _c("b", [_vm._v("Atendente Responsável:")]),
+                          _vm._v(" " + _vm._s(helpdesk.responsavel))
+                        ])
+                      : _vm._e()
+                  ]
+                )
+              ])
+            ]
+          )
+        ])
+      })
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h5", { staticClass: "header grey-text center-align" }, [
+      _vm._v("Atendimentos | \n        "),
+      _c(
+        "a",
+        {
+          staticClass: "waves-effect waves-light btn",
+          attrs: { href: "atendimento/novo" }
+        },
+        [
+          _c("i", { staticClass: "material-icons left" }, [
+            _vm._v("add_circle")
+          ]),
+          _vm._v("Solicitar")
         ]
       )
     ])
@@ -68533,6 +69464,8 @@ Vue.use(vue_snotify__WEBPACK_IMPORTED_MODULE_0__["default"], {
 Vue.use(axios__WEBPACK_IMPORTED_MODULE_1___default.a); //Importação de componentes
 
 Vue.component('form-helpdesk-component', __webpack_require__(/*! ./components/helpdesk/FormHelpDeskComponent.vue */ "./resources/js/components/helpdesk/FormHelpDeskComponent.vue").default);
+Vue.component('helpdesks-component', __webpack_require__(/*! ./components/helpdesk/HelpDesksComponent.vue */ "./resources/js/components/helpdesk/HelpDesksComponent.vue").default);
+Vue.component('helpdesk-component', __webpack_require__(/*! ./components/helpdesk/HelpDeskComponent.vue */ "./resources/js/components/helpdesk/HelpDeskComponent.vue").default);
 Vue.component('categorie-helpdesk-component', __webpack_require__(/*! ./components/categories/CategorieHelpDeskComponent.vue */ "./resources/js/components/categories/CategorieHelpDeskComponent.vue").default);
 Vue.component('categorie-archive-component', __webpack_require__(/*! ./components/categories/CategorieArchiveComponent.vue */ "./resources/js/components/categories/CategorieArchiveComponent.vue").default);
 Vue.component('categorie-article-component', __webpack_require__(/*! ./components/categories/CategorieArticleComponent.vue */ "./resources/js/components/categories/CategorieArticleComponent.vue").default);
@@ -68990,6 +69923,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormHelpDeskComponent_vue_vue_type_template_id_03521d35_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormHelpDeskComponent_vue_vue_type_template_id_03521d35_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/helpdesk/HelpDeskComponent.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/helpdesk/HelpDeskComponent.vue ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _HelpDeskComponent_vue_vue_type_template_id_5cb61699___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HelpDeskComponent.vue?vue&type=template&id=5cb61699& */ "./resources/js/components/helpdesk/HelpDeskComponent.vue?vue&type=template&id=5cb61699&");
+/* harmony import */ var _HelpDeskComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HelpDeskComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/helpdesk/HelpDeskComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _HelpDeskComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _HelpDeskComponent_vue_vue_type_template_id_5cb61699___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _HelpDeskComponent_vue_vue_type_template_id_5cb61699___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/helpdesk/HelpDeskComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/helpdesk/HelpDeskComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/helpdesk/HelpDeskComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDeskComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./HelpDeskComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDeskComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDeskComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/helpdesk/HelpDeskComponent.vue?vue&type=template&id=5cb61699&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/helpdesk/HelpDeskComponent.vue?vue&type=template&id=5cb61699& ***!
+  \***********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDeskComponent_vue_vue_type_template_id_5cb61699___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./HelpDeskComponent.vue?vue&type=template&id=5cb61699& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDeskComponent.vue?vue&type=template&id=5cb61699&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDeskComponent_vue_vue_type_template_id_5cb61699___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDeskComponent_vue_vue_type_template_id_5cb61699___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/helpdesk/HelpDesksComponent.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/js/components/helpdesk/HelpDesksComponent.vue ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _HelpDesksComponent_vue_vue_type_template_id_32afa23e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HelpDesksComponent.vue?vue&type=template&id=32afa23e& */ "./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e&");
+/* harmony import */ var _HelpDesksComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HelpDesksComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _HelpDesksComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _HelpDesksComponent_vue_vue_type_template_id_32afa23e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _HelpDesksComponent_vue_vue_type_template_id_32afa23e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/helpdesk/HelpDesksComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./HelpDesksComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e& ***!
+  \************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_template_id_32afa23e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./HelpDesksComponent.vue?vue&type=template&id=32afa23e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_template_id_32afa23e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_template_id_32afa23e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
