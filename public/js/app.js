@@ -3090,6 +3090,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3134,6 +3136,14 @@ __webpack_require__.r(__webpack_exports__);
 
         if (stored == true) {
           vm.helpdesk.status = status;
+
+          if (status == 'Finalizado') {
+            vm.$snotify.info('A solicitação foi finalizada!', 'Finalizada');
+          }
+
+          setTimeout(function () {
+            vm.getResponses();
+          }, 1000);
         } else {
           vm.$snotify.error('Falha ao alterar prioridade!', 'Erro');
         }
@@ -3223,6 +3233,7 @@ __webpack_require__.r(__webpack_exports__);
           if (upload) {
             $('.modal').modal('close');
             vm.$snotify.success('Sua resposta foi enviada com sucesso!', 'Sucesso');
+            vm.getResponses();
           }
         } else {
           vm.$snotify.error('Falha ao enviar resposta!', 'Erro');
@@ -55358,9 +55369,14 @@ var render = function() {
                       }
                     }),
                 _vm._v(" "),
-                _c("span", { staticClass: "title" }, [
-                  _c("b", [_vm._v(_vm._s(_vm.helpdesk.titulo))])
-                ]),
+                _c(
+                  "span",
+                  {
+                    staticClass: "title",
+                    staticStyle: { "font-size": "1.5em" }
+                  },
+                  [_c("b", [_vm._v(_vm._s(_vm.helpdesk.titulo))])]
+                ),
                 _vm._v(" "),
                 _c("p", { staticClass: "grey-text darken-4" }, [
                   _vm._v(
@@ -55574,12 +55590,20 @@ var render = function() {
               1
             ),
             _vm._v(" "),
+            _vm.respostas.length > 0
+              ? _c("li", { staticClass: "collection-item" }, [
+                  _c("p", { staticStyle: { "font-size": "1.5em" } }, [
+                    _vm._v("Respostas:")
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             _vm._l(_vm.respostas, function(resp, index) {
               return _c(
                 "li",
                 { key: index, staticClass: "collection-item avatar" },
                 [
-                  _vm.helpdesk.autor_foto
+                  resp.autor_foto
                     ? _c("img", {
                         staticClass: "circle",
                         attrs: { src: resp.autor_foto, alt: "Foto usuário" }
@@ -55595,6 +55619,29 @@ var render = function() {
                   _c("p", { staticClass: "grey-text darken-4" }, [
                     _vm._v(_vm._s(resp.autor) + " - " + _vm._s(resp.created_at))
                   ]),
+                  _vm._v(" "),
+                  resp.archives.length > 0
+                    ? _c(
+                        "p",
+                        [
+                          _vm._v("Arquivos: \n                        "),
+                          _vm._l(resp.archives, function(arquivo, index) {
+                            return _c(
+                              "a",
+                              {
+                                key: index,
+                                attrs: {
+                                  href:
+                                    "download/" + arquivo.id_arquivo_atendimento
+                                }
+                              },
+                              [_vm._v(" " + _vm._s(arquivo.nome) + " ")]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    : _vm._e(),
                   _vm._v(" "),
                   _c(
                     "label",
@@ -55719,10 +55766,10 @@ var render = function() {
                           _vm._v(" "),
                           _vm._m(0)
                         ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _vm._m(1)
+                      ),
+                      _vm._v(" "),
+                      _vm._m(1)
+                    ])
                   ]
                 )
               ]
@@ -55754,7 +55801,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
+    return _c("div", { staticClass: "row center-align" }, [
       _c(
         "button",
         {

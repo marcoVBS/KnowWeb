@@ -8,7 +8,7 @@
                         <img v-if="helpdesk.autor_foto" :src="helpdesk.autor_foto" class="circle" alt="Foto usuário">
                         <img v-else src="/KnowWeb/public/img/app/usuario-icon.png" class="circle" alt="Foto usuário">
                         
-                        <span class="title"><b>{{helpdesk.titulo}}</b></span>
+                        <span style="font-size: 1.5em;" class="title"><b>{{helpdesk.titulo}}</b></span>
                         
                         <p class="grey-text darken-4">Autor: {{ helpdesk.autor }} - {{ helpdesk.created_at }}<br>
                         Categoria: {{ helpdesk.categoria }}<br></p>
@@ -47,16 +47,18 @@
                         </editor>
                     </li>
 
+                    <li v-if="respostas.length > 0" class="collection-item"><p style="font-size: 1.5em;">Respostas:</p></li>
+
                     <li v-for="(resp, index) in respostas" :key="index" class="collection-item avatar">
                         
-                        <img v-if="helpdesk.autor_foto" :src="resp.autor_foto" class="circle" alt="Foto usuário">
+                        <img v-if="resp.autor_foto" :src="resp.autor_foto" class="circle" alt="Foto usuário">
                         <img v-else src="/KnowWeb/public/img/app/usuario-icon.png" class="circle" alt="Foto usuário">
                         
                         <p class="grey-text darken-4">{{ resp.autor }} - {{ resp.created_at }}</p>
 
-                        <!-- <p v-if="resp.arquivos.length > 0">Arquivos: 
-                            <a :href="`download/${resp.id_arquivo_atendimento}`" v-for="(arquivo, index) in resp.arquivos" :key="index"> {{ arquivo.nome }} </a>
-                        </p> -->
+                        <p v-if="resp.archives.length > 0">Arquivos: 
+                            <a :href="`download/${arquivo.id_arquivo_atendimento}`" v-for="(arquivo, index) in resp.archives" :key="index"> {{ arquivo.nome }} </a>
+                        </p>
                         
                         <label class="black-text" style="font-size:16px;">Resposta: </label>
                         <editor name="res" api-key="k9nq1pz5sirugp247sm9bg2tb42ks18ttmcxjxni7iknoisv" 
@@ -96,10 +98,10 @@
                                             <span class="helper-text grey-text">Máximo de upload por arquivo é 8mb.</span>
                                         </div>
                                     </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="waves-effect waves-green btn green"><i class="material-icons left">send</i>Enviar</button>
-                                <a href="#!" class="modal-close waves-effect waves-green btn red"><i class="material-icons left">clear</i>Cancelar</a>
+                                    <div class="row center-align">
+                                        <button type="submit" class="waves-effect waves-green btn green"><i class="material-icons left">send</i>Enviar</button>
+                                        <a href="#!" class="modal-close waves-effect waves-green btn red"><i class="material-icons left">clear</i>Cancelar</a>
+                                    </div>
                             </div>
                         </form>
                     </div>
@@ -158,6 +160,12 @@ export default {
 
                 if(stored == true){
                     vm.helpdesk.status = status
+                    if(status == 'Finalizado'){
+                        vm.$snotify.info('A solicitação foi finalizada!', 'Finalizada')
+                    }
+                    setTimeout(function(){
+                        vm.getResponses()
+                    }, 1000)
                 }else{
                     vm.$snotify.error('Falha ao alterar prioridade!', 'Erro')
                 }
@@ -253,6 +261,7 @@ export default {
                     if(upload){
                         $('.modal').modal('close')
                         vm.$snotify.success('Sua resposta foi enviada com sucesso!', 'Sucesso')
+                        vm.getResponses()
                     }
                 
                 }else{

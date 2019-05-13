@@ -28,9 +28,6 @@ class CreateAtendimentoTable extends Migration
             $table->integer('atendente_responsavel_id')->unsigned()->nullable();
             $table->foreign('atendente_responsavel_id')->references('id_usuario')->on('tb_usuario')
                 ->onDelete('cascade')->onUpdate('cascade');
-            $table->integer('atendente_encaminhado_id')->unsigned()->nullable();
-            $table->foreign('atendente_encaminhado_id')->references('id_usuario')->on('tb_usuario')
-                ->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
             $table->timestamp('time_finalizado')->nullable();
         });

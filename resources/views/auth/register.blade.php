@@ -14,9 +14,11 @@
         <div class="col s12 m8 form-register">
             <div class="row">
                 
-                <form class="col s12" method="POST" action="{{ route('register') }}">
+                <form class="col s12" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                     @csrf
+
                     <div class="row">
+
                         <div class="input-field col s12">
                             <input id="nome" type="text" class="validate" name="nome" value="{{ old('nome') }}" required>
                             <label for="nome">Nome</label>
@@ -45,6 +47,11 @@
                         <div class="input-field col s12 m6">
                             <input id="cpf_user" type="text" name="cpf" value="{{ old('cpf') }}" required class="validate">
                             <label for="cpf_user">CPF</label>
+
+                            @if ($errors->has('cpf'))
+                                <span class="helper-text red-text">{{ $errors->first('cpf') }}</span>
+                            @endif
+
                         </div>
                         
                         <div class="input-field col s12 m6">
@@ -84,7 +91,25 @@
                                 <label>Setor</label>
                         </div>
 
-                    </div>    
+                    </div>   
+
+                    <div class="row">
+
+                        <div class="col s12 m6 file-field input-field">
+                            <div class="btn">
+                                <span>Foto de perfil...</span>
+                                <input type="file" name="foto" id="foto">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
+                        </div>
+
+                        <div class="col s12 m6">
+                            <img id="image_upload_preview" src="{{ asset('img/begin/100x100.png') }}" alt="Imagem de perfil" width="100px" height="100px" style="border-radius: 50%;"/>
+                        </div>
+
+                    </div>
 
                     <div class="divider"></div><br>
                     <div class="row center-align">    

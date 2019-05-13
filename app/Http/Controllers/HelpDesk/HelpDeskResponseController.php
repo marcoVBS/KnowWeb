@@ -19,7 +19,7 @@ class HelpDeskResponseController extends Controller
         $response->resposta = $request->resposta;
         if($response->save()){
             foreach ($request->imagens as $image) {
-                $upload = $this->saveArchive($response->atendimento_id, $image['nome'], $image['caminho'], $response->id_resposta_atendimento);
+                $upload = $this->saveArchive($response->atendimento_id, $image['nome'], $image['caminho'], $response->id_resposta_atendimento, 'Imagem');
                 if(!$upload){
                     return response()->json([
                         'stored' => false
@@ -38,11 +38,12 @@ class HelpDeskResponseController extends Controller
         }
     }
 
-    public function saveArchive($atendimento_id, $name, $caminho, $resposta_id){
+    public function saveArchive($atendimento_id, $name, $caminho, $resposta_id, $tipo){
         $archive = new HelpDeskArchive();
         $archive->atendimento_id = $atendimento_id;
         $archive->nome = $name;
         $archive->caminho = $caminho;
+        $archive->tipo = $tipo;
         $archive->resposta_atendimento_id = $resposta_id;
         if($archive->save()){
             return true;
@@ -81,7 +82,7 @@ class HelpDeskResponseController extends Controller
             $upload = $request->file('file')->storeAs('/atendimentos/arquivos/respostas/'.$id_resposta.'/', $name);
 
             if($upload){
-                $save = $this->saveArchive($id_atendimento, $name, $path, $id_resposta);
+                $save = $this->saveArchive($id_atendimento, $name, $path, $id_resposta, 'Arquivo');
                 if($save){
                     return response()->json([
                         'upload' => true
@@ -109,6 +110,7 @@ class HelpDeskResponseController extends Controller
             $user = User::find($response->usuario_id);
             $response->autor = $user->nome;
             $response->autor_foto = $user->foto;
+            $response->archives = HelpDeskArchive::where('resposta_atendimento_id', $response->id_resposta_atendimento)->where('tipo', '<>', 'Imagem')->get();
         }
         return response()->json([
             'responses' => $responses

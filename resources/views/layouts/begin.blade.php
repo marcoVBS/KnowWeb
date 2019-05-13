@@ -47,5 +47,24 @@
     
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" type="text/javascript"></script>
+    
+    <!-- Preview imagem usuário -->
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+    
+                reader.onload = function (e) {
+                    $('#image_upload_preview').attr('src', e.target.result);
+                }
+    
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    
+        $("#foto").change(function () {
+            readURL(this);
+        });
+    </script>
     </body>
 </html>

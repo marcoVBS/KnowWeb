@@ -23,6 +23,7 @@ class CreateArquivoAtendimentoTable extends Migration
                 ->onDelete('cascade')->onUpdate('cascade');
             $table->string('nome', 45);
             $table->string('caminho', 100);
+            $table->string('tipo', 10);
         });
     }
 

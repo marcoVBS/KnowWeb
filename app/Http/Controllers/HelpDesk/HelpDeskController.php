@@ -46,7 +46,7 @@ class HelpDeskController extends Controller
         $helpdesk->usuario_solicitante_id = Auth::id();
         if($helpdesk->save()){
             foreach ($request->imagens as $image) {
-                $upload = $this->saveArchive($helpdesk->id_atendimento, $image['nome'], $image['caminho']);
+                $upload = $this->saveArchive($helpdesk->id_atendimento, $image['nome'], $image['caminho'], 'Imagem');
                 if(!$upload){
                     return response()->json([
                         'stored' => false
@@ -64,11 +64,12 @@ class HelpDeskController extends Controller
         }
     }
 
-    public function saveArchive($atendimento_id, $name, $caminho){
+    public function saveArchive($atendimento_id, $name, $caminho, $tipo){
         $archive = new HelpDeskArchive();
         $archive->atendimento_id = $atendimento_id;
         $archive->nome = $name;
         $archive->caminho = $caminho;
+        $archive->tipo = $tipo;
         if($archive->save()){
             return true;
         }else{
@@ -105,7 +106,7 @@ class HelpDeskController extends Controller
             $upload = $request->file('file')->storeAs('/atendimentos/arquivos/'.$id_atendimento.'/', $name);
 
             if($upload){
-                $save = $this->saveArchive($id_atendimento, $name, $path);
+                $save = $this->saveArchive($id_atendimento, $name, $path, 'Arquivo');
                 if($save){
                     return response()->json([
                         'upload' => true
@@ -133,7 +134,7 @@ class HelpDeskController extends Controller
         $helpdesk->autor = $user->nome;
         $helpdesk->autor_foto = $user->foto;
         $helpdesk->categoria = HelpDeskCategorie::find($helpdesk->categoria_atendimento_id)->nome;
-        $arquivos = HelpDeskArchive::where('atendimento_id', $request->id)->whereNull('resposta_atendimento_id')->get();
+        $arquivos = HelpDeskArchive::where('atendimento_id', $request->id)->whereNull('resposta_atendimento_id')->where('tipo', '<>', 'Imagem')->get();
         $helpdesk->arquivos = $arquivos;
         return view('helpdesk.helpdesk', ['helpdesk'=> json_encode($helpdesk)]);
     }

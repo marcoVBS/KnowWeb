@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Setor;
+use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -58,6 +60,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'nome' => ['required', 'max:80'],
             'email' => ['required', 'email', 'max:80', 'unique:tb_usuario'],
+            'cpf' => ['unique:tb_usuario'],
             'password' => ['required', 'min:8', 'confirmed'],
         ], 
         [
@@ -67,10 +70,40 @@ class RegisterController extends Controller
             'email.email'=>'Informe um email válido!',
             'email.max'=>'O campo email deve conter no máximo 80 caracteres!',
             'email.unique'=>"O email informado já existe no sistema!",
+            'cpf.unique'=>"O CPF informado já existe no sistema!",
             'password.required'=>'O campo senha é obrigatório!',
             'password.min'=>'O campo senha deve conter no mínimo 8 caracteres!',
             'password.confirmed'=>'As senhas informadas não conferem!'
         ]);
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        
+        if($request->file('foto')){
+            $extension = $request->file('foto')->getClientOriginalExtension();
+            $name = $request->cpf.'.'.$extension;
+            $path = '/KnowWeb/public/storage/usuarios/' . $name;
+
+            if($request->hasFile('foto') && $request->file('foto')->isValid()){
+                $request->file('foto')->storeAs('/usuarios/', $name);
+                event(new Registered($user = $this->create($request->all(), $path)));
+            }
+        }else{
+            event(new Registered($user = $this->create($request->all())));
+        }
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+                        ?: redirect($this->redirectPath());
     }
 
     /**
@@ -79,13 +112,15 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
-    {
+    protected function create(array $data, $foto = null)
+    {   
+
         return User::create([
             'nome' => $data['nome'],
             'email' => $data['email'],
             'telefone' => $data['telefone'],
             'cpf' => $data['cpf'],
+            'foto' => $foto,
             'password' => Hash::make($data['password']),
             'tipo_usuario'=> $data['tipo_usuario'],
             'setor_id'=>$data['setor_id']
