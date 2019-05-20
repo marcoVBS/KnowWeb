@@ -53,14 +53,14 @@
                         </div>
 
                         @if (Auth::user()->foto)
-                            <a href="#user"><img class="circle" src="{{ Auth::user()->foto }}"></a>
+                            <img class="circle" src="{{ Auth::user()->foto }}">
                         @else    
-                            <a href="#user"><img class="circle" src="{{ asset('img/app/usuario-icon.png') }}"></a>                     
+                            <img class="circle" src="{{ asset('img/app/usuario-icon.png') }}">                    
                         @endif
 
-                        <h5 class="white-text">{{ Auth::user()->nome }}</h5>
+                        <h6 class="white-text">{{ Auth::user()->nome }}</h6>
                         <div class="divider"></div>
-                        <a href="#email"><i class="material-icons">build</i> Editar Perfil</a>
+                        <a href="#email"><i class="tiny material-icons">build</i> Editar Perfil</a>
                     </div>
                 </li>
                 <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">library_books</i>Artigos</a></li>
@@ -70,6 +70,7 @@
                 <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">security</i>Senhas</a></li>
                 <li><a class="waves-effect white-text" href="{{ route('helpdesks') }}"><i class="material-icons white-text">help_outline</i>Atendimentos</a></li>
                 <li><a class="waves-effect white-text" href="{{ route('categories') }}"><i class="material-icons white-text">more</i>Categorias</a></li>
+                <li><a class="waves-effect white-text" href="{{ route('sectors') }}"><i class="material-icons white-text">domain</i>Setores</a></li>
                 <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">supervisor_account</i>Usuários</a></li>
             </ul>
         </div>

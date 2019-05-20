@@ -5,7 +5,7 @@
 @section('content')
 
     <div class="container">
-        <helpdesk-component :helpdesk="{{  $helpdesk  }}"></helpdesk-component>
+        <helpdesk-component :user_id="{{ Auth::id() }}" :helpdesk="{{  $helpdesk  }}"></helpdesk-component>
     </div>
 
 @endsection

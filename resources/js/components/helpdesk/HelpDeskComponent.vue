@@ -13,31 +13,39 @@
                         <p class="grey-text darken-4">Autor: {{ helpdesk.autor }} - {{ helpdesk.created_at }}<br>
                         Categoria: {{ helpdesk.categoria }}<br></p>
                         
-                        <p>Prioridade:
-                            <label>
-                                <input name="prioridade" type="radio" value="Baixa" v-model="helpdesk.prioridade" @change="changePriority()"/>
-                                <span>Baixa</span>
-                            </label> - 
-                        
-                            <label>
-                                <input name="prioridade" type="radio" value="Média" v-model="helpdesk.prioridade" @change="changePriority()"/>
-                                <span>Média</span>
-                            </label> - 
-                        
-                            <label>
-                                <input name="prioridade" type="radio" value="Alta" v-model="helpdesk.prioridade" @change="changePriority()"/>
-                                <span>Alta</span>
-                            </label>
-                        </p>
+                        <div v-if="helpdesk.usuario_solicitante_id != user_id">
+                            <p>Prioridade:
+                                <label>
+                                    <input name="prioridade" type="radio" value="Baixa" v-model="helpdesk.prioridade" @change="changePriority()"/>
+                                    <span>Baixa</span>
+                                </label> - 
+                            
+                                <label>
+                                    <input name="prioridade" type="radio" value="Média" v-model="helpdesk.prioridade" @change="changePriority()"/>
+                                    <span>Média</span>
+                                </label> - 
+                            
+                                <label>
+                                    <input name="prioridade" type="radio" value="Alta" v-model="helpdesk.prioridade" @change="changePriority()"/>
+                                    <span>Alta</span>
+                                </label>
+                            </p>
+                        </div>
+                        <div v-else>
+                            <p>Prioridade: {{ helpdesk.prioridade }}</p>
+                        </div>
 
                         <p v-if="helpdesk.arquivos.length > 0">Arquivos: 
                             <a :href="`download/${arquivo.id_arquivo_atendimento}`" v-for="(arquivo, index) in helpdesk.arquivos" :key="index"> {{ arquivo.nome }} </a>
                         </p>
-
-                        <a v-if="helpdesk.status == 'Aberto'" @click="changeStatus('Em andamento')" class="waves-effect waves-light green btn secondary-content">
+                        
+                        <a v-if="helpdesk.status == 'Aberto' && helpdesk.usuario_solicitante_id != user_id" @click="changeStatus('Em andamento')" class="waves-effect waves-light green btn secondary-content">
                             <i class="material-icons left">open_in_new</i>Atender</a>
-                        <a v-if="helpdesk.status == 'Em andamento'" @click="changeStatus('Finalizado')" class="waves-effect waves-light green btn secondary-content">
-                            <i class="material-icons left">check_box</i>Finalizar</a>
+                       
+                        <div v-if="helpdesk.usuario_solicitante_id == user_id || helpdesk.atendente_responsavel_id == user_id">
+                            <a v-if="helpdesk.status == 'Em andamento'" @click="changeStatus('Finalizado')" class="waves-effect waves-light green btn secondary-content">
+                                <i class="material-icons left">check_box</i>Finalizar</a>
+                        </div>
                         
                         <label class="black-text" style="font-size:16px;">Descrição: </label>
                         <editor name="descricao" api-key="k9nq1pz5sirugp247sm9bg2tb42ks18ttmcxjxni7iknoisv" 
@@ -116,7 +124,7 @@ import tinymce from 'tinymce/tinymce';
 import Editor from '@tinymce/tinymce-vue';
 
 export default {
-    props: ['helpdesk'],
+    props: ['user_id', 'helpdesk'],
     data() {
         return {
             skin: '/KnowWeb/public/skin/ui/oxide',
@@ -160,6 +168,7 @@ export default {
 
                 if(stored == true){
                     vm.helpdesk.status = status
+                    vm.atendente_responsavel_id = vm.user_id
                     if(status == 'Finalizado'){
                         vm.$snotify.info('A solicitação foi finalizada!', 'Finalizada')
                     }

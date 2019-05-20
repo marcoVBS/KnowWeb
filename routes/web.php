@@ -63,4 +63,12 @@ Route::get('/categorias/artigo/all', 'Article\ArticleCategorieController@getCate
 Route::delete('/categorias/artigo/delete/{id}', 'Article\ArticleCategorieController@delete');
 Route::put('/categorias/artigo/update', 'Article\ArticleCategorieController@update');
 
+//GESTÃO DE SETORES
+Route::get('/setores', 'Sector\SectorController@index')->name('sectors');
+Route::get('/setores/all', 'Sector\SectorController@getSectors');
+Route::post('/setores/create', 'Sector\SectorController@create');
+Route::delete('/setores/delete/{id}', 'Sector\SectorController@delete');
+Route::put('/setores/update', 'Sector\SectorController@update');
+
+//ROTAS DE AUTENTICAÇÃO
 Auth::routes();

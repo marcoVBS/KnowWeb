@@ -7,9 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use App\Setor;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Auth\Events\Registered;
+use App\Models\Sector\Setor;
 
 class RegisterController extends Controller
 {
