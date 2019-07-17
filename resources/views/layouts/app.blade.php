@@ -65,7 +65,7 @@
                 </li>
                 <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">library_books</i>Artigos</a></li>
                 <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">computer</i>Computadores</a></li>
-                <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">archive</i>Arquivos</a></li>
+                <li><a class="waves-effect white-text" href="{{ route('archives') }}"><i class="material-icons white-text">archive</i>Arquivos</a></li>
                 <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">router</i>Equipamentos</a></li>
                 <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">security</i>Senhas</a></li>
                 <li><a class="waves-effect white-text" href="{{ route('helpdesks') }}"><i class="material-icons white-text">help_outline</i>Atendimentos</a></li>

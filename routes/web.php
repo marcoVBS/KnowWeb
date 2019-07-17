@@ -17,6 +17,12 @@ Route::get('/', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+//GESTÃO DE ARQUIVOS
+Route::get('/arquivos', 'Archive\ArchiveController@index')->name('archives');
+Route::post('/arquivos/extensao/create', 'Archive\ArchiveExtensionController@create');
+Route::get('/arquivos/extensao/all', 'Archive\ArchiveExtensionController@getExtensions');
+Route::delete('/arquivos/extensao/delete/{id}', 'Archive\ArchiveExtensionController@delete');
+
 
 //GESTÃO DE HELP DESK
 Route::get('/atendimento', 'HelpDesk\HelpDeskController@index')->name('helpdesks');

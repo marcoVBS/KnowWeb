@@ -21,6 +21,7 @@ Vue.component('categorie-article-component', require('./components/categories/Ca
 Vue.component('categorie-equipment-component', require('./components/categories/CategorieEquipmentComponent.vue').default);
 Vue.component('form-categorie-component', require('./components/categories/FormCategorieComponent.vue').default);
 Vue.component('sectors-component', require('./components/sectors/SectorsComponent.vue').default);
+Vue.component('archives-component', require('./components/archives/ArchivesComponent.vue').default);
 
 
 const app = new Vue({

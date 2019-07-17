@@ -168,13 +168,10 @@ export default {
 
                 if(stored == true){
                     vm.helpdesk.status = status
-                    vm.atendente_responsavel_id = vm.user_id
+                    vm.helpdesk.atendente_responsavel_id = vm.user_id
                     if(status == 'Finalizado'){
                         vm.$snotify.info('A solicitação foi finalizada!', 'Finalizada')
                     }
-                    setTimeout(function(){
-                        vm.getResponses()
-                    }, 1000)
                 }else{
                     vm.$snotify.error('Falha ao alterar prioridade!', 'Erro')
                 }
@@ -185,6 +182,9 @@ export default {
                 }else if(status = 'Finalizado'){
                     vm.$snotify.error('Falha ao finalizar solicitação!', 'Erro')
                 }
+            }).
+            finally(function(){
+                vm.getResponses();
             })
         },
         upload_handler(blobInfo, success, failure){
@@ -270,7 +270,6 @@ export default {
                     if(upload){
                         $('.modal').modal('close')
                         vm.$snotify.success('Sua resposta foi enviada com sucesso!', 'Sucesso')
-                        vm.getResponses()
                     }
                 
                 }else{
@@ -285,6 +284,7 @@ export default {
                 $('#form_response').each(function(){
                     this.reset();
                 })
+                vm.getResponses()
             })
         },
         getResponses(){
