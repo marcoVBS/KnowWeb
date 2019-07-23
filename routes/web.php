@@ -19,6 +19,12 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //GESTÃO DE ARQUIVOS
 Route::get('/arquivos', 'Archive\ArchiveController@index')->name('archives');
+Route::post('/arquivos/novo', 'Archive\ArchiveController@create');
+Route::get('/arquivos/all', 'Archive\ArchiveController@getFiles');
+Route::delete('/arquivos/delete/{id}', 'Archive\ArchiveController@delete');
+Route::get('/arquivos/download/{id}', 'Archive\ArchiveController@downloadFile');
+
+//Extensões de arquivos permitidas
 Route::post('/arquivos/extensao/create', 'Archive\ArchiveExtensionController@create');
 Route::get('/arquivos/extensao/all', 'Archive\ArchiveExtensionController@getExtensions');
 Route::delete('/arquivos/extensao/delete/{id}', 'Archive\ArchiveExtensionController@delete');

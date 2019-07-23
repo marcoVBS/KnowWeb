@@ -35,6 +35,7 @@ $(document).ready(function(){
     $('.collapsible').collapsible();
     $('.tabs').tabs();
     $('.modal').modal();
+    $('.tooltipped').tooltip();
 
     $('#telefone_user').mask('(00) 00000-0000');
     $('#cpf_user').mask('000.000.000-00');

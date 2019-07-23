@@ -4,10 +4,10 @@
 
 @section('content')
 
-    <div class="container">
+    <div>
         <h5 class="header grey-text center-align">Gestão de arquivos</h5>
         <div class="row">
-            <archives-component></archives-component>
+            <archives-component :categories="{{ $categorias }}"></archives-component>
         </div>
     </div>
 
