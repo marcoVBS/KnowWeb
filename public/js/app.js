@@ -3398,6 +3398,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3606,8 +3607,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['helpdesks']
+  props: ['helpdesks'],
+  data: function data() {
+    return {
+      status: "Aberto",
+      aberto: true,
+      andamento: false,
+      finalizado: false
+    };
+  },
+  methods: {
+    changeType: function changeType(status) {
+      this.status = status;
+      this.aberto = this.status == "Aberto";
+      this.andamento = this.status == "Em andamento";
+      this.finalizado = this.status == "Finalizado";
+    }
+  }
 });
 
 /***/ }),
@@ -3820,6 +3847,25 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, "\n.icon_files{\r\n    width: 20px;\n}\n.text_files{\r\n    padding-left: 10px;\n}\n.container2{\r\n    width: 85%;\n}\n.busca{\r\n    margin-top: 8px;\r\n    height: 56px;\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=style&index=0&id=32afa23e&scoped=true&lang=css&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=style&index=0&id=32afa23e&scoped=true&lang=css& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.card-helpdesk-title[data-v-32afa23e]{\r\n    font-size: 1.4em;\n}\r\n", ""]);
 
 // exports
 
@@ -27705,6 +27751,36 @@ process.umask = function() { return 0; };
 
 
 var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./ArchivesComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/archives/ArchivesComponent.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=style&index=0&id=32afa23e&scoped=true&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=style&index=0&id=32afa23e&scoped=true&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./HelpDesksComponent.vue?vue&type=style&index=0&id=32afa23e&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=style&index=0&id=32afa23e&scoped=true&lang=css&");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -55775,7 +55851,7 @@ var staticRenderFns = [
         "a",
         {
           staticClass:
-            "btn-floating tooltipped btn-large teal darken-3 modal-trigger",
+            "btn-floating tooltipped btn-large teal darken-3 modal-trigger pulse",
           attrs: {
             href: "#modalfiles",
             "data-position": "left",
@@ -56867,11 +56943,9 @@ var staticRenderFns = [
         ]
       ),
       _vm._v(" "),
-      _c(
-        "a",
-        { staticClass: "btn", attrs: { href: "/KnowWeb/public/atendimento" } },
-        [_vm._v("Cancelar")]
-      )
+      _c("a", { staticClass: "btn", attrs: { href: "../atendimento" } }, [
+        _vm._v("Cancelar")
+      ])
     ])
   }
 ]
@@ -57258,14 +57332,9 @@ var render = function() {
               )
             }),
             _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "modal-trigger btn",
-                attrs: { href: "#modal-response" }
-              },
-              [_vm._v("Responder")]
-            ),
+            _vm._m(0),
+            _vm._v(" "),
+            _vm._m(1),
             _vm._v(" "),
             _c(
               "div",
@@ -57348,11 +57417,11 @@ var render = function() {
                             })
                           ]),
                           _vm._v(" "),
-                          _vm._m(0)
+                          _vm._m(2)
                         ]
                       ),
                       _vm._v(" "),
-                      _vm._m(1)
+                      _vm._m(3)
                     ])
                   ]
                 )
@@ -57366,6 +57435,35 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "modal-trigger btn blue accent-4",
+        attrs: { href: "#modal-response" }
+      },
+      [
+        _c("i", { staticClass: "material-icons left" }, [_vm._v("create")]),
+        _vm._v("Responder")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      { staticClass: "btn red lighten-2", attrs: { href: "../atendimento" } },
+      [
+        _c("i", { staticClass: "material-icons left" }, [_vm._v("arrow_back")]),
+        _vm._v("Retornar")
+      ]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -57418,10 +57516,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e&":
-/*!******************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e& ***!
-  \******************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e&scoped=true&":
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e&scoped=true& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -57433,84 +57531,176 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "row" },
-    [
+  return _c("div", { staticClass: "row" }, [
+    _c("h5", { staticClass: "header grey-text center-align" }, [
+      _vm._v("Solicitações de Atendimento")
+    ]),
+    _c("div", { staticClass: "divider" }),
+    _vm._v(" "),
+    _c("ul", { staticClass: "collection with-header col s12 m3" }, [
       _vm._m(0),
-      _c("div", { staticClass: "divider" }),
+      _c("br"),
       _vm._v(" "),
+      _c("li", [
+        _c(
+          "a",
+          {
+            staticClass: "collection-item",
+            class: { active: _vm.aberto },
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.changeType("Aberto")
+              }
+            }
+          },
+          [
+            _vm._v("Abertas"),
+            _c("i", { staticClass: "material-icons secondary-content" }, [
+              _vm._v("open_in_new")
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("li", [
+        _c(
+          "a",
+          {
+            staticClass: "collection-item",
+            class: { active: _vm.andamento },
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.changeType("Em andamento")
+              }
+            }
+          },
+          [
+            _vm._v("Em andamento"),
+            _c("i", { staticClass: "material-icons secondary-content" }, [
+              _vm._v("access_time")
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("li", [
+        _c(
+          "a",
+          {
+            staticClass: "collection-item",
+            class: { active: _vm.finalizado },
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.changeType("Finalizado")
+              }
+            }
+          },
+          [
+            _vm._v("Finalizadas"),
+            _c("i", { staticClass: "material-icons secondary-content" }, [
+              _vm._v("check")
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("br")
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "col s12 m9" },
       _vm._l(_vm.helpdesks, function(helpdesk, index) {
-        return _c("div", { key: index, staticClass: "col s12 m6 l4" }, [
-          _c(
-            "a",
-            { attrs: { href: "atendimento/" + helpdesk.id_atendimento } },
-            [
-              _c("div", { staticClass: "card black-text" }, [
+        return _c("div", { key: index }, [
+          helpdesk.status == _vm.status
+            ? _c("div", { staticClass: "col s12 m6" }, [
                 _c(
-                  "div",
-                  { staticClass: "card-content waves-effect waves-block" },
+                  "a",
+                  { attrs: { href: "atendimento/" + helpdesk.id_atendimento } },
                   [
-                    _c("span", { staticClass: "card-title" }, [
-                      _c("b", [_vm._v(_vm._s(helpdesk.titulo))])
-                    ]),
-                    _c("div", { staticClass: "divider" }),
-                    _vm._v(" "),
-                    _c("p", [
-                      _c("b", [_vm._v("Autor:")]),
-                      _vm._v(
-                        " " +
-                          _vm._s(helpdesk.autor) +
-                          " - " +
-                          _vm._s(helpdesk.created_at)
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("p", [
-                      _c("b", [_vm._v("Categoria:")]),
-                      _vm._v(" " + _vm._s(helpdesk.categoria) + " ")
-                    ]),
-                    _vm._v(" "),
-                    _c("p", [
-                      _c("b", [_vm._v("Status:")]),
-                      _vm._v(" " + _vm._s(helpdesk.status) + " - "),
-                      _c("b", [_vm._v("Prioridade:")]),
-                      _vm._v(" " + _vm._s(helpdesk.prioridade))
-                    ]),
-                    _vm._v(" "),
-                    helpdesk.responsavel
-                      ? _c("p", [
-                          _c("b", [_vm._v("Atendente Responsável:")]),
-                          _vm._v(" " + _vm._s(helpdesk.responsavel))
-                        ])
-                      : _vm._e()
+                    _c(
+                      "div",
+                      { staticClass: "card black-text grey lighten-5" },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "card-content waves-effect waves-block"
+                          },
+                          [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "card-title card-helpdesk-title green-text"
+                              },
+                              [_c("b", [_vm._v(_vm._s(helpdesk.titulo))])]
+                            ),
+                            _c("div", { staticClass: "divider" }),
+                            _vm._v(" "),
+                            _c("p", [
+                              _c("b", [_vm._v("Autor:")]),
+                              _vm._v(
+                                " " +
+                                  _vm._s(helpdesk.autor) +
+                                  " - " +
+                                  _vm._s(helpdesk.created_at)
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("p", [
+                              _c("b", [_vm._v("Categoria:")]),
+                              _vm._v(" " + _vm._s(helpdesk.categoria) + " ")
+                            ]),
+                            _vm._v(" "),
+                            _c("p", [
+                              _c("b", [_vm._v("Status:")]),
+                              _vm._v(" " + _vm._s(helpdesk.status) + " - "),
+                              _c("b", [_vm._v("Prioridade:")]),
+                              _vm._v(" " + _vm._s(helpdesk.prioridade))
+                            ]),
+                            _vm._v(" "),
+                            helpdesk.responsavel
+                              ? _c("p", [
+                                  _c("b", [_vm._v("Atendente Responsável:")]),
+                                  _vm._v(" " + _vm._s(helpdesk.responsavel))
+                                ])
+                              : _vm._e()
+                          ]
+                        )
+                      ]
+                    )
                   ]
                 )
               ])
-            ]
-          )
+            : _vm._e()
         ])
-      })
-    ],
-    2
-  )
+      }),
+      0
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("h5", { staticClass: "header grey-text center-align" }, [
-      _vm._v("Atendimentos | \n        "),
+    return _c("li", { staticClass: "collection-header center-align" }, [
       _c(
         "a",
         {
-          staticClass: "waves-effect waves-light btn",
+          staticClass: "waves-effect waves-light btn btn-large green darken-3",
           attrs: { href: "atendimento/novo" }
         },
         [
           _c("i", { staticClass: "material-icons left" }, [
-            _vm._v("add_circle")
+            _vm._v("add_circle_outline")
           ]),
           _vm._v("Solicitar")
         ]
@@ -71982,9 +72172,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _HelpDesksComponent_vue_vue_type_template_id_32afa23e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HelpDesksComponent.vue?vue&type=template&id=32afa23e& */ "./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e&");
+/* harmony import */ var _HelpDesksComponent_vue_vue_type_template_id_32afa23e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HelpDesksComponent.vue?vue&type=template&id=32afa23e&scoped=true& */ "./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e&scoped=true&");
 /* harmony import */ var _HelpDesksComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HelpDesksComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _HelpDesksComponent_vue_vue_type_style_index_0_id_32afa23e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./HelpDesksComponent.vue?vue&type=style&index=0&id=32afa23e&scoped=true&lang=css& */ "./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=style&index=0&id=32afa23e&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -71992,13 +72184,13 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _HelpDesksComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _HelpDesksComponent_vue_vue_type_template_id_32afa23e___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _HelpDesksComponent_vue_vue_type_template_id_32afa23e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _HelpDesksComponent_vue_vue_type_template_id_32afa23e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _HelpDesksComponent_vue_vue_type_template_id_32afa23e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  null,
+  "32afa23e",
   null
   
 )
@@ -72024,19 +72216,35 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e&":
-/*!************************************************************************************************!*\
-  !*** ./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e& ***!
-  \************************************************************************************************/
+/***/ "./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=style&index=0&id=32afa23e&scoped=true&lang=css&":
+/*!**************************************************************************************************************************!*\
+  !*** ./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=style&index=0&id=32afa23e&scoped=true&lang=css& ***!
+  \**************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_style_index_0_id_32afa23e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./HelpDesksComponent.vue?vue&type=style&index=0&id=32afa23e&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=style&index=0&id=32afa23e&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_style_index_0_id_32afa23e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_style_index_0_id_32afa23e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_style_index_0_id_32afa23e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_style_index_0_id_32afa23e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_style_index_0_id_32afa23e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e&scoped=true&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e&scoped=true& ***!
+  \************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_template_id_32afa23e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./HelpDesksComponent.vue?vue&type=template&id=32afa23e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_template_id_32afa23e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_template_id_32afa23e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./HelpDesksComponent.vue?vue&type=template&id=32afa23e&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helpdesk/HelpDesksComponent.vue?vue&type=template&id=32afa23e&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_template_id_32afa23e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_template_id_32afa23e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelpDesksComponent_vue_vue_type_template_id_32afa23e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

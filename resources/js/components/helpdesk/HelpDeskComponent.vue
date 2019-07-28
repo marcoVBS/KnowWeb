@@ -76,7 +76,8 @@
                         </editor>
                     </li>
 
-                    <a class="modal-trigger btn" href="#modal-response">Responder</a>
+                    <a class="modal-trigger btn blue accent-4" href="#modal-response"><i class="material-icons left">create</i>Responder</a>
+                    <a class="btn red lighten-2" href="../atendimento"><i class="material-icons left">arrow_back</i>Retornar</a>
                     
                     <div id="modal-response" class="modal">
                         <form @submit.prevent="onSubmit" action="#" method="post" id="form_response">

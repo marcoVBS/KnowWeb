@@ -26,6 +26,9 @@ class HelpDeskController extends Controller
             if($helpdesk->atendente_responsavel_id){
                 $helpdesk->responsavel = User::find($helpdesk->atendente_responsavel_id)->nome;
             }
+            if(strlen($helpdesk->titulo) > 27){
+                $helpdesk->titulo = substr($helpdesk->titulo, 0, 27)."...";
+            }
         }
         return view('helpdesk.listhelpdesks', ['helpdesks'=> json_encode($helpdesks)]);
     }

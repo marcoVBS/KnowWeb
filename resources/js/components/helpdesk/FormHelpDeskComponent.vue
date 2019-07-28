@@ -53,7 +53,7 @@
                             <i class="material-icons right">clear</i>
                         </button>
 
-                        <a href="/KnowWeb/public/atendimento" class="btn">Cancelar</a>
+                        <a href="../atendimento" class="btn">Cancelar</a>
 
                     </div>
                 </form>

@@ -34,7 +34,7 @@
 
         <div class="row">
             <div class="fixed-action-btn">
-                <a class="btn-floating tooltipped btn-large teal darken-3 modal-trigger"  href="#modalfiles" data-position="left" data-tooltip="Enviar arquivos!">
+                <a class="btn-floating tooltipped btn-large teal darken-3 modal-trigger pulse"  href="#modalfiles" data-position="left" data-tooltip="Enviar arquivos!">
                     <i class="large material-icons">attach_file</i>
                 </a>
             </div>
