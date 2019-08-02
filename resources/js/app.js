@@ -11,7 +11,7 @@ Vue.use(Snotify, {toast: {showProgressBar: false, timeout: 4000}})
 import Axios from 'axios'
 Vue.use(Axios)
 
-//Importação de componentes
+//Importando componentes
 Vue.component('form-helpdesk-component', require('./components/helpdesk/FormHelpDeskComponent.vue').default);
 Vue.component('helpdesks-component', require('./components/helpdesk/HelpDesksComponent.vue').default);
 Vue.component('helpdesk-component', require('./components/helpdesk/HelpDeskComponent.vue').default);
@@ -22,6 +22,7 @@ Vue.component('categorie-equipment-component', require('./components/categories/
 Vue.component('form-categorie-component', require('./components/categories/FormCategorieComponent.vue').default);
 Vue.component('sectors-component', require('./components/sectors/SectorsComponent.vue').default);
 Vue.component('archives-component', require('./components/archives/ArchivesComponent.vue').default);
+Vue.component('equipments-component', require('./components/equipments/EquipmentsComponent.vue').default);
 
 
 const app = new Vue({

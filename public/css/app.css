@@ -10250,6 +10250,10 @@ input[type=range]::-ms-thumb {
   margin-left: 1em;
 }
 
+.container2 {
+  width: 85%;
+}
+
 @media only screen and (max-width: 992px) {
   .logo-begin {
     padding: 0;

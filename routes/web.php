@@ -82,5 +82,13 @@ Route::post('/setores/create', 'Sector\SectorController@create');
 Route::delete('/setores/delete/{id}', 'Sector\SectorController@delete');
 Route::put('/setores/update', 'Sector\SectorController@update');
 
+//GESTÃO DE EQUIPAMENTOS
+Route::get('/equipamentos', 'Equipment\EquipmentController@index')->name('equipments');
+Route::get('/equipamentos/all', 'Equipment\EquipmentController@getEquipments');
+Route::post('/equipamentos/create', 'Equipment\EquipmentController@create');
+Route::delete('/equipamentos/delete/{id}', 'Equipment\EquipmentController@delete');
+Route::put('/equipamentos/update', 'Equipment\EquipmentController@update');
+
+
 //ROTAS DE AUTENTICAÇÃO
 Auth::routes();

@@ -87,7 +87,7 @@
 
                         <div class="col s12 file-field input-field">
                             <div class="btn">
-                                <span>Enviar arquivos...</span>
+                                <span>Selecionar arquivos...</span>
                                 <input type="file" name="arquivo" id="arquivos" ref="files" multiple @change="changeFiles()">
                             </div>
                             <div class="file-path-wrapper">
@@ -301,11 +301,5 @@ export default {
 .text_files{
     padding-left: 10px;
 }
-.container2{
-    width: 85%;
-}
-.busca{
-    margin-top: 8px;
-    height: 56px;
-}
+
 </style>

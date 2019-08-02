@@ -1,8 +1,13 @@
 <template>
     <div>
         <div class="divider"></div><br>
-        <a class="waves-effect waves-light btn modal-trigger" href="#modalsector" @click="newSector()">
-                <i class="material-icons left">add_circle</i>Novo</a>
+
+        <div class="fixed-action-btn">
+            <a class="btn-floating tooltipped btn-large teal darken-3 modal-trigger" href="#modalsector" data-position="left" data-tooltip="Novo!" @click="newSector()">
+                <i class="large material-icons">add</i>
+            </a>
+        </div>
+        
         <table>
             <thead>
                 <tr>
@@ -19,7 +24,7 @@
                     <td> {{sector.descricao}} </td>
                     <td class="row">
                             <a href="#modalsector" class="modal-trigger" @click="loadForm(sector)"><i class="material-icons">edit</i></a>
-                            <a href="#" @click.prevent="confirmDelete(sector.id_setor, sector.nome)"><i class="material-icons">delete</i></a>
+                            <a class="red-text" href="#" @click.prevent="confirmDelete(sector.id_setor, sector.nome)"><i class="material-icons">delete</i></a>
                     </td>
                     </tr>
             </tbody>

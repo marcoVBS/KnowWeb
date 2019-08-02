@@ -1,9 +1,13 @@
 <template>
         <div class="row">
-           <h5 class="header grey-text center-align">Categorias de equipamento
-                <a class="waves-effect waves-light btn modal-trigger" href="#modalequipament" @click="newRoute()">
-                <i class="material-icons left">add_circle</i>Nova</a>
-           </h5>
+
+                <div class="fixed-action-btn">
+                        <a class="btn-floating tooltipped btn-large teal darken-3 modal-trigger" href="#modalequipament" data-position="left" data-tooltip="Novo!" @click="newRoute()">
+                                <i class="large material-icons">add</i>
+                        </a>
+                </div>
+
+           <h5 class="header grey-text center-align">Categorias de equipamento</h5>
            <!-- Modal Structure -->
                 <div id="modalequipament" class="modal">
                         <div class="modal-content">
@@ -32,7 +36,7 @@
                             <td> {{categorie.descricao}} </td>
                             <td class="row">
                                 <a href="#modalequipament" class="modal-trigger" @click="loadForm(categorie)"><i class="material-icons">edit</i></a>
-                                <a href="#" @click.prevent="confirmDelete(categorie.id_categoria_equipamento, categorie.nome)"><i class="material-icons">delete</i></a>
+                                <a class="red-text" href="#" @click.prevent="confirmDelete(categorie.id_categoria_equipamento, categorie.nome)"><i class="material-icons">delete</i></a>
                             </td>
                         </tr>
                     </tbody>
