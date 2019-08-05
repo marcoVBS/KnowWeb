@@ -3091,6 +3091,287 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/computers/ComputersComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/computers/ComputersComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['setores', 'sos'],
+  data: function data() {
+    return {
+      operSystems: [],
+      operSystem: {},
+      updateSO: false,
+      computer: {},
+      updateComputer: false
+    };
+  },
+  methods: {
+    onSubmitSO: function onSubmitSO() {
+      if (this.updateSO == true) {
+        this.updateSystem();
+      } else {
+        this.insertSO();
+      }
+    },
+    getSOs: function getSOs() {
+      var vm = this;
+      axios.get("computadores/so/all").then(function (response) {
+        vm.operSystems = response.data.SOs;
+      });
+    },
+    insertSO: function insertSO() {
+      var vm = this;
+      axios.post('computadores/so/create', {
+        nome: vm.operSystem.nome,
+        versao: vm.operSystem.versao,
+        arquitetura: vm.operSystem.arquitetura
+      }).then(function (response) {
+        var stored = response.data.stored;
+        var message = response.data.message;
+        vm.getSOs();
+
+        if (stored == true) {
+          vm.$snotify.success(message, 'Sucesso');
+          vm.operSystem = {};
+        } else {
+          vm.$snotify.error(message, 'Erro');
+        }
+      }).catch(function (error) {
+        vm.$snotify.error('Falha ao cadastrar sistema operacional!', 'Erro');
+      }).finally(function () {
+        $('#form_so').each(function () {
+          this.reset();
+        });
+      });
+    },
+    confirmDeleteSO: function confirmDeleteSO(id, name) {
+      var vm = this;
+      vm.$snotify.confirm("Deseja realmente excluir o sistema ".concat(name, "?"), 'Exclusão!', {
+        timeout: false,
+        position: 'centerCenter',
+        buttons: [{
+          text: 'Sim',
+          action: function action(toast) {
+            vm.deleteSO(id);
+            vm.$snotify.remove(toast.id);
+          }
+        }, {
+          text: 'Não',
+          action: function action(toast) {
+            return vm.$snotify.remove(toast.id);
+          }
+        }]
+      });
+    },
+    deleteSO: function deleteSO(id) {
+      var vm = this;
+      axios.delete("computadores/so/delete/".concat(id)).then(function (response) {
+        var stored = response.data.deleted;
+        var message = response.data.message;
+
+        if (stored == true) {
+          vm.$snotify.success(message, 'Sucesso');
+          vm.getSOs();
+        } else {
+          vm.$snotify.error(message, 'Erro');
+        }
+      }).catch(function (error) {
+        return vm.$snotify.error('Falha ao excluir o sistema operacional!', 'Erro');
+      });
+    },
+    loadFormSO: function loadFormSO(SO) {
+      this.updateSO = true;
+      this.operSystem = SO;
+    },
+    updateSystem: function updateSystem() {
+      var vm = this;
+      axios.put('computadores/so/update', vm.operSystem).then(function (response) {
+        var stored = response.data.stored;
+        var message = response.data.message;
+        vm.operSystem = {};
+        vm.updateSO = false;
+        vm.getSOs();
+
+        if (stored == true) {
+          vm.$snotify.success(message, 'Sucesso');
+        } else {
+          vm.$snotify.error(message, 'Erro');
+        }
+      }).catch(function (error) {
+        return vm.$snotify.error('Falha ao atualizar sistema operacional', 'Erro');
+      }).finally(function () {
+        $('#form_so').each(function () {
+          this.reset();
+        });
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.operSystems = this.sos;
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/equipments/EquipmentsComponent.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/equipments/EquipmentsComponent.vue?vue&type=script&lang=js& ***!
@@ -56985,6 +57266,820 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "divider" }),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("ul", { staticClass: "collapsible" }, [
+        _c("li", [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "collapsible-body" }, [
+            _c("div", { staticClass: "row" }, [
+              _c(
+                "form",
+                {
+                  attrs: { method: "post", action: "#", id: "form_so" },
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.onSubmitSO($event)
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "input-field col s12 m6" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.operSystem.nome,
+                          expression: "operSystem.nome"
+                        }
+                      ],
+                      staticClass: "validate",
+                      attrs: { id: "extensao", type: "text" },
+                      domProps: { value: _vm.operSystem.nome },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.operSystem, "nome", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        class: { active: _vm.updateSO },
+                        attrs: { for: "extensao" }
+                      },
+                      [_vm._v("Nome")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-field col s12 m3" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.operSystem.versao,
+                          expression: "operSystem.versao"
+                        }
+                      ],
+                      staticClass: "validate",
+                      attrs: { id: "versao", type: "text" },
+                      domProps: { value: _vm.operSystem.versao },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.operSystem,
+                            "versao",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        class: { active: _vm.updateSO },
+                        attrs: { for: "versao" }
+                      },
+                      [_vm._v("Versão")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-field col s12 m3" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.operSystem.arquitetura,
+                          expression: "operSystem.arquitetura"
+                        }
+                      ],
+                      staticClass: "validate",
+                      attrs: { id: "arq", type: "text" },
+                      domProps: { value: _vm.operSystem.arquitetura },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.operSystem,
+                            "arquitetura",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        class: { active: _vm.updateSO },
+                        attrs: { for: "arq" }
+                      },
+                      [_vm._v("Arquitetura")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(1)
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "divider" }),
+              _c("br"),
+              _vm._v(" "),
+              _c("table", [
+                _vm._m(2),
+                _vm._v(" "),
+                _vm.operSystems.length > 0
+                  ? _c(
+                      "tbody",
+                      _vm._l(_vm.operSystems, function(SO, index) {
+                        return _c("tr", { key: index }, [
+                          _c("td", [
+                            _vm._v(
+                              " " + _vm._s(SO.id_sistema_operacional) + " "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(" " + _vm._s(SO.nome) + " ")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(" " + _vm._s(SO.versao) + " ")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(" " + _vm._s(SO.arquitetura) + " ")
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "row" }, [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.loadFormSO(SO)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("edit")
+                                ])
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "a",
+                              {
+                                staticClass: "red-text",
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.confirmDeleteSO(
+                                      SO.id_sistema_operacional,
+                                      SO.nome
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("delete")
+                                ])
+                              ]
+                            )
+                          ])
+                        ])
+                      }),
+                      0
+                    )
+                  : _c("tbody", [_vm._m(3)])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("h5", { staticClass: "header grey-text" }, [
+        _vm._v("Novo Computador")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c(
+          "form",
+          { attrs: { method: "post", action: "#", id: "form_computer" } },
+          [
+            _c("div", { staticClass: "input-field col s12 m6" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.computer.placa_mae,
+                    expression: "computer.placa_mae"
+                  }
+                ],
+                staticClass: "validate",
+                attrs: { id: "placa_mae", type: "text" },
+                domProps: { value: _vm.computer.placa_mae },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.computer, "placa_mae", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                {
+                  class: { active: _vm.updateComputer },
+                  attrs: { for: "placa_mae" }
+                },
+                [_vm._v("Placa-mãe")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-field col s12 m6" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.computer.processador,
+                    expression: "computer.processador"
+                  }
+                ],
+                staticClass: "validate",
+                attrs: { id: "processador", type: "text" },
+                domProps: { value: _vm.computer.processador },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.computer, "processador", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                {
+                  class: { active: _vm.updateComputer },
+                  attrs: { for: "processador" }
+                },
+                [_vm._v("Processador")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-field col s12 m6" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.computer.memoria_ram,
+                    expression: "computer.memoria_ram"
+                  }
+                ],
+                staticClass: "validate",
+                attrs: { id: "ram", type: "text" },
+                domProps: { value: _vm.computer.memoria_ram },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.computer, "memoria_ram", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                {
+                  class: { active: _vm.updateComputer },
+                  attrs: { for: "ram" }
+                },
+                [_vm._v("Memória RAM")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-field col s12 m6" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.computer.unidade_armazenamento,
+                    expression: "computer.unidade_armazenamento"
+                  }
+                ],
+                staticClass: "validate",
+                attrs: { id: "hd", type: "text" },
+                domProps: { value: _vm.computer.unidade_armazenamento },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.computer,
+                      "unidade_armazenamento",
+                      $event.target.value
+                    )
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                { class: { active: _vm.updateComputer }, attrs: { for: "hd" } },
+                [_vm._v("Unidade de armazenamento")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-field col s12 m6" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.computer.mac_ethernet,
+                    expression: "computer.mac_ethernet"
+                  }
+                ],
+                staticClass: "validate",
+                attrs: { id: "mac_ethernet", type: "text" },
+                domProps: { value: _vm.computer.mac_ethernet },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.computer, "mac_ethernet", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                {
+                  class: { active: _vm.updateComputer },
+                  attrs: { for: "mac_ethernet" }
+                },
+                [_vm._v("Mac da plada de rede Ethernet")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-field col s12 m6" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.computer.mac_wireless,
+                    expression: "computer.mac_wireless"
+                  }
+                ],
+                staticClass: "validate",
+                attrs: { id: "mac_wireless", type: "text" },
+                domProps: { value: _vm.computer.mac_wireless },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.computer, "mac_wireless", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                {
+                  class: { active: _vm.updateComputer },
+                  attrs: { for: "mac_wireless" }
+                },
+                [_vm._v("Mac da plada de rede Wireless")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-field col s12 m6" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.computer.senha_usuario_adm,
+                    expression: "computer.senha_usuario_adm "
+                  }
+                ],
+                staticClass: "validate",
+                attrs: { id: "senha_adm", type: "password" },
+                domProps: { value: _vm.computer.senha_usuario_adm },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.computer,
+                      "senha_usuario_adm",
+                      $event.target.value
+                    )
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                {
+                  class: { active: _vm.updateComputer },
+                  attrs: { for: "senha_adm" }
+                },
+                [_vm._v("Senha do Administrador do sistema")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-field col s12 m6" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.computer.nome_computador,
+                    expression: "computer.nome_computador "
+                  }
+                ],
+                staticClass: "validate",
+                attrs: { id: "nome_pc", type: "text" },
+                domProps: { value: _vm.computer.nome_computador },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.computer,
+                      "nome_computador",
+                      $event.target.value
+                    )
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                {
+                  class: { active: _vm.updateComputer },
+                  attrs: { for: "nome_pc" }
+                },
+                [_vm._v("Nome do computador")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-field col s12 m6" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.computer.identificador_computador,
+                    expression: "computer.identificador_computador"
+                  }
+                ],
+                staticClass: "validate",
+                attrs: { id: "id_pc", type: "password" },
+                domProps: { value: _vm.computer.identificador_computador },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.computer,
+                      "identificador_computador",
+                      $event.target.value
+                    )
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                {
+                  class: { active: _vm.updateComputer },
+                  attrs: { for: "id_pc" }
+                },
+                [_vm._v("Identificador do computador")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-field col s12 m6" }, [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.computer.programas_especificos,
+                    expression: "computer.programas_especificos"
+                  }
+                ],
+                staticClass: "materialize-textarea",
+                attrs: { id: "programas" },
+                domProps: { value: _vm.computer.programas_especificos },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.computer,
+                      "programas_especificos",
+                      $event.target.value
+                    )
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "programas" } }, [
+                _vm._v("Programas específicos")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-field col s12 m6" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.computer.sistema_operacional_id,
+                      expression: "computer.sistema_operacional_id"
+                    }
+                  ],
+                  attrs: { id: "SO" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.computer,
+                        "sistema_operacional_id",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "option",
+                    { attrs: { value: "", disabled: "", selected: "" } },
+                    [_vm._v("Selecione...")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.operSystems, function(SO, index) {
+                    return _c(
+                      "option",
+                      {
+                        key: index,
+                        domProps: { value: SO.id_sistema_operacional }
+                      },
+                      [
+                        _vm._v(
+                          " " +
+                            _vm._s(SO.nome) +
+                            " - " +
+                            _vm._s(SO.versao) +
+                            " - " +
+                            _vm._s(SO.arquitetura)
+                        )
+                      ]
+                    )
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("label", [_vm._v("Sistema Operacional")])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-field col s12 m6" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.computer.setor_id,
+                      expression: "computer.setor_id"
+                    }
+                  ],
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.computer,
+                        "setor_id",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "option",
+                    { attrs: { value: "", disabled: "", selected: "" } },
+                    [_vm._v("Selecione...")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.setores, function(setor, index) {
+                    return _c(
+                      "option",
+                      { key: index, domProps: { value: setor.id_setor } },
+                      [_vm._v(" " + _vm._s(setor.nome) + " ")]
+                    )
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("label", [_vm._v("Setor")])
+            ]),
+            _vm._v(" "),
+            _vm._m(4)
+          ]
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "collapsible-header green-text darken-4" },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("settings")]),
+        _vm._v("Sistemas Operacionais")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn waves-effect waves-light green",
+          attrs: { type: "submit" }
+        },
+        [
+          _vm._v("Enviar\n                                    "),
+          _c("i", { staticClass: "material-icons right" }, [_vm._v("send")])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn waves-effect waves-light red",
+          attrs: { type: "reset" }
+        },
+        [
+          _vm._v("Limpar\n                                    "),
+          _c("i", { staticClass: "material-icons right" }, [_vm._v("clear")])
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("#Id")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nome")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Versão")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Arquitetura")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Ações")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "green-text" }, [
+        _vm._v("Nenhum sistema operacional cadastrado...")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn waves-effect waves-light green",
+          attrs: { type: "submit" }
+        },
+        [
+          _vm._v("Enviar\n                        "),
+          _c("i", { staticClass: "material-icons right" }, [_vm._v("send")])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn waves-effect waves-light red",
+          attrs: { type: "reset" }
+        },
+        [
+          _vm._v("Limpar\n                        "),
+          _c("i", { staticClass: "material-icons right" }, [_vm._v("clear")])
+        ]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/equipments/EquipmentsComponent.vue?vue&type=template&id=fa89d14e&":
 /*!*********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/equipments/EquipmentsComponent.vue?vue&type=template&id=fa89d14e& ***!
@@ -72220,6 +73315,7 @@ Vue.component('form-categorie-component', __webpack_require__(/*! ./components/c
 Vue.component('sectors-component', __webpack_require__(/*! ./components/sectors/SectorsComponent.vue */ "./resources/js/components/sectors/SectorsComponent.vue").default);
 Vue.component('archives-component', __webpack_require__(/*! ./components/archives/ArchivesComponent.vue */ "./resources/js/components/archives/ArchivesComponent.vue").default);
 Vue.component('equipments-component', __webpack_require__(/*! ./components/equipments/EquipmentsComponent.vue */ "./resources/js/components/equipments/EquipmentsComponent.vue").default);
+Vue.component('computers-component', __webpack_require__(/*! ./components/computers/ComputersComponent.vue */ "./resources/js/components/computers/ComputersComponent.vue").default);
 var app = new Vue({
   el: '#app'
 });
@@ -72691,6 +73787,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormCategorieComponent_vue_vue_type_template_id_f6ecc0bc_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormCategorieComponent_vue_vue_type_template_id_f6ecc0bc_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/computers/ComputersComponent.vue":
+/*!******************************************************************!*\
+  !*** ./resources/js/components/computers/ComputersComponent.vue ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ComputersComponent_vue_vue_type_template_id_976adc72___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ComputersComponent.vue?vue&type=template&id=976adc72& */ "./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72&");
+/* harmony import */ var _ComputersComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ComputersComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/computers/ComputersComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ComputersComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ComputersComponent_vue_vue_type_template_id_976adc72___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ComputersComponent_vue_vue_type_template_id_976adc72___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/computers/ComputersComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/computers/ComputersComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/computers/ComputersComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ComputersComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ComputersComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/computers/ComputersComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ComputersComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72& ***!
+  \*************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ComputersComponent_vue_vue_type_template_id_976adc72___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ComputersComponent.vue?vue&type=template&id=976adc72& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ComputersComponent_vue_vue_type_template_id_976adc72___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ComputersComponent_vue_vue_type_template_id_976adc72___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

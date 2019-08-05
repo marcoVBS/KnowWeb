@@ -89,6 +89,15 @@ Route::post('/equipamentos/create', 'Equipment\EquipmentController@create');
 Route::delete('/equipamentos/delete/{id}', 'Equipment\EquipmentController@delete');
 Route::put('/equipamentos/update', 'Equipment\EquipmentController@update');
 
+//GESTÃO DE COMPUTADORES
+Route::get('/computadores', 'Computer\ComputerController@index')->name('computers');
+
+//Sistemas operacionais
+Route::post('/computadores/so/create', 'Computer\OperationalSystemController@create');
+Route::get('/computadores/so/all', 'Computer\OperationalSystemController@getSOs');
+Route::delete('/computadores/so/delete/{id}', 'Computer\OperationalSystemController@delete');
+Route::put('/computadores/so/update', 'Computer\OperationalSystemController@update');
+
 
 //ROTAS DE AUTENTICAÇÃO
 Auth::routes();

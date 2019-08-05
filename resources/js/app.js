@@ -23,6 +23,7 @@ Vue.component('form-categorie-component', require('./components/categories/FormC
 Vue.component('sectors-component', require('./components/sectors/SectorsComponent.vue').default);
 Vue.component('archives-component', require('./components/archives/ArchivesComponent.vue').default);
 Vue.component('equipments-component', require('./components/equipments/EquipmentsComponent.vue').default);
+Vue.component('computers-component', require('./components/computers/ComputersComponent.vue').default);
 
 
 const app = new Vue({

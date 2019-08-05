@@ -17,7 +17,7 @@ class CreateSistemaOperacionalTable extends Migration
             $table->increments('id_sistema_operacional');
             $table->string('nome', 80);
             $table->string('versao', 45);
-            $table->string('arquiterura', 20);
+            $table->string('arquitetura', 20);
         });
     }
 
