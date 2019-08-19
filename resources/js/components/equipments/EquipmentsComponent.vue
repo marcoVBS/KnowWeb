@@ -65,6 +65,13 @@
         </div>
 
         <div class="col s12">
+
+            <div class="input-field col s12 m6">
+                <i class="material-icons prefix">search</i>
+                <input id="icon_prefix" type="text" v-model="search_query" class="validate">
+                <label for="icon_prefix">Buscar equipamentos...</label>
+            </div>
+
             <table class="striped">
                 <thead>
                     <tr>
@@ -74,7 +81,7 @@
                     </tr>
                 </thead>
                 <tbody v-if="equipments.length > 0">
-                        <tr v-for="(equip, index) in equipments" :key="index">
+                        <tr v-for="(equip, index) in filteredData" :key="index">
                         <td> {{equip.descricao}} </td>
                         <td> {{equip.categoria}} </td>
                         <td class="row">
@@ -101,7 +108,22 @@ export default {
             equipments: [],
             equipment: {},
             view: {},
-            update: false
+            update: false,
+            search_query: ''
+        }
+    },
+    computed: {
+        filteredData: function(){
+            var filterKey = this.search_query && this.search_query.toLowerCase()
+            var dataFilter = this.equipments
+            if (filterKey) {
+                dataFilter = dataFilter.filter(function (row) {
+                return Object.keys(row).some(function (key) {
+                    return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                })
+                })
+            }
+            return dataFilter
         }
     },
     methods: {

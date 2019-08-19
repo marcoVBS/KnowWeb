@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <h5 class="header grey-text center-align">Solicitações de Atendimento</h5><div class="divider"></div>
-
+        
         <ul class="collection with-header col s12 m3">
             <li class="collection-header center-align"><a class="waves-effect waves-light btn btn-large green darken-3" href="atendimento/novo"><i class="material-icons left">add_circle_outline</i>Solicitar</a></li><br>
             <li><a href="#" @click.prevent="changeType('Aberto')" class="collection-item" v-bind:class="{active: aberto}">Abertas<i class="material-icons secondary-content">open_in_new</i></a></li>
@@ -11,7 +11,14 @@
         </ul>
 
         <div class="col s12 m9">
-            <div v-for="(helpdesk, index) in helpdesks" :key="index">
+
+            <div class="input-field col s12">
+                <i class="material-icons prefix">search</i>
+                <input id="icon_prefix" type="text" v-model="search_query" class="validate">
+                <label for="icon_prefix">Buscar solicitações...</label>
+            </div>
+
+            <div v-for="(helpdesk, index) in filteredData" :key="index">
                 <div v-if="helpdesk.status == status" class="col s12 m6">
                     <a :href="`atendimento/${helpdesk.id_atendimento}`">
                         <div class="card black-text grey lighten-5">
@@ -40,7 +47,22 @@ export default {
             status: "Aberto",
             aberto: true,
             andamento: false,
-            finalizado: false
+            finalizado: false,
+            search_query: ''
+        }
+    },
+    computed: {
+        filteredData: function(){
+            var filterKey = this.search_query && this.search_query.toLowerCase()
+            var dataFilter = this.helpdesks
+            if (filterKey) {
+                dataFilter = dataFilter.filter(function (row) {
+                return Object.keys(row).some(function (key) {
+                    return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                })
+                })
+            }
+            return dataFilter
         }
     },
     methods: {

@@ -8,6 +8,13 @@
         </div>
 
         <div class="col s12">
+
+            <div class="input-field col s12 m6">
+                <i class="material-icons prefix">search</i>
+                <input id="icon_prefix" type="text" v-model="search_query" class="validate">
+                <label for="icon_prefix">Buscar computador...</label>
+            </div>
+
             <table class="striped">
                 <thead>
                     <tr>
@@ -21,7 +28,7 @@
                     </tr>
                 </thead>
                 <tbody v-if="computers.length > 0">
-                        <tr v-for="(pc, index) in computers" :key="index">
+                        <tr v-for="(pc, index) in filteredData" :key="index">
                         <td> {{pc.placa_mae}} </td>
                         <td> {{pc.processador}} </td>
                         <td> {{pc.memoria_ram}} </td>
@@ -48,7 +55,22 @@
 export default {
     data() {
         return {
-            computers: []
+            computers: [],
+            search_query: ''
+        }
+    },
+    computed: {
+        filteredData: function(){
+            var filterKey = this.search_query && this.search_query.toLowerCase()
+            var dataFilter = this.computers
+            if (filterKey) {
+                dataFilter = dataFilter.filter(function (row) {
+                return Object.keys(row).some(function (key) {
+                    return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                })
+                })
+            }
+            return dataFilter
         }
     },
     methods: {

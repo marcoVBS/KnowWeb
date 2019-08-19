@@ -1,6 +1,5 @@
 <template>
     <div class="container container2">
-        <div class="divider"></div>
 
         <div class="row">
             <ul class="collapsible">
@@ -32,14 +31,19 @@
             </ul>
         </div>
 
+        <div class="fixed-action-btn">
+            <a class="btn-floating tooltipped btn-large teal darken-3 modal-trigger pulse"  href="#modalfiles" data-position="left" data-tooltip="Enviar arquivos!">
+                <i class="large material-icons">attach_file</i>
+            </a>
+        </div>
+
         <div class="row">
-            <div class="fixed-action-btn">
-                <a class="btn-floating tooltipped btn-large teal darken-3 modal-trigger pulse"  href="#modalfiles" data-position="left" data-tooltip="Enviar arquivos!">
-                    <i class="large material-icons">attach_file</i>
-                </a>
+            <div class="input-field col s12 m6 campo-busca">
+                <i class="material-icons prefix">search</i>
+                <input id="icon_prefix" type="text" v-model="search_query" class="validate">
+                <label for="icon_prefix">Buscar arquivos...</label>
             </div>
-      
-            <div class="divider"></div>
+
             <table class="highlight">
                 <thead>
                     <tr>
@@ -53,7 +57,7 @@
                 </thead>
 
                 <tbody>
-                    <tr v-for="(file, index) in files" :key="index">
+                    <tr v-for="(file, index) in filteredData" :key="index">
                         <td>
                             <img :src="file.img_ext" class="icon_files"><span class="text_files"><b>{{file.nome}}</b></span>
                         </td>
@@ -129,7 +133,22 @@ export default {
             categoria_id: '',
             arquivos_up: [],
             files: [],
-            progress: false
+            progress: false,
+            search_query: ''
+        }
+    },
+    computed: {
+        filteredData: function(){
+            var filterKey = this.search_query && this.search_query.toLowerCase()
+            var dataFilter = this.files
+            if (filterKey) {
+                dataFilter = dataFilter.filter(function (row) {
+                return Object.keys(row).some(function (key) {
+                    return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                })
+                })
+            }
+            return dataFilter
         }
     },
     methods: {
@@ -294,12 +313,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .icon_files{
     width: 20px;
 }
 .text_files{
     padding-left: 10px;
 }
-
+.campo-busca{
+    margin-top: -15px;
+}
 </style>
