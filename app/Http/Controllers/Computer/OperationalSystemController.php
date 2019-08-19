@@ -15,8 +15,10 @@ class OperationalSystemController extends Controller
 
     public function getSOs()
     {
+        $sos = OperationalSystem::all();
+
         return response()->json([
-            'SOs' => OperationalSystem::all()
+            'systems' => $sos
         ]);
     }
 

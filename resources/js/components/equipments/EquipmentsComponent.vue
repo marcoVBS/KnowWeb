@@ -42,9 +42,9 @@
                         </div>
 
                         <div class="input-field col s12">
-                            <select v-model="equipment.categoria_equipamento_id" name="categoria" required>
-                                    <option value="" disabled selected>Selecione...</option>
-                                    <option v-for="(categorie, index) in categories" :key="index" :value="categorie.id_categoria_equipamento"> {{ categorie.nome }} </option>        
+                            <select v-model="equipment.categoria_equipamento_id" required>
+                                    <option value="" disabled>Selecione...</option>
+                                    <option v-for="(categorie, index) in categories" :key="index" :value="categorie.id_categoria_equipamento"> {{categorie.nome}} </option>        
                             </select>
                             <label>Categoria</label>
                         </div>

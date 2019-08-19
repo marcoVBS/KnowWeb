@@ -43,8 +43,10 @@
                         </div>
 
                     </div>
+                    
+                    <div class="divider"></div><br>
 
-                    <div class="row center-align">   
+                    <div class="row">   
                         <button class="btn waves-effect waves-light green" type="submit">Enviar
                             <i class="material-icons right">send</i>
                         </button>

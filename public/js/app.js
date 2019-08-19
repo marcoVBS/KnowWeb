@@ -3146,6 +3146,121 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      computers: []
+    };
+  },
+  methods: {
+    getComputers: function getComputers() {
+      var vm = this;
+      axios.get("computadores/all").then(function (response) {
+        vm.computers = response.data.computers;
+      });
+    },
+    confirmDelete: function confirmDelete(id) {
+      var vm = this;
+      vm.$snotify.confirm("Deseja realmente excluir o computador?", 'Exclusão!', {
+        timeout: false,
+        position: 'centerCenter',
+        buttons: [{
+          text: 'Sim',
+          action: function action(toast) {
+            vm.deleteComputer(id);
+            vm.$snotify.remove(toast.id);
+          }
+        }, {
+          text: 'Não',
+          action: function action(toast) {
+            return vm.$snotify.remove(toast.id);
+          }
+        }]
+      });
+    },
+    deleteComputer: function deleteComputer(id) {
+      var vm = this;
+      axios.delete("computadores/delete/".concat(id)).then(function (response) {
+        var stored = response.data.deleted;
+        var message = response.data.message;
+
+        if (stored == true) {
+          vm.$snotify.success(message, 'Sucesso');
+          vm.getComputers();
+        } else {
+          vm.$snotify.error(message, 'Erro');
+        }
+      }).catch(function (error) {
+        return vm.$snotify.error('Falha ao excluir o Computador!', 'Erro');
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.getComputers();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/computers/FormComputerComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/computers/FormComputerComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3254,17 +3369,78 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['setores', 'sos'],
+  props: ['update', 'sos', 'setores', 'computerupdate'],
   data: function data() {
     return {
       operSystems: [],
       operSystem: {},
       updateSO: false,
-      computer: {},
+      computer: {
+        mac_ethernet: '',
+        mac_wireless: ''
+      },
       updateComputer: false
     };
   },
   methods: {
+    onSubmitComputer: function onSubmitComputer() {
+      if (this.updateComputer == true) {
+        this.updatePC();
+      } else {
+        this.insertComputer();
+      }
+    },
+    insertComputer: function insertComputer() {
+      var vm = this;
+      axios.post('novo/create', {
+        placa_mae: vm.computer.placa_mae,
+        processador: vm.computer.processador,
+        memoria_ram: vm.computer.memoria_ram,
+        unidade_armazenamento: vm.computer.unidade_armazenamento,
+        mac_ethernet: vm.computer.mac_ethernet,
+        mac_wireless: vm.computer.mac_wireless,
+        senha_usuario_adm: vm.computer.senha_usuario_adm,
+        nome_computador: vm.computer.nome_computador,
+        identificador_computador: vm.computer.identificador_computador,
+        programas_especificos: vm.computer.programas_especificos,
+        sistema_operacional_id: vm.computer.sistema_operacional_id,
+        setor_id: vm.computer.setor_id
+      }).then(function (response) {
+        var stored = response.data.stored;
+        var message = response.data.message;
+
+        if (stored == true) {
+          vm.$snotify.success(message, 'Sucesso');
+          vm.computer = {
+            mac_ethernet: '',
+            mac_wireless: ''
+          };
+        } else {
+          vm.$snotify.error(message, 'Erro');
+        }
+      }).catch(function (error) {
+        vm.$snotify.error('Falha ao cadastrar Computador', 'Erro');
+      }).finally(function () {
+        $('#form_computer').each(function () {
+          this.reset();
+        });
+      });
+    },
+    updatePC: function updatePC() {
+      var vm = this;
+      axios.put('update', vm.computer).then(function (response) {
+        var stored = response.data.stored;
+        var message = response.data.message;
+
+        if (stored == true) {
+          vm.$snotify.success(message, 'Sucesso');
+        } else {
+          vm.$snotify.error(message, 'Erro');
+        }
+      }).catch(function (error) {
+        return vm.$snotify.error('Falha ao atualizar computador', 'Erro');
+      });
+    },
     onSubmitSO: function onSubmitSO() {
       if (this.updateSO == true) {
         this.updateSystem();
@@ -3274,13 +3450,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     getSOs: function getSOs() {
       var vm = this;
-      axios.get("computadores/so/all").then(function (response) {
-        vm.operSystems = response.data.SOs;
+      axios.get("so/all").then(function (response) {
+        vm.operSystems = response.data.systems;
       });
     },
     insertSO: function insertSO() {
       var vm = this;
-      axios.post('computadores/so/create', {
+      axios.post('so/create', {
         nome: vm.operSystem.nome,
         versao: vm.operSystem.versao,
         arquitetura: vm.operSystem.arquitetura
@@ -3324,7 +3500,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     deleteSO: function deleteSO(id) {
       var vm = this;
-      axios.delete("computadores/so/delete/".concat(id)).then(function (response) {
+      axios.delete("so/delete/".concat(id)).then(function (response) {
         var stored = response.data.deleted;
         var message = response.data.message;
 
@@ -3344,7 +3520,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     updateSystem: function updateSystem() {
       var vm = this;
-      axios.put('computadores/so/update', vm.operSystem).then(function (response) {
+      axios.put('so/update', vm.operSystem).then(function (response) {
         var stored = response.data.stored;
         var message = response.data.message;
         vm.operSystem = {};
@@ -3367,6 +3543,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.operSystems = this.sos;
+
+    if (this.update) {
+      this.updateComputer = this.update;
+      this.computer = this.computerupdate;
+    }
   }
 });
 
@@ -3617,6 +3798,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tinymce_tinymce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tinymce/tinymce */ "./node_modules/tinymce/tinymce.js");
 /* harmony import */ var tinymce_tinymce__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tinymce_tinymce__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _tinymce_tinymce_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @tinymce/tinymce-vue */ "./node_modules/@tinymce/tinymce-vue/lib/es2015/index.js");
+//
+//
 //
 //
 //
@@ -56062,6 +56245,17 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/vue-jquery-mask/dist/vue-jquery-mask.min.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/vue-jquery-mask/dist/vue-jquery-mask.min.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(e,t){ true?module.exports=t(__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"),__webpack_require__(/*! jquery-mask-plugin */ "./node_modules/jquery-mask-plugin/dist/jquery.mask.js")):undefined}(this,function(e,t){return function(e){var t={};function n(r){if(t[r])return t[r].exports;var u=t[r]={i:r,l:!1,exports:{}};return e[r].call(u.exports,u,u.exports,n),u.l=!0,u.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var u in e)n.d(r,u,function(t){return e[t]}.bind(null,u));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=2)}([function(t,n){t.exports=e},function(e,n){e.exports=t},function(e,t,n){"use strict";n.r(t);var r=n(0),u=n.n(r),o=(n(1),{name:"jquery-mask",render:function(e){return e("input",{attrs:{type:"text"},on:{input:this.onInput,blur:this.onBlur}})},props:{value:{required:!0,default:null,validator:function(e){return null===e||"string"==typeof e||e instanceof String||"number"==typeof e}},mask:{required:!0,type:[String,Function]},options:{type:Object,default:function(){return{}}},raw:{type:Boolean,default:!0}},data:function(){return{}},mounted:function(){var e=u.a.extend(!0,{},this.options);u()(this.$el).mask(this.mask,e),u()(this.$el).val(u()(this.$el).masked(this.value))},methods:{onInput:function(e){var t=this;this.$nextTick(function(){t.$emit("input",t.toEmit(e))})},toEmit:function(e){return this.raw?u()(this.$el).cleanVal():e.target.value},onBlur:function(e){var t=this;this.$nextTick(function(){var n=t.toEmit(e);t.$emit("blur",n),t.$emit("input",n)})}},watch:{value:function(e){u()(this.$el).val(u()(this.$el).masked(e))}},beforeDestroy:function(){u()(this.$el).unmask()}});n.d(t,"Plugin",function(){return i}),n.d(t,"Component",function(){return o});var i=function(e,t){var n="vue-mask";"string"==typeof t&&(n=t),e.component(n,o)};o.install=i;t.default=o}]).default});
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/archives/ArchivesComponent.vue?vue&type=template&id=5cbce8d9&":
 /*!*****************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/archives/ArchivesComponent.vue?vue&type=template&id=5cbce8d9& ***!
@@ -57266,10 +57460,168 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72&":
-/*!*******************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72& ***!
-  \*******************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72&scoped=true&":
+/*!*******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72&scoped=true& ***!
+  \*******************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "divider" }),
+    _vm._v(" "),
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "col s12" }, [
+      _c("table", { staticClass: "striped" }, [
+        _vm._m(1),
+        _vm._v(" "),
+        _vm.computers.length > 0
+          ? _c(
+              "tbody",
+              _vm._l(_vm.computers, function(pc, index) {
+                return _c("tr", { key: index }, [
+                  _c("td", [_vm._v(" " + _vm._s(pc.placa_mae) + " ")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(" " + _vm._s(pc.processador) + " ")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(" " + _vm._s(pc.memoria_ram) + " ")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(" " + _vm._s(pc.unidade_armazenamento) + " ")
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(" " + _vm._s(pc.identificador_computador) + " ")
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(" " + _vm._s(pc.setor) + " ")]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "row" }, [
+                    _c(
+                      "a",
+                      {
+                        attrs: {
+                          href: "computadores/atualizar/" + pc.id_computador
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "material-icons" }, [
+                          _vm._v("edit")
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm._m(2, true),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "red-text",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.confirmDelete(pc.id_computador)
+                          }
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "material-icons" }, [
+                          _vm._v("delete")
+                        ])
+                      ]
+                    )
+                  ])
+                ])
+              }),
+              0
+            )
+          : _c("tbody", [_vm._m(3)])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "fixed-action-btn" }, [
+      _c(
+        "a",
+        {
+          staticClass:
+            "btn-floating tooltipped btn-large teal darken-3 modal-trigger",
+          attrs: {
+            href: "computadores/novo",
+            "data-position": "left",
+            "data-tooltip": "Novo!"
+          }
+        },
+        [_c("i", { staticClass: "large material-icons" }, [_vm._v("add")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Placa-Mãe")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Processador")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("RAM")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Armazenamento")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Identificador")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Setor")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Ações")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "green-text", attrs: { href: "#" } }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("remove_red_eye")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "green-text" }, [
+        _vm._v("Nenhum computador cadastrado...")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/computers/FormComputerComponent.vue?vue&type=template&id=2cbd2c8c&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/computers/FormComputerComponent.vue?vue&type=template&id=2cbd2c8c& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -57448,6 +57800,7 @@ var render = function() {
                                 attrs: { href: "#" },
                                 on: {
                                   click: function($event) {
+                                    $event.preventDefault()
                                     return _vm.loadFormSO(SO)
                                   }
                                 }
@@ -57494,16 +57847,28 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
-      _c("h5", { staticClass: "header grey-text" }, [
-        _vm._v("Novo Computador")
-      ]),
+      _vm.updateComputer
+        ? _c("h5", { staticClass: "header grey-text" }, [
+            _vm._v("Editar Computador")
+          ])
+        : _c("h5", { staticClass: "header grey-text" }, [
+            _vm._v("Novo Computador")
+          ]),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
         _c(
           "form",
-          { attrs: { method: "post", action: "#", id: "form_computer" } },
+          {
+            attrs: { method: "post", action: "#", id: "form_computer" },
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.onSubmitComputer($event)
+              }
+            }
+          },
           [
-            _c("div", { staticClass: "input-field col s12 m6" }, [
+            _c("div", { staticClass: "input-field col s12 m4" }, [
               _c("input", {
                 directives: [
                   {
@@ -57514,7 +57879,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "validate",
-                attrs: { id: "placa_mae", type: "text" },
+                attrs: { id: "placa_mae", type: "text", required: "" },
                 domProps: { value: _vm.computer.placa_mae },
                 on: {
                   input: function($event) {
@@ -57536,7 +57901,7 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m6" }, [
+            _c("div", { staticClass: "input-field col s12 m4" }, [
               _c("input", {
                 directives: [
                   {
@@ -57547,7 +57912,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "validate",
-                attrs: { id: "processador", type: "text" },
+                attrs: { id: "processador", type: "text", required: "" },
                 domProps: { value: _vm.computer.processador },
                 on: {
                   input: function($event) {
@@ -57569,7 +57934,7 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m6" }, [
+            _c("div", { staticClass: "input-field col s12 m4" }, [
               _c("input", {
                 directives: [
                   {
@@ -57580,7 +57945,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "validate",
-                attrs: { id: "ram", type: "text" },
+                attrs: { id: "ram", type: "text", required: "" },
                 domProps: { value: _vm.computer.memoria_ram },
                 on: {
                   input: function($event) {
@@ -57602,7 +57967,7 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m6" }, [
+            _c("div", { staticClass: "input-field col s12 m4" }, [
               _c("input", {
                 directives: [
                   {
@@ -57613,7 +57978,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "validate",
-                attrs: { id: "hd", type: "text" },
+                attrs: { id: "hd", type: "text", required: "" },
                 domProps: { value: _vm.computer.unidade_armazenamento },
                 on: {
                   input: function($event) {
@@ -57636,73 +58001,71 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m6" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
+            _c(
+              "div",
+              { staticClass: "input-field col s12 m4" },
+              [
+                _c("vue-mask", {
+                  staticClass: "validate",
+                  attrs: {
+                    id: "mac_ethernet",
+                    type: "text",
+                    mask: "AA:AA:AA:AA:AA:AA"
+                  },
+                  model: {
                     value: _vm.computer.mac_ethernet,
+                    callback: function($$v) {
+                      _vm.$set(_vm.computer, "mac_ethernet", $$v)
+                    },
                     expression: "computer.mac_ethernet"
                   }
-                ],
-                staticClass: "validate",
-                attrs: { id: "mac_ethernet", type: "text" },
-                domProps: { value: _vm.computer.mac_ethernet },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.computer, "mac_ethernet", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  class: { active: _vm.updateComputer },
-                  attrs: { for: "mac_ethernet" }
-                },
-                [_vm._v("Mac da plada de rede Ethernet")]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m6" }, [
-              _c("input", {
-                directives: [
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
                   {
-                    name: "model",
-                    rawName: "v-model",
+                    class: { active: _vm.updateComputer },
+                    attrs: { for: "mac_ethernet" }
+                  },
+                  [_vm._v("Mac Ethernet")]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "input-field col s12 m4" },
+              [
+                _c("vue-mask", {
+                  staticClass: "validate",
+                  attrs: {
+                    id: "mac_wireless",
+                    type: "text",
+                    mask: "AA:AA:AA:AA:AA:AA"
+                  },
+                  model: {
                     value: _vm.computer.mac_wireless,
+                    callback: function($$v) {
+                      _vm.$set(_vm.computer, "mac_wireless", $$v)
+                    },
                     expression: "computer.mac_wireless"
                   }
-                ],
-                staticClass: "validate",
-                attrs: { id: "mac_wireless", type: "text" },
-                domProps: { value: _vm.computer.mac_wireless },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.computer, "mac_wireless", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  class: { active: _vm.updateComputer },
-                  attrs: { for: "mac_wireless" }
-                },
-                [_vm._v("Mac da plada de rede Wireless")]
-              )
-            ]),
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    class: { active: _vm.updateComputer },
+                    attrs: { for: "mac_wireless" }
+                  },
+                  [_vm._v("Mac Wireless")]
+                )
+              ],
+              1
+            ),
             _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m6" }, [
+            _c("div", { staticClass: "input-field col s12 m4" }, [
               _c("input", {
                 directives: [
                   {
@@ -57735,11 +58098,11 @@ var render = function() {
                   class: { active: _vm.updateComputer },
                   attrs: { for: "senha_adm" }
                 },
-                [_vm._v("Senha do Administrador do sistema")]
+                [_vm._v("Senha Admin do sistema")]
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m6" }, [
+            _c("div", { staticClass: "input-field col s12 m4" }, [
               _c("input", {
                 directives: [
                   {
@@ -57776,7 +58139,7 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m6" }, [
+            _c("div", { staticClass: "input-field col s12 m4" }, [
               _c("input", {
                 directives: [
                   {
@@ -57787,7 +58150,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "validate",
-                attrs: { id: "id_pc", type: "password" },
+                attrs: { id: "id_pc", type: "text" },
                 domProps: { value: _vm.computer.identificador_computador },
                 on: {
                   input: function($event) {
@@ -57814,38 +58177,6 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "input-field col s12 m6" }, [
-              _c("textarea", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.computer.programas_especificos,
-                    expression: "computer.programas_especificos"
-                  }
-                ],
-                staticClass: "materialize-textarea",
-                attrs: { id: "programas" },
-                domProps: { value: _vm.computer.programas_especificos },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(
-                      _vm.computer,
-                      "programas_especificos",
-                      $event.target.value
-                    )
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "programas" } }, [
-                _vm._v("Programas específicos")
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m6" }, [
               _c(
                 "select",
                 {
@@ -57857,7 +58188,6 @@ var render = function() {
                       expression: "computer.sistema_operacional_id"
                     }
                   ],
-                  attrs: { id: "SO" },
                   on: {
                     change: function($event) {
                       var $$selectedVal = Array.prototype.filter
@@ -57885,21 +58215,22 @@ var render = function() {
                     [_vm._v("Selecione...")]
                   ),
                   _vm._v(" "),
-                  _vm._l(_vm.operSystems, function(SO, index) {
+                  _vm._l(_vm.operSystems, function(so, index) {
                     return _c(
                       "option",
                       {
                         key: index,
-                        domProps: { value: SO.id_sistema_operacional }
+                        domProps: { value: so.id_sistema_operacional }
                       },
                       [
                         _vm._v(
                           " " +
-                            _vm._s(SO.nome) +
+                            _vm._s(so.nome) +
                             " - " +
-                            _vm._s(SO.versao) +
+                            _vm._s(so.versao) +
                             " - " +
-                            _vm._s(SO.arquitetura)
+                            _vm._s(so.arquitetura) +
+                            " "
                         )
                       ]
                     )
@@ -57964,7 +58295,53 @@ var render = function() {
               _c("label", [_vm._v("Setor")])
             ]),
             _vm._v(" "),
-            _vm._m(4)
+            _c("div", { staticClass: "input-field col s12" }, [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.computer.programas_especificos,
+                    expression: "computer.programas_especificos"
+                  }
+                ],
+                staticClass: "materialize-textarea",
+                attrs: { id: "programas" },
+                domProps: { value: _vm.computer.programas_especificos },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.computer,
+                      "programas_especificos",
+                      $event.target.value
+                    )
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "programas" } }, [
+                _vm._v("Programas específicos")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _vm._m(4),
+              _vm._v(" "),
+              _vm._m(5),
+              _vm._v(" "),
+              _vm.updateComputer
+                ? _c("a", { staticClass: "btn", attrs: { href: "../" } }, [
+                    _vm._v("voltar")
+                  ])
+                : _c(
+                    "a",
+                    { staticClass: "btn", attrs: { href: "../computadores" } },
+                    [_vm._v("voltar")]
+                  )
+            ])
           ]
         )
       ])
@@ -58047,31 +58424,33 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn waves-effect waves-light green",
-          attrs: { type: "submit" }
-        },
-        [
-          _vm._v("Enviar\n                        "),
-          _c("i", { staticClass: "material-icons right" }, [_vm._v("send")])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn waves-effect waves-light red",
-          attrs: { type: "reset" }
-        },
-        [
-          _vm._v("Limpar\n                        "),
-          _c("i", { staticClass: "material-icons right" }, [_vm._v("clear")])
-        ]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "btn waves-effect waves-light green",
+        attrs: { type: "submit" }
+      },
+      [
+        _vm._v("Enviar\n                        "),
+        _c("i", { staticClass: "material-icons right" }, [_vm._v("send")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn waves-effect waves-light red",
+        attrs: { type: "reset" }
+      },
+      [
+        _vm._v("Limpar\n                        "),
+        _c("i", { staticClass: "material-icons right" }, [_vm._v("clear")])
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -58263,7 +58642,7 @@ var render = function() {
                         expression: "equipment.categoria_equipamento_id"
                       }
                     ],
-                    attrs: { name: "categoria", required: "" },
+                    attrs: { required: "" },
                     on: {
                       change: function($event) {
                         var $$selectedVal = Array.prototype.filter
@@ -58285,11 +58664,9 @@ var render = function() {
                     }
                   },
                   [
-                    _c(
-                      "option",
-                      { attrs: { value: "", disabled: "", selected: "" } },
-                      [_vm._v("Selecione...")]
-                    ),
+                    _c("option", { attrs: { value: "", disabled: "" } }, [
+                      _vm._v("Selecione...")
+                    ]),
                     _vm._v(" "),
                     _vm._l(_vm.categories, function(categorie, index) {
                       return _c(
@@ -58652,6 +59029,9 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
+          _c("div", { staticClass: "divider" }),
+          _c("br"),
+          _vm._v(" "),
           _vm._m(1)
         ]
       )
@@ -58678,7 +59058,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row center-align" }, [
+    return _c("div", { staticClass: "row" }, [
       _c(
         "button",
         {
@@ -73289,6 +73669,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_snotify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-snotify */ "./node_modules/vue-snotify/vue-snotify.esm.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue_jquery_mask__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-jquery-mask */ "./node_modules/vue-jquery-mask/dist/vue-jquery-mask.min.js");
+/* harmony import */ var vue_jquery_mask__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_jquery_mask__WEBPACK_IMPORTED_MODULE_2__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js"); //importa Snotify
@@ -73302,7 +73684,10 @@ Vue.use(vue_snotify__WEBPACK_IMPORTED_MODULE_0__["default"], {
 }); //importa Axios
 
 
-Vue.use(axios__WEBPACK_IMPORTED_MODULE_1___default.a); //Importando componentes
+Vue.use(axios__WEBPACK_IMPORTED_MODULE_1___default.a); //Importa o Vue jquery Mask
+
+
+Vue.use(vue_jquery_mask__WEBPACK_IMPORTED_MODULE_2___default.a); //Importando componentes
 
 Vue.component('form-helpdesk-component', __webpack_require__(/*! ./components/helpdesk/FormHelpDeskComponent.vue */ "./resources/js/components/helpdesk/FormHelpDeskComponent.vue").default);
 Vue.component('helpdesks-component', __webpack_require__(/*! ./components/helpdesk/HelpDesksComponent.vue */ "./resources/js/components/helpdesk/HelpDesksComponent.vue").default);
@@ -73315,6 +73700,7 @@ Vue.component('form-categorie-component', __webpack_require__(/*! ./components/c
 Vue.component('sectors-component', __webpack_require__(/*! ./components/sectors/SectorsComponent.vue */ "./resources/js/components/sectors/SectorsComponent.vue").default);
 Vue.component('archives-component', __webpack_require__(/*! ./components/archives/ArchivesComponent.vue */ "./resources/js/components/archives/ArchivesComponent.vue").default);
 Vue.component('equipments-component', __webpack_require__(/*! ./components/equipments/EquipmentsComponent.vue */ "./resources/js/components/equipments/EquipmentsComponent.vue").default);
+Vue.component('form-computer-component', __webpack_require__(/*! ./components/computers/FormComputerComponent.vue */ "./resources/js/components/computers/FormComputerComponent.vue").default);
 Vue.component('computers-component', __webpack_require__(/*! ./components/computers/ComputersComponent.vue */ "./resources/js/components/computers/ComputersComponent.vue").default);
 var app = new Vue({
   el: '#app'
@@ -73801,7 +74187,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ComputersComponent_vue_vue_type_template_id_976adc72___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ComputersComponent.vue?vue&type=template&id=976adc72& */ "./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72&");
+/* harmony import */ var _ComputersComponent_vue_vue_type_template_id_976adc72_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ComputersComponent.vue?vue&type=template&id=976adc72&scoped=true& */ "./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72&scoped=true&");
 /* harmony import */ var _ComputersComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ComputersComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/computers/ComputersComponent.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
@@ -73813,11 +74199,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _ComputersComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ComputersComponent_vue_vue_type_template_id_976adc72___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _ComputersComponent_vue_vue_type_template_id_976adc72___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _ComputersComponent_vue_vue_type_template_id_976adc72_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ComputersComponent_vue_vue_type_template_id_976adc72_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  null,
+  "976adc72",
   null
   
 )
@@ -73843,19 +74229,88 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72&":
-/*!*************************************************************************************************!*\
-  !*** ./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72& ***!
-  \*************************************************************************************************/
+/***/ "./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72&scoped=true&":
+/*!*************************************************************************************************************!*\
+  !*** ./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72&scoped=true& ***!
+  \*************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ComputersComponent_vue_vue_type_template_id_976adc72___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ComputersComponent.vue?vue&type=template&id=976adc72& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ComputersComponent_vue_vue_type_template_id_976adc72___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ComputersComponent_vue_vue_type_template_id_976adc72_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ComputersComponent.vue?vue&type=template&id=976adc72&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/computers/ComputersComponent.vue?vue&type=template&id=976adc72&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ComputersComponent_vue_vue_type_template_id_976adc72_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ComputersComponent_vue_vue_type_template_id_976adc72___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ComputersComponent_vue_vue_type_template_id_976adc72_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/computers/FormComputerComponent.vue":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/computers/FormComputerComponent.vue ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FormComputerComponent_vue_vue_type_template_id_2cbd2c8c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormComputerComponent.vue?vue&type=template&id=2cbd2c8c& */ "./resources/js/components/computers/FormComputerComponent.vue?vue&type=template&id=2cbd2c8c&");
+/* harmony import */ var _FormComputerComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FormComputerComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/computers/FormComputerComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _FormComputerComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FormComputerComponent_vue_vue_type_template_id_2cbd2c8c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _FormComputerComponent_vue_vue_type_template_id_2cbd2c8c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/computers/FormComputerComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/computers/FormComputerComponent.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/computers/FormComputerComponent.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormComputerComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./FormComputerComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/computers/FormComputerComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormComputerComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/computers/FormComputerComponent.vue?vue&type=template&id=2cbd2c8c&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/js/components/computers/FormComputerComponent.vue?vue&type=template&id=2cbd2c8c& ***!
+  \****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormComputerComponent_vue_vue_type_template_id_2cbd2c8c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./FormComputerComponent.vue?vue&type=template&id=2cbd2c8c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/computers/FormComputerComponent.vue?vue&type=template&id=2cbd2c8c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormComputerComponent_vue_vue_type_template_id_2cbd2c8c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormComputerComponent_vue_vue_type_template_id_2cbd2c8c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

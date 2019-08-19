@@ -91,6 +91,12 @@ Route::put('/equipamentos/update', 'Equipment\EquipmentController@update');
 
 //GESTÃO DE COMPUTADORES
 Route::get('/computadores', 'Computer\ComputerController@index')->name('computers');
+Route::get('/computadores/novo', 'Computer\ComputerController@new');
+Route::post('/computadores/novo/create', 'Computer\ComputerController@create');
+Route::get('/computadores/all', 'Computer\ComputerController@getComputers');
+Route::delete('/computadores/delete/{id}', 'Computer\ComputerController@delete');
+Route::get('/computadores/atualizar/{id}', 'Computer\ComputerController@change');
+Route::put('/computadores/atualizar/update', 'Computer\ComputerController@update');
 
 //Sistemas operacionais
 Route::post('/computadores/so/create', 'Computer\OperationalSystemController@create');

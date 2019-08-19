@@ -27,6 +27,7 @@
         "@tinymce/tinymce-vue": "^2.0.0",
         "jquery-mask-plugin": "^1.14.15",
         "materialize-css": "^1.0.0-rc.2",
-        "tinymce": "^5.0.3"
+        "tinymce": "^5.0.3",
+        "vue-jquery-mask": "^1.0.3"
     }
 }

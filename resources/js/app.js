@@ -11,6 +11,10 @@ Vue.use(Snotify, {toast: {showProgressBar: false, timeout: 4000}})
 import Axios from 'axios'
 Vue.use(Axios)
 
+//Importa o Vue jquery Mask
+import vueMask from 'vue-jquery-mask';
+Vue.use(vueMask);
+
 //Importando componentes
 Vue.component('form-helpdesk-component', require('./components/helpdesk/FormHelpDeskComponent.vue').default);
 Vue.component('helpdesks-component', require('./components/helpdesk/HelpDesksComponent.vue').default);
@@ -23,6 +27,7 @@ Vue.component('form-categorie-component', require('./components/categories/FormC
 Vue.component('sectors-component', require('./components/sectors/SectorsComponent.vue').default);
 Vue.component('archives-component', require('./components/archives/ArchivesComponent.vue').default);
 Vue.component('equipments-component', require('./components/equipments/EquipmentsComponent.vue').default);
+Vue.component('form-computer-component', require('./components/computers/FormComputerComponent.vue').default);
 Vue.component('computers-component', require('./components/computers/ComputersComponent.vue').default);
 
 
@@ -41,5 +46,4 @@ $(document).ready(function(){
 
     $('#telefone_user').mask('(00) 00000-0000');
     $('#cpf_user').mask('000.000.000-00');
-
 });
