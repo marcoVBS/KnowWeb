@@ -29,6 +29,7 @@ Vue.component('archives-component', require('./components/archives/ArchivesCompo
 Vue.component('equipments-component', require('./components/equipments/EquipmentsComponent.vue').default);
 Vue.component('form-computer-component', require('./components/computers/FormComputerComponent.vue').default);
 Vue.component('computers-component', require('./components/computers/ComputersComponent.vue').default);
+Vue.component('passwords-component', require('./components/passwords/PasswordsComponent.vue').default);
 
 
 const app = new Vue({

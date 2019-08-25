@@ -104,6 +104,12 @@ Route::get('/computadores/so/all', 'Computer\OperationalSystemController@getSOs'
 Route::delete('/computadores/so/delete/{id}', 'Computer\OperationalSystemController@delete');
 Route::put('/computadores/so/update', 'Computer\OperationalSystemController@update');
 
+//GESTÃO DE SENHAS
+Route::get('/senhas', 'Password\PasswordController@index')->name('passwords');
+Route::post('/senhas/create', 'Password\PasswordController@create');
+Route::get('/senhas/all', 'Password\PasswordController@getPasswords');
+Route::delete('/senhas/delete/{id}', 'Password\PasswordController@delete');
+Route::put('/senhas/update', 'Password\PasswordController@update');
 
 //ROTAS DE AUTENTICAÇÃO
 Auth::routes();

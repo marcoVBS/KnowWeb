@@ -104,7 +104,8 @@
                         <label for="mac_wireless" v-bind:class="{active: updateComputer}">Mac Wireless</label>
                     </div>
                     <div class="input-field col s12 m4">
-                        <input id="senha_adm" type="password" v-model="computer.senha_usuario_adm " class="validate">
+                        <i @click.prevent="viewPass" class="material-icons prefix">visibility</i>
+                        <input id="senha_adm" :type="typePass" v-model="computer.senha_usuario_adm " class="validate">
                         <label for="senha_adm" v-bind:class="{active: updateComputer}">Senha Admin do sistema</label>
                     </div>
                     <div class="input-field col s12 m4">
@@ -167,10 +168,18 @@ export default {
                 mac_ethernet: '',
                 mac_wireless: ''
             },
-            updateComputer: false
+            updateComputer: false,
+            typePass: 'password'
         }
     },
     methods: {
+        viewPass(){
+            if(this.typePass == 'password'){
+                this.typePass = 'text'
+            }else if(this.typePass == 'text'){
+                this.typePass = 'password'
+            }
+        },
         onSubmitComputer(){
             if(this.updateComputer == true){
                 this.updatePC();
