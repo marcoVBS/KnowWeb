@@ -22,7 +22,7 @@
                 <div class="divider"></div>
 
                 <div v-if="view.equipamento">
-                    <h5>Equipamento associado:</h5>
+                    <h6><b>Equipamento associado:</b></h6>
                     <p><b>Descrição: </b><br>{{ view.equipamento.descricao}}</p>
                     <p><b>Características: </b><br>{{ view.equipamento.caracteristicas}}</p>
 

@@ -111,5 +111,10 @@ Route::get('/senhas/all', 'Password\PasswordController@getPasswords');
 Route::delete('/senhas/delete/{id}', 'Password\PasswordController@delete');
 Route::put('/senhas/update', 'Password\PasswordController@update');
 
-//ROTAS DE AUTENTICAÇÃO
+
+//ROTAS DE AUTENTICAÇÃO E GESTÃO DE PERFIL
 Auth::routes();
+Route::get('/perfil', 'User\ProfileController@index')->name('profile');
+Route::post('/perfil/updateImage', 'User\ProfileController@updateImage');
+Route::put('/perfil/updateProfile', 'User\ProfileController@updateProfile');
+Route::put('/perfil/updatePassword', 'User\ProfileController@updatePassword');

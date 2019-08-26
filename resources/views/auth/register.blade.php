@@ -19,7 +19,7 @@
 
                     <div class="row">
 
-                        <div class="input-field col s12">
+                        <div class="input-field col s12 m6">
                             <input id="nome" type="text" class="validate" name="nome" value="{{ old('nome') }}" required>
                             <label for="nome">Nome</label>
 
@@ -29,7 +29,7 @@
 
                         </div>
 
-                        <div class="input-field col s12">
+                        <div class="input-field col s12 m6">
                             <input id="email" type="email" name="email" value="{{ old('email') }}" required class="validate">
                             <label for="email">Email</label>
 

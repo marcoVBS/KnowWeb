@@ -60,7 +60,7 @@
 
                         <h6 class="white-text">{{ Auth::user()->nome }}</h6>
                         <div class="divider"></div>
-                        <a href="#email"><i class="tiny material-icons">build</i> Editar Perfil</a>
+                        <a href="{{ route('profile') }}"><i class="tiny material-icons">build</i> Editar Perfil</a>
                     </div>
                 </li>
                 <li><a class="waves-effect white-text" href="#"><i class="material-icons white-text">library_books</i>Artigos</a></li>
