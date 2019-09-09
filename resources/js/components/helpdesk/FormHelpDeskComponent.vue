@@ -20,11 +20,10 @@
                         <div class="col s12">
                             <label style="font-size:16px;">Descrição: </label>
                             <editor v-model="descricao" name="descricao" api-key="k9nq1pz5sirugp247sm9bg2tb42ks18ttmcxjxni7iknoisv" 
-                                :init="{language: 'pt_BR', language_url: '/KnowWeb/public/js/tiny_pt_BR.js', 
-                                    images_upload_handler: upload_handler, skin_url: skin}" 
+                                :init="{language: 'pt_BR', language_url: '/KnowWeb/public/js/tiny_pt_BR.js', images_upload_handler: upload_handler}" 
                                 
                                 plugins="autoresize print preview fullpage searchreplace fullscreen image link 
-                                    hr insertdatetime advlist lists imagetools textpattern  " 
+                                    hr insertdatetime advlist lists imagetools textpattern" 
                                 
                                 toolbar="formatselect | bold italic forecolor backcolor | link image | 
                                     alignleft aligncenter alignright alignjustify | numlist bullist outdent indent">
@@ -65,14 +64,12 @@
 </template>
 
 <script>
-import tinymce from 'tinymce/tinymce';
 import Editor from '@tinymce/tinymce-vue';
 
 export default {
     props: ['categories'],
     data() {
         return {
-            skin: '/KnowWeb/public/skin/ui/oxide',
             titulo: '',
             categoria_id: '',
             descricao: '',

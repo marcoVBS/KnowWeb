@@ -15,8 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', 'HomeController@index')->name('home');
-
 //GESTÃO DE ARQUIVOS
 Route::get('/arquivos', 'Archive\ArchiveController@index')->name('archives');
 Route::post('/arquivos/novo', 'Archive\ArchiveController@create');
@@ -44,6 +42,12 @@ Route::post('/atendimento/resposta/imagem/upload', 'HelpDesk\HelpDeskResponseCon
 Route::post('/atendimento/resposta/upload', 'HelpDesk\HelpDeskResponseController@uploadFiles');
 Route::post('/atendimento/resposta/create', 'HelpDesk\HelpDeskResponseController@create');
 Route::get('/atendimento/respostas/{id}', 'HelpDesk\HelpDeskResponseController@getResponses');
+
+//GESTÃO DE ARTIGOS
+Route::get('/artigos', 'Article\ArticleController@index')->name('articles');
+Route::get('/artigos/novo', 'Article\ArticleController@new');
+Route::post('/artigos/novo/create', 'Article\ArticleController@create');
+Route::post('/artigos/novo/imagem/upload', 'Article\ArticleController@uploadImage');
 
 
 //GESTÃO DE CATEGORIAS

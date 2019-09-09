@@ -31,7 +31,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/artigos';
 
     /**
      * Create a new controller instance.
@@ -122,7 +122,7 @@ class RegisterController extends Controller
             'cpf' => $data['cpf'],
             'foto' => $foto,
             'password' => Hash::make($data['password']),
-            'tipo_usuario'=> $data['tipo_usuario'],
+            'tipo_usuario'=> 'Usuario',
             'setor_id'=>$data['setor_id']
         ]);
     }

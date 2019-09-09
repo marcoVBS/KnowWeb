@@ -13,12 +13,14 @@ Vue.use(Axios)
 
 //Importa o Vue jquery Mask
 import vueMask from 'vue-jquery-mask';
-Vue.use(vueMask);
+Vue.use(vueMask)
 
 //Importando componentes
 Vue.component('form-helpdesk-component', require('./components/helpdesk/FormHelpDeskComponent.vue').default);
 Vue.component('helpdesks-component', require('./components/helpdesk/HelpDesksComponent.vue').default);
 Vue.component('helpdesk-component', require('./components/helpdesk/HelpDeskComponent.vue').default);
+Vue.component('articles-component', require('./components/articles/ArticlesComponent.vue').default);
+Vue.component('form-article-component', require('./components/articles/FormArticleComponent.vue').default);
 Vue.component('categorie-helpdesk-component', require('./components/categories/CategorieHelpDeskComponent.vue').default);
 Vue.component('categorie-archive-component', require('./components/categories/CategorieArchiveComponent.vue').default);
 Vue.component('categorie-article-component', require('./components/categories/CategorieArticleComponent.vue').default);

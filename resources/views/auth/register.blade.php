@@ -70,16 +70,6 @@
                         </div>
 
                         <div class="input-field col s12 m6">
-                            <select name="tipo_usuario" required>
-                                <option value="" disabled selected>Selecione...</option>
-                                <option value="Usuario">Usuário</option>
-                                <option value="Membro">Membro da equipe</option>
-                                <option value="Administrador">Administrador</option>
-                            </select>
-                            <label>Tipo de usuário</label>
-                        </div>
-
-                        <div class="input-field col s12 m6">
                                 <select name="setor_id" required>
                                     <option value="" disabled selected>Selecione...</option>
                                     @if($setores)

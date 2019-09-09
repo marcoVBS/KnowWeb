@@ -14,9 +14,4 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css');
 
-mix.copyDirectory('node_modules/tinymce/skins/ui/oxide', 'public/skin/ui/oxide');
-mix.copyDirectory('node_modules/tinymce/skins/content/default', 'public/js/skins/content/default');
-mix.copyDirectory('node_modules/tinymce/themes', 'public/js/themes');
-mix.copyDirectory('node_modules/tinymce/plugins', 'public/js/plugins');
-
 mix.browserSync('http://localhost/KnowWeb/public/')

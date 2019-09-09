@@ -29,6 +29,9 @@ class HelpDeskController extends Controller
             if(strlen($helpdesk->titulo) > 27){
                 $helpdesk->titulo = substr($helpdesk->titulo, 0, 27)."...";
             }
+            if(strlen($helpdesk->categoria) > 30){
+                $helpdesk->categoria = substr($helpdesk->categoria, 0, 30)."...";
+            }
         }
         return view('helpdesk.listhelpdesks', ['helpdesks'=> json_encode($helpdesks)]);
     }

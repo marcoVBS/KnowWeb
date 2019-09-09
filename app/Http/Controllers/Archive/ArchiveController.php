@@ -59,7 +59,7 @@ class ArchiveController extends Controller
     public function create(Request $request){
         $file = $request->file('file');
 
-        $name = $file->getClientOriginalName();
+        $name = \strtolower($file->getClientOriginalName());
         
         if(Storage::exists('/arquivos/'. $name)){
             $i = 0;
@@ -122,7 +122,7 @@ class ArchiveController extends Controller
 
     public function downloadFile(Request $request){
         $file = Archive::find($request->id);
-        return Storage::download($file->caminho);
+        return response()->download(storage_path('app/public'.$file->caminho));
     }
 
     public function delete($id)

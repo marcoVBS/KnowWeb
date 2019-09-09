@@ -50,7 +50,7 @@
                         <label class="black-text" style="font-size:16px;">Descrição: </label>
                         <editor name="descricao" api-key="k9nq1pz5sirugp247sm9bg2tb42ks18ttmcxjxni7iknoisv" 
                             :init="{language: 'pt_BR', language_url: '/KnowWeb/public/js/tiny_pt_BR.js', 
-                                skin_url: skin, menubar: false, toolbar: false}"
+                                menubar: false, toolbar: false}"
                             :initial-value="helpdesk.descricao" :disabled="true" plugins="autoresize">
                         </editor>
                     </li>
@@ -71,7 +71,7 @@
                         <label class="black-text" style="font-size:16px;">Resposta: </label>
                         <editor name="res" api-key="k9nq1pz5sirugp247sm9bg2tb42ks18ttmcxjxni7iknoisv" 
                             :init="{language: 'pt_BR', language_url: '/KnowWeb/public/js/tiny_pt_BR.js', 
-                                skin_url: skin, menubar: false, toolbar: false}"
+                                menubar: false, toolbar: false}"
                             :initial-value="resp.resposta" :disabled="true" plugins="autoresize">
                         </editor>
                     </li>
@@ -86,8 +86,7 @@
                                     <div class="col s12">
                                         <label style="font-size:16px;">Resposta: </label>
                                         <editor v-model="resposta" name="resposta" api-key="k9nq1pz5sirugp247sm9bg2tb42ks18ttmcxjxni7iknoisv" 
-                                            :init="{language: 'pt_BR', language_url: '/KnowWeb/public/js/tiny_pt_BR.js',
-                                                images_upload_handler: upload_handler, skin_url: skin}" 
+                                            :init="{language: 'pt_BR', language_url: '/KnowWeb/public/js/tiny_pt_BR.js',images_upload_handler: upload_handler}" 
                                             
                                             plugins="autoresize print preview fullpage searchreplace fullscreen image link 
                                                 hr insertdatetime advlist lists imagetools textpattern  " 
@@ -121,14 +120,12 @@
 </template>
 
 <script>
-import tinymce from 'tinymce/tinymce';
 import Editor from '@tinymce/tinymce-vue';
 
 export default {
     props: ['user_id', 'helpdesk'],
     data() {
         return {
-            skin: '/KnowWeb/public/skin/ui/oxide',
             respostas: [],
             resposta: '',
             imagens: [],

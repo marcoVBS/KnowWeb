@@ -91,6 +91,9 @@ class CreateArtigoTable extends Migration
             $table->integer('tag_id')->unsigned();
             $table->foreign('tag_id')->references('id_tag')->on('tb_tag')
                 ->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('artigo_id')->unsigned();
+            $table->foreign('artigo_id')->references('id_artigo')->on('tb_artigo')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
