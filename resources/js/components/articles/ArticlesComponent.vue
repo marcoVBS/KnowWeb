@@ -19,8 +19,8 @@
                 
                 <p v-if="article.atualizador"><b>Última atualização:</b> {{ article.updated_at }} - {{ article.atualizador }} </p>
                 <div class="secondary-content">
-                    <a href="#"><i class="material-icons green-text">edit</i></a>
-                    <a href="#"><i class="material-icons red-text">delete</i></a>
+                    <a :href="`artigos/atualizar/${article.id_artigo}`"><i class="material-icons green-text">edit</i></a>
+                    <a v-if="(user_id == article.usuario_autor_id)" href="#"><i class="material-icons red-text">delete</i></a>
                 </div>
             </li>
         </ul>
@@ -31,7 +31,7 @@
 
 <script>
 export default {
-    props: ['articles']
+    props: ['user_id', 'articles']
 }
 </script>
 

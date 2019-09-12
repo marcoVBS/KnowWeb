@@ -48,6 +48,7 @@ Route::get('/artigos', 'Article\ArticleController@index')->name('articles');
 Route::get('/artigos/novo', 'Article\ArticleController@new');
 Route::post('/artigos/novo/create', 'Article\ArticleController@create');
 Route::post('/artigos/novo/imagem/upload', 'Article\ArticleController@uploadImage');
+Route::get('/artigos/atualizar/{id}', 'Article\ArticleController@change');
 
 
 //GESTÃO DE CATEGORIAS

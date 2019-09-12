@@ -2504,7 +2504,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['articles']
+  props: ['user_id', 'articles']
 });
 
 /***/ }),
@@ -2831,12 +2831,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['update', 'categories', 'all_tags'],
+  props: ['update', 'categories', 'all_tags', 'articleupdate'],
   data: function data() {
     return {
-      article: {},
+      article: {
+        files: [],
+        passwords: [],
+        computers: [],
+        equipments: []
+      },
       imagens: [],
       tags: [],
       instance: null,
@@ -2911,42 +2919,140 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     load_files: function load_files() {
       var vm = this;
-      axios.get("../arquivos/all").then(function (response) {
+      var route = '';
+
+      if (this.update) {
+        route = "../../arquivos/all";
+      } else {
+        route = "../arquivos/all";
+      }
+
+      axios.get(route).then(function (response) {
         vm.files = response.data.files;
+
+        if (vm.update) {
+          vm.files.map(function (e) {
+            if (vm.article.files_id.indexOf(e.id_arquivo) > -1) {
+              e.check = true;
+            }
+          });
+        }
       });
     },
     load_passwords: function load_passwords() {
       var vm = this;
-      axios.get("../senhas/all").then(function (response) {
+      var route = '';
+
+      if (this.update) {
+        route = "../../senhas/all";
+      } else {
+        route = "../senhas/all";
+      }
+
+      axios.get(route).then(function (response) {
         vm.passwords = response.data.passwords;
+
+        if (vm.update) {
+          vm.passwords.map(function (e) {
+            if (vm.article.passwords_id.indexOf(e.id_senha) > -1) {
+              e.check = true;
+            }
+          });
+        }
       });
     },
     load_computers: function load_computers() {
       var vm = this;
-      axios.get("../computadores/all").then(function (response) {
+      var route = '';
+
+      if (this.update) {
+        route = "../../computadores/all";
+      } else {
+        route = "../computadores/all";
+      }
+
+      axios.get(route).then(function (response) {
         vm.computers = response.data.computers;
+
+        if (vm.update) {
+          vm.computers.map(function (e) {
+            if (vm.article.computers_id.indexOf(e.id_computador) > -1) {
+              e.check = true;
+            }
+          });
+        }
       });
     },
     load_equipments: function load_equipments() {
       var vm = this;
-      axios.get("../equipamentos/all").then(function (response) {
+      var route = '';
+
+      if (this.update) {
+        route = "../../equipamentos/all";
+      } else {
+        route = "../equipamentos/all";
+      }
+
+      axios.get(route).then(function (response) {
         vm.equipments = response.data.equipments;
+
+        if (vm.update) {
+          vm.equipments.map(function (e) {
+            if (vm.article.equipments_id.indexOf(e.id_equipamento) > -1) {
+              e.check = true;
+            }
+          });
+        }
       });
     },
     onSubmit: function onSubmit() {
+      this.change_assocs();
+
+      if (update) {} else {
+        this.createArticle();
+      }
+    },
+    change_assocs: function change_assocs() {
       var _this = this;
 
       this.instance[0].chipsData.forEach(function (element) {
         _this.tags.push(element.tag);
       });
-      this.createArticle();
+      this.files.forEach(function (element) {
+        if (element.check) {
+          _this.article.files.push(element.id_arquivo);
+        }
+      });
+      this.passwords.forEach(function (element) {
+        if (element.check) {
+          _this.article.passwords.push(element.id_senha);
+        }
+      });
+      this.computers.forEach(function (element) {
+        if (element.check) {
+          _this.article.computers.push(element.id_computador);
+        }
+      });
+      this.equipments.forEach(function (element) {
+        if (element.check) {
+          _this.article.equipments.push(element.id_equipamento);
+        }
+      });
     },
     upload_handler: function upload_handler(blobInfo, success, failure) {
       var formData;
       formData = new FormData();
       formData.append('file', blobInfo.blob(), blobInfo.filename());
       var vm = this;
-      axios.post('novo/imagem/upload', formData).then(function (response) {
+      var route = '';
+
+      if (this.update) {
+        route = '../novo/imagem/upload';
+      } else {
+        route = 'novo/imagem/upload';
+      }
+
+      axios.post(route, formData).then(function (response) {
         var path = response.data.path;
         var name = response.data.name;
         success(path);
@@ -2966,7 +3072,11 @@ __webpack_require__.r(__webpack_exports__);
         conteudo: vm.article.conteudo,
         categoria_id: vm.article.categoria_artigo_id,
         imagens: vm.imagens,
-        tags: vm.tags
+        tags: vm.tags,
+        archives: vm.article.files,
+        passwords: vm.article.passwords,
+        computers: vm.article.computers,
+        equipments: vm.article.equipments
       }).then(function (response) {
         var stored = response.data.stored;
         var message = response.data.message;
@@ -2988,6 +3098,17 @@ __webpack_require__.r(__webpack_exports__);
     Editor: _tinymce_tinymce_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   mounted: function mounted() {
+    var init = [];
+
+    if (this.update) {
+      this.article = this.articleupdate;
+      this.article.tags.forEach(function (element) {
+        init.push({
+          tag: element
+        });
+      });
+    }
+
     var dados = {};
     this.all_tags.forEach(function (element) {
       dados[element.nome] = null;
@@ -2995,6 +3116,7 @@ __webpack_require__.r(__webpack_exports__);
     var elems = document.querySelectorAll('.chips');
     this.instance = M.Chips.init(elems, {
       placeholder: 'Tag...',
+      data: init,
       autocompleteOptions: {
         data: dados,
         limit: 5,
@@ -3003,8 +3125,8 @@ __webpack_require__.r(__webpack_exports__);
     });
     this.load_files();
     this.load_passwords();
-    this.load_computers();
     this.load_equipments();
+    this.load_computers();
   }
 });
 
@@ -30990,7 +31112,25 @@ var render = function() {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            _vm._m(1, true)
+            _c("div", { staticClass: "secondary-content" }, [
+              _c(
+                "a",
+                { attrs: { href: "artigos/atualizar/" + article.id_artigo } },
+                [
+                  _c("i", { staticClass: "material-icons green-text" }, [
+                    _vm._v("edit")
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _vm.user_id == article.usuario_autor_id
+                ? _c("a", { attrs: { href: "#" } }, [
+                    _c("i", { staticClass: "material-icons red-text" }, [
+                      _vm._v("delete")
+                    ])
+                  ])
+                : _vm._e()
+            ])
           ],
           2
         )
@@ -31018,20 +31158,6 @@ var staticRenderFns = [
         },
         [_c("i", { staticClass: "large material-icons" }, [_vm._v("add")])]
       )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "secondary-content" }, [
-      _c("a", { attrs: { href: "#" } }, [
-        _c("i", { staticClass: "material-icons green-text" }, [_vm._v("edit")])
-      ]),
-      _vm._v(" "),
-      _c("a", { attrs: { href: "#" } }, [
-        _c("i", { staticClass: "material-icons red-text" }, [_vm._v("delete")])
-      ])
     ])
   }
 ]
@@ -31255,15 +31381,29 @@ var render = function() {
               return _c("div", { key: index }, [
                 file.check
                   ? _c("div", [
-                      _c("img", {
-                        staticClass: "icon_files",
-                        attrs: { src: "../" + file.img_ext }
-                      }),
-                      _c("b", [
-                        _c("span", { staticClass: "text_files" }, [
-                          _vm._v(_vm._s(file.nome))
-                        ])
-                      ]),
+                      _vm.update
+                        ? _c("div", [
+                            _c("img", {
+                              staticClass: "icon_files",
+                              attrs: { src: "../../" + file.img_ext }
+                            }),
+                            _c("b", [
+                              _c("span", { staticClass: "text_files" }, [
+                                _vm._v(_vm._s(file.nome))
+                              ])
+                            ])
+                          ])
+                        : _c("div", [
+                            _c("img", {
+                              staticClass: "icon_files",
+                              attrs: { src: "../" + file.img_ext }
+                            }),
+                            _c("b", [
+                              _c("span", { staticClass: "text_files" }, [
+                                _vm._v(_vm._s(file.nome))
+                              ])
+                            ])
+                          ]),
                       _vm._v(" "),
                       _c("p", [
                         _c("b", [_vm._v("Categoria: ")]),
@@ -31497,15 +31637,25 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("td", [
-                    _c("img", {
-                      staticClass: "icon_files",
-                      attrs: { src: "../" + file.img_ext }
-                    }),
-                    _c("span", { staticClass: "text_files" }, [
-                      _c("b", [_vm._v(_vm._s(file.nome))])
-                    ])
-                  ]),
+                  _vm.update
+                    ? _c("td", [
+                        _c("img", {
+                          staticClass: "icon_files",
+                          attrs: { src: "../../" + file.img_ext }
+                        }),
+                        _c("span", { staticClass: "text_files" }, [
+                          _c("b", [_vm._v(_vm._s(file.nome))])
+                        ])
+                      ])
+                    : _c("td", [
+                        _c("img", {
+                          staticClass: "icon_files",
+                          attrs: { src: "../" + file.img_ext }
+                        }),
+                        _c("span", { staticClass: "text_files" }, [
+                          _c("b", [_vm._v(_vm._s(file.nome))])
+                        ])
+                      ]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(file.categoria))]),
                   _vm._v(" "),
@@ -31887,8 +32037,6 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "input-field col s12" }, [
-      _c("p", { staticClass: "grey-text" }, [_vm._v("Tags:")]),
-      _vm._v(" "),
       _c("div", { staticClass: "chips chips-autocomplete" })
     ])
   },
