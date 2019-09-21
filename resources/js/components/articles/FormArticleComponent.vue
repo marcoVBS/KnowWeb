@@ -56,7 +56,7 @@
                         <i class="material-icons right">clear</i>
                     </button>
 
-                    <a href="../artigos" class="btn">Cancelar</a>
+                    <a href="../artigos" class="btn">Voltar</a>
 
                 </div>
                 
@@ -89,10 +89,9 @@
                     <div class="collapsible-body">
                         <div v-for="(file, index) in files" :key="index">
                             <div v-if="file.check">
-                                <div v-if="update"><img :src="'../../'+file.img_ext" class="icon_files"><b><span class="text_files">{{file.nome}}</span></b></div>
-                                <div v-else><img :src="'../'+file.img_ext" class="icon_files"><b><span class="text_files">{{file.nome}}</span></b></div>
-                                <p><b>Categoria: </b>{{file.categoria}}</p>
-                                <p><b>Tamanho: </b>{{file.tamanho}}</p>
+                                <div><img :src="'../'+file.img_ext" class="icon_files"><b><span class="text_files">{{file.nome}}</span></b></div>
+                                <p><b>Categoria: </b>{{file.categoria}}<br>
+                                <b>Tamanho: </b>{{file.tamanho}}</p>
                                 <div class="divider"></div><br>
                             </div>
                         </div>
@@ -103,8 +102,8 @@
                     <div class="collapsible-body">
                         <div v-for="(pass, index) in passwords" :key="index">
                             <div v-if="pass.check">
-                                <p><b>Descrição: </b>{{pass.descricao}}</p>
-                                <p><b>Login: </b>{{pass.login}}</p>
+                                <p><b>Descrição: </b>{{pass.descricao}}<br>
+                                <b>Login: </b>{{pass.login}}</p>
                                 <p v-if="pass.equipamento"><b>Equipamento: </b>{{pass.equipamento.descricao}}</p>
                                 <div class="divider"></div><br>
                             </div>
@@ -116,11 +115,11 @@
                     <div class="collapsible-body">
                         <div v-for="(pc, index) in computers" :key="index">
                             <div v-if="pc.check">
-                                <p><b>Placa-mãe: </b>{{pc.placa_mae}}</p>
-                                <p><b>Processador: </b>{{pc.processador}}</p>
-                                <p><b>RAM: </b>{{pc.memoria_ram}}</p>
-                                <p><b>Setor: </b>{{pc.setor}}</p>
-                                <p><b>Identificador: </b>{{pc.identificador_computador}}</p>
+                                <p><b>Placa-mãe: </b>{{pc.placa_mae}}<br>
+                                <b>Processador: </b>{{pc.processador}}<br>
+                                <b>RAM: </b>{{pc.memoria_ram}}<br>
+                                <b>Setor: </b>{{pc.setor}}<br>
+                                <b>Identificador: </b>{{pc.identificador_computador}}</p>
                                 <div class="divider"></div><br>
                             </div>
                         </div>
@@ -131,8 +130,8 @@
                     <div class="collapsible-body">
                         <div v-for="(equip, index) in equipments" :key="index">
                             <div v-if="equip.check">
-                                <p><b>Descrição: </b>{{equip.descricao}}</p>
-                                <p><b>Categoria: </b>{{equip.categoria}}</p>
+                                <p><b>Descrição: </b>{{equip.descricao}}<br>
+                                <b>Categoria: </b>{{equip.categoria}}</p>
                                 <div class="divider"></div><br>
                             </div>
                         </div>
@@ -170,10 +169,7 @@
                                 </label>
                             </p>
                         </td>
-                        <td v-if="update">
-                            <img :src="'../../'+file.img_ext" class="icon_files"><span class="text_files"><b>{{file.nome}}</b></span>
-                        </td>
-                        <td v-else>
+                        <td>
                             <img :src="'../'+file.img_ext" class="icon_files"><span class="text_files"><b>{{file.nome}}</b></span>
                         </td>
                         <td>{{file.categoria}}</td>
@@ -393,96 +389,76 @@ export default {
     methods: {
         load_files(){
             let vm = this
-            
-            let route = ''
-            if(this.update){
-                route = "../../arquivos/all"
-            }else{
-                route = "../arquivos/all"
-            }
-                        
-            axios.get(route)
+           
+            axios.get('../arquivos/all')
             .then(function(response){
                 vm.files = response.data.files
                 if(vm.update){
-                    vm.files.map(function(e){
-                        if(vm.article.files_id.indexOf(e.id_arquivo) > -1){
-                            e.check = true
-                        }
-                    })
+                    if(vm.article.files_id){
+                        vm.files.map(function(e){
+                            if(vm.article.files_id.indexOf(e.id_arquivo) > -1){
+                                e.check = true
+                            }
+                        })
+                    }
                 }
             })
         },
         load_passwords(){
             let vm = this
-
-            let route = ''
-            if(this.update){
-                route = "../../senhas/all"
-            }else{
-                route = "../senhas/all"
-            }
-                        
-            axios.get(route)
+       
+            axios.get("../senhas/all")
             .then(function(response){
                 vm.passwords = response.data.passwords
                 if(vm.update){
-                     vm.passwords.map(function(e){
-                        if(vm.article.passwords_id.indexOf(e.id_senha) > -1){
-                            e.check = true
-                        }
-                    })
+                    if(vm.article.passwords_id){
+                        vm.passwords.map(function(e){
+                           if(vm.article.passwords_id.indexOf(e.id_senha) > -1){
+                               e.check = true
+                           }
+                       })
+                    }
                 }
             })
         },
         load_computers(){
             let vm = this
 
-            let route = ''
-            if(this.update){
-                route = "../../computadores/all"
-            }else{
-                route = "../computadores/all"
-            }
-                        
-            axios.get(route)
+            axios.get('../computadores/all')
             .then(function(response){
                 vm.computers = response.data.computers
                 if(vm.update){
-                     vm.computers.map(function(e){
-                        if(vm.article.computers_id.indexOf(e.id_computador) > -1){
-                            e.check = true
-                        }
-                    })
+                    if(vm.article.computers_id){
+                        vm.computers.map(function(e){
+                           if(vm.article.computers_id.indexOf(e.id_computador) > -1){
+                               e.check = true
+                           }
+                       })
+                    }
                 }
             })
         },
         load_equipments(){
             let vm = this
-
-            let route = ''
-            if(this.update){
-                route = "../../equipamentos/all"
-            }else{
-                route = "../equipamentos/all"
-            } 
-                        
-            axios.get(route)
+       
+            axios.get("../equipamentos/all")
             .then(function(response){
                 vm.equipments = response.data.equipments
                 if(vm.update){
-                    vm.equipments.map(function(e){
-                        if(vm.article.equipments_id.indexOf(e.id_equipamento) > -1){
-                            e.check = true
-                        }
-                    })
+                    if(vm.article.equipments_id){
+                        vm.equipments.map(function(e){
+                            if(vm.article.equipments_id.indexOf(e.id_equipamento) > -1){
+                                e.check = true
+                            }
+                        })
+                    }
                 }
             })
         },
         onSubmit(){
             this.change_assocs()
-            if(update){
-                
+            if(this.update){
+                this.updateArticle()
             }else{
                 this.createArticle()
             }
@@ -522,14 +498,8 @@ export default {
             formData.append('file', blobInfo.blob(), blobInfo.filename());
 
             let vm = this
-            let route = ''
-            if(this.update){
-                route = '../novo/imagem/upload'
-            }else{
-                route = 'novo/imagem/upload'
-            }
 
-            axios.post(route, formData)
+            axios.post('novo/imagem/upload', formData)
             .then(function(response){
                 let path = response.data.path
                 let name = response.data.name
@@ -571,7 +541,40 @@ export default {
             .catch(function(error){
                 vm.$snotify.error('Falha ao cadastrar artigo!', 'Erro')
             })
-        }      
+        },
+        updateArticle(){
+            let vm = this
+
+            axios.put('update', {
+                id_artigo: vm.article.id_artigo,
+                titulo: vm.article.titulo,
+                descricao : vm.article.descricao,
+                conteudo: vm.article.conteudo,
+                categoria_id: vm.article.categoria_artigo_id,
+                imagens: vm.imagens,
+                tags: vm.tags,
+                archives: vm.article.files,
+                passwords: vm.article.passwords,
+                computers: vm.article.computers,
+                equipments: vm.article.equipments
+            })
+            .then(function(response){
+                let stored = response.data.stored
+                let message = response.data.message
+
+                if(stored == true){
+                    vm.$snotify.success(message, 'Sucesso')
+                    vm.tags = []
+                    vm.article.files = []
+                    vm.article.passwords = []
+                    vm.article.computers = []
+                    vm.article.equipments = []
+                }else{
+                    vm.$snotify.error(message, 'Erro')
+                }
+            })
+            .catch((error) => (vm.$snotify.error('Falha ao atualizar artigo', 'Erro')))
+        }   
     },
     components: {
         Editor
@@ -581,12 +584,19 @@ export default {
         let init = []
         if(this.update){
             this.article = this.articleupdate
+            this.article.files = []
+            this.article.passwords = []
+            this.article.computers = []
+            this.article.equipments = []
 
-            this.article.tags.forEach(element => {
-                init.push({
-                    tag: element
+            if(this.article.tags){
+                this.article.tags.forEach(element => {
+                    init.push({
+                        tag: element
+                    })
                 })
-            })
+                this.tags = []
+            }
         }
 
         let dados = {}
@@ -613,7 +623,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .icon_files{
     width: 20px;
 }

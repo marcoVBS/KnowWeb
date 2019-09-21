@@ -1,0 +1,107 @@
+<template>
+    <div>
+        <h4 class="header green-text">{{ article.titulo }}</h4><div class="divider"></div>
+        <div class="col s12">
+            <p style="font-size: 1.4em;"><b>Descrição: </b> {{ article.descricao }}</p>
+            <p>
+                <b>Categoria:</b> {{ article.categoria }} <br>
+                <b>Autor:</b> {{ article.autor }} - {{ article.created_at }} <br>
+                <span class="black-text" v-if="article.atualizador"><b>Última atualização:</b> por {{ article.atualizador }} - {{ article.updated_at }} </span>
+            </p>
+            <b>Tags: </b><div v-for="(tag, index) in article.tags" :key="index" class="chip"> {{ tag }} </div>
+
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header green-text darken-4"><i class="material-icons">link</i>Associações</div>
+                    <div class="collapsible-body">
+
+                        <div class="row" v-if="article.arquivos">
+                            <p><b>Arquivos:</b></p>
+                            <div class="col s12 m4" v-for="(file, index) in article.arquivos" :key="index">
+                                <div class="form-register view-assoc">
+                                    <a :href="`../arquivos/download/${file.id_arquivo}`"><img :src="'../'+file.img_ext" class="icon_files"><b><span class="text_files">{{file.nome}}</span></b></a>
+                                    <p><b>Categoria: </b>{{file.categoria}} <br>
+                                    <b>Tamanho: </b>{{file.tamanho}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row" v-if="article.senhas">
+                            <p><b>Senhas:</b></p>
+                            <div class="col s12 m6" v-for="(pass, index) in article.senhas" :key="index">
+                                <div class="form-register view-assoc">
+                                    <p><b>Descrição: </b>{{pass.descricao}} <br>
+                                    <b>Login: </b>{{pass.login}} <br>
+                                    <b>Senha:</b> 
+                                    <span v-if="show">{{ pass.senha }}</span>
+                                    <a v-else href="#" @click.prevent="showPass()">Exibir senha</a></p>
+
+                                    <p v-if="pass.equipamento"><b>Equipamento: </b>{{pass.equipamento.descricao}}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" v-if="article.computadores">
+                            <p><b>Computadores:</b></p>
+                            <div class="col s12 m4" v-for="(pc, index) in article.computadores" :key="index">
+                                <div class="form-register view-assoc">
+                                    <p><b>Placa-mãe: </b>{{pc.placa_mae}}<br>
+                                    <b>Processador: </b>{{pc.processador}}<br>
+                                    <b>RAM: </b>{{pc.memoria_ram}}<br>
+                                    <b>Setor: </b>{{pc.setor}}<br>
+                                    <b>Identificador: </b>{{pc.identificador_computador}}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" v-if="article.equipamentos">
+                            <p><b>Equipamentos:</b></p>
+                            <div class="col s12 m6" v-for="(equip, index) in article.equipamentos" :key="index">
+                                <div class="form-register view-assoc">
+                                    <p><b>Descrição: </b>{{equip.descricao}}<br>
+                                    <b>Categoria: </b>{{equip.categoria}}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </li>
+            </ul>
+
+            <editor name="descricao" api-key="k9nq1pz5sirugp247sm9bg2tb42ks18ttmcxjxni7iknoisv" 
+                :init="{language: 'pt_BR', language_url: '/KnowWeb/public/js/tiny_pt_BR.js', 
+                    menubar: false, toolbar: 'fullscreen preview print'}"
+                :initial-value="article.conteudo" plugins="autoresize fullscreen preview print">
+            </editor><br>
+                    
+            <a href="../artigos" class="btn"><i class="material-icons left">keyboard_return</i>Voltar</a>
+            <a :href="`../artigos/atualizar${article.id_artigo}`" class="btn green"><i class="material-icons left">edit</i>Editar</a>
+            
+        </div>
+    </div>
+</template>
+
+<script>
+import Editor from '@tinymce/tinymce-vue';
+
+export default {
+    props: ['article'],
+    data() {
+        return {
+            show: false
+        }
+    },
+    methods: {
+        showPass(){
+            this.show = true
+        }
+    },
+    components: {
+        Editor
+    },
+}
+</script>
+
+<style scoped>
+    .view-assoc{padding-left: 1em;}
+</style>

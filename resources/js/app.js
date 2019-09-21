@@ -20,6 +20,7 @@ Vue.component('form-helpdesk-component', require('./components/helpdesk/FormHelp
 Vue.component('helpdesks-component', require('./components/helpdesk/HelpDesksComponent.vue').default);
 Vue.component('helpdesk-component', require('./components/helpdesk/HelpDeskComponent.vue').default);
 Vue.component('articles-component', require('./components/articles/ArticlesComponent.vue').default);
+Vue.component('article-component', require('./components/articles/ArticleComponent.vue').default);
 Vue.component('form-article-component', require('./components/articles/FormArticleComponent.vue').default);
 Vue.component('categorie-helpdesk-component', require('./components/categories/CategorieHelpDeskComponent.vue').default);
 Vue.component('categorie-archive-component', require('./components/categories/CategorieArchiveComponent.vue').default);
