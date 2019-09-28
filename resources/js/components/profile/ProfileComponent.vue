@@ -48,12 +48,12 @@
                         </div>
                         
                         <div class="input-field col s12 m6">
-                            <vue-mask id="telefone" type="text" mask="(00) 00000-0000" v-model="user_logged.telefone" class="validate" required></vue-mask>
+                            <vue-mask id="telefone" type="text" mask="(00) 00000-0000" :raw="false" v-model="user_logged.telefone" class="validate" required></vue-mask>
                             <label for="telefone">Telefone</label>
                         </div>
 
                         <div class="input-field col s12 m6">
-                            <vue-mask id="cpf" type="text" mask="000.000.000-00" v-model="user_logged.cpf" class="validate" disabled></vue-mask>
+                            <vue-mask id="cpf" type="text" mask="000.000.000-00" :raw="false" v-model="user_logged.cpf" class="validate" disabled></vue-mask>
                             <label for="cpf">CPF</label>
                         </div>
                    

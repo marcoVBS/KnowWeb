@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <div class="fixed-action-btn">
             <a class="btn-floating tooltipped btn-large teal darken-3 modal-trigger" href="artigos/novo" data-position="left" data-tooltip="Novo!">
                 <i class="large material-icons">add</i>

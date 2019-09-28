@@ -126,3 +126,10 @@ Route::get('/perfil', 'User\ProfileController@index')->name('profile');
 Route::post('/perfil/updateImage', 'User\ProfileController@updateImage');
 Route::put('/perfil/updateProfile', 'User\ProfileController@updateProfile');
 Route::put('/perfil/updatePassword', 'User\ProfileController@updatePassword');
+
+//GESTÃO DE USUÁRIO E PERMIÇÕES DE ACESSO
+Route::get('/usuarios', 'User\UsersController@index')->name('users');
+Route::get('/usuarios/all', 'User\UsersController@getUsers');
+Route::post('/usuarios/create', 'User\UsersController@create');
+Route::delete('/usuarios/delete/{id}', 'User\UsersController@delete');
+Route::put('/usuarios/update', 'User\UsersController@update');

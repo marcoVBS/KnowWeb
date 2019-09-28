@@ -34,6 +34,7 @@ Vue.component('form-computer-component', require('./components/computers/FormCom
 Vue.component('computers-component', require('./components/computers/ComputersComponent.vue').default);
 Vue.component('passwords-component', require('./components/passwords/PasswordsComponent.vue').default);
 Vue.component('profile-component', require('./components/profile/ProfileComponent.vue').default);
+Vue.component('users-component', require('./components/users/UsersComponent.vue').default);
 
 
 const app = new Vue({

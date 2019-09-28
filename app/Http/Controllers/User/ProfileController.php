@@ -57,10 +57,12 @@ class ProfileController extends Controller
         $user->nome = $request->nome;
         $verifica_email = User::where('email', $request->email)->get();
         if(count($verifica_email) > 0){
-            return response()->json([
-                'message' => "O email informado já existe no sistema!",
-                'stored' => false
-            ]);
+            if($verifica_email[0]->id_usuario !== $request->id_usuario){
+                return response()->json([
+                    'message' => "O email informado já existe no sistema!",
+                    'stored' => false
+                ]);
+            }
         }
         $user->email = $request->email;
         $user->telefone = $request->telefone;
