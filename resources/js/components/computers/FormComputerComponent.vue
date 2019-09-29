@@ -96,11 +96,11 @@
                         <label for="hd" v-bind:class="{active: updateComputer}">Unidade de armazenamento</label>
                     </div>
                     <div class="input-field col s12 m4">
-                        <vue-mask id="mac_ethernet" type="text" mask="AA:AA:AA:AA:AA:AA" v-model="computer.mac_ethernet" class="validate"></vue-mask>
+                        <vue-mask id="mac_ethernet" type="text" mask="AA:AA:AA:AA:AA:AA" :raw="false" v-model="computer.mac_ethernet" class="validate"></vue-mask>
                         <label for="mac_ethernet" v-bind:class="{active: updateComputer}">Mac Ethernet</label>
                     </div>
                     <div class="input-field col s12 m4">
-                        <vue-mask id="mac_wireless" type="text" mask="AA:AA:AA:AA:AA:AA" v-model="computer.mac_wireless" class="validate"></vue-mask>
+                        <vue-mask id="mac_wireless" type="text" mask="AA:AA:AA:AA:AA:AA" :raw="false" v-model="computer.mac_wireless" class="validate"></vue-mask>
                         <label for="mac_wireless" v-bind:class="{active: updateComputer}">Mac Wireless</label>
                     </div>
                     <div class="input-field col s12 m4">
@@ -136,7 +136,7 @@
                     </div>
 
                     <div class="row">   
-                        <button class="btn waves-effect waves-light green" type="submit">Enviar
+                        <button class="btn waves-effect waves-light green" type="submit">Salvar
                             <i class="material-icons right">send</i>
                         </button>
 

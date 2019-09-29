@@ -8,5 +8,8 @@ class ComputerArticle extends Model
 {
     protected $table = 'tb_artigo_computador';
     protected $primaryKey = 'id_artigo_computador';
-    public $timestamps = false;
+    protected $casts = [
+        'created_at' => 'datetime:d/m/Y H:i',
+        'updated_at' => 'datetime:d/m/Y H:i'
+    ];
 }

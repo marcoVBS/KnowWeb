@@ -105,6 +105,7 @@ Route::get('/computadores/all', 'Computer\ComputerController@getComputers');
 Route::delete('/computadores/delete/{id}', 'Computer\ComputerController@delete');
 Route::get('/computadores/atualizar/{id}', 'Computer\ComputerController@change');
 Route::put('/computadores/atualizar/update', 'Computer\ComputerController@update');
+Route::get('/computadores/{id}', 'Computer\ComputerController@view');
 
 //Sistemas operacionais
 Route::post('/computadores/so/create', 'Computer\OperationalSystemController@create');

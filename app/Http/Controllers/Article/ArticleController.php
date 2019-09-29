@@ -106,7 +106,7 @@ class ArticleController extends Controller
         $computers = ComputerArticle::where('artigo_id', $id)->get();
         if(count($computers) > 0){
             foreach ($computers as $pc) {
-                $pcs_id[] = $pc->computador_id;
+                $pcs_id[] = ['id' => $pc->computador_id, 'count' => $pc->contador];
             }
             $article->computers_id = $pcs_id;
         }
@@ -192,7 +192,8 @@ class ArticleController extends Controller
                 foreach ($request->computers as $pc) {
                     $pc_article = new ComputerArticle();
                     $pc_article->artigo_id = $article->id_artigo;
-                    $pc_article->computador_id = $pc;
+                    $pc_article->computador_id = $pc['id'];
+                    $pc_article->contador = $pc['count'];
                     $pc_article->save();
                 }
             }
@@ -305,7 +306,8 @@ class ArticleController extends Controller
                 foreach ($request->computers as $pc) {
                     $pc_article = new ComputerArticle();
                     $pc_article->artigo_id = $request->id_artigo;
-                    $pc_article->computador_id = $pc;
+                    $pc_article->computador_id = $pc['id'];
+                    $pc_article->contador = $pc['count'];
                     $pc_article->save();
                 }
             }

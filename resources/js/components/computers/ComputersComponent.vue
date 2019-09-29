@@ -37,7 +37,7 @@
                         <td> {{pc.setor}} </td>
                         <td class="row">
                                 <a :href="`computadores/atualizar/${pc.id_computador}`"><i class="material-icons">edit</i></a>
-                                <a href="#" class="green-text"><i class="material-icons">remove_red_eye</i></a>
+                                <a :href="`computadores/${pc.id_computador}`" class="green-text"><i class="material-icons">remove_red_eye</i></a>
                                 <a class="red-text" href="#" @click.prevent="confirmDelete(pc.id_computador)"><i class="material-icons">delete</i></a>
                         </td>
                         </tr>

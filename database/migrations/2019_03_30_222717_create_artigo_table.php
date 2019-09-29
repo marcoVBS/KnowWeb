@@ -72,6 +72,8 @@ class CreateArtigoTable extends Migration
             $table->integer('computador_id')->unsigned();
             $table->foreign('computador_id')->references('id_computador')->on('tb_computador')
                 ->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('contador');
+            $table->timestamps();
         });
 
         Schema::dropIfExists('tb_artigo_arquivo');

@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Computer;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Article\Article;
+use App\Models\Article\ComputerArticle;
 use App\Models\Computer\Computer;
 use App\Models\Sector\Setor;
 use App\Models\Computer\OperationalSystem;
+use App\User;
 
 class ComputerController extends Controller
 {
@@ -25,6 +28,23 @@ class ComputerController extends Controller
         $sectors = Setor::all();
         $sos = OperationalSystem::all();
         return view('computer.formcomputer', ['update' => json_encode(false), 'sos' => json_encode($sos),'setores' => json_encode($sectors)]);
+    }
+
+    public function view(Request $request){
+        $computer = Computer::find($request->id);
+        $computer->setor = Setor::find($computer->setor_id)->nome;
+        $computer->so = OperationalSystem::find($computer->sistema_operacional_id);
+
+        $articles_computers = ComputerArticle::where('computador_id', $request->id)->get();
+        $assocs = [];
+        foreach ($articles_computers as $item) {
+            $article = Article::where('id_artigo', $item->artigo_id)->get();
+            $article[0]->autor = User::find($article[0]->usuario_autor_id)->nome;
+            $article[0]->contador = $item->contador;
+            $assocs[] = $article[0];
+        }
+
+        return view('computer.computer', ['computer'=> json_encode($computer), 'articles' => json_encode($assocs)]);
     }
 
     public function change($id)
@@ -54,8 +74,8 @@ class ComputerController extends Controller
         $computer->processador = $request->processador;
         $computer->memoria_ram = $request->memoria_ram;
         $computer->unidade_armazenamento = $request->unidade_armazenamento;
-        $computer->mac_ethernet = $request->mac_ethernet;
-        $computer->mac_wireless = $request->mac_wireless;
+        $computer->mac_ethernet = strtoupper($request->mac_ethernet);
+        $computer->mac_wireless = strtoupper($request->mac_wireless);
         $computer->senha_usuario_adm = $request->senha_usuario_adm;
         $computer->nome_computador = $request->nome_computador;
         $computer->identificador_computador = $request->identificador_computador;
@@ -83,8 +103,8 @@ class ComputerController extends Controller
         $computer->processador = $request->processador;
         $computer->memoria_ram = $request->memoria_ram;
         $computer->unidade_armazenamento = $request->unidade_armazenamento;
-        $computer->mac_ethernet = $request->mac_ethernet;
-        $computer->mac_wireless = $request->mac_wireless;
+        $computer->mac_ethernet = strtoupper($request->mac_ethernet);
+        $computer->mac_wireless = strtoupper($request->mac_wireless);
         $computer->senha_usuario_adm = $request->senha_usuario_adm;
         $computer->nome_computador = $request->nome_computador;
         $computer->identificador_computador = $request->identificador_computador;

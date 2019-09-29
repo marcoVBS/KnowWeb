@@ -7,7 +7,7 @@
         </div>
 
         <div class="col s12 m5">
-            <h4 class="header grey-text center-align"><i class="material-icons">library_books</i> Artigos</h4>
+            <h4 class="header grey-text center-align"><i class="small material-icons">library_books</i> Artigos</h4>
         </div>
 
         <div class="input-field col s12 m7">

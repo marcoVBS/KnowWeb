@@ -119,7 +119,8 @@
                                 <b>Processador: </b>{{pc.processador}}<br>
                                 <b>RAM: </b>{{pc.memoria_ram}}<br>
                                 <b>Setor: </b>{{pc.setor}}<br>
-                                <b>Identificador: </b>{{pc.identificador_computador}}</p>
+                                <b>Identificador: </b>{{pc.identificador_computador}}<br>
+                                <b>Ocorrências: </b>{{pc.count}}</p>
                                 <div class="divider"></div><br>
                             </div>
                         </div>
@@ -179,7 +180,7 @@
             </table>
             </div>
             <div class="modal-footer">
-                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Concluir</a>
+                <a href="#" class="modal-close waves-effect waves-green btn-flat">Concluir</a>
             </div>
         </div>
 
@@ -220,7 +221,7 @@
             </table>
             </div>
             <div class="modal-footer">
-                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Concluir</a>
+                <a href="#" class="modal-close waves-effect waves-green btn-flat">Concluir</a>
             </div>
         </div>
 
@@ -241,6 +242,7 @@
                         <th>RAM</th>
                         <th>Identificador</th>
                         <th>Setor</th>
+                        <th>Ocorrências</th>
                     </tr>
                 </thead>
 
@@ -259,12 +261,13 @@
                         <td> {{pc.memoria_ram}} </td>
                         <td> {{pc.identificador_computador}} </td>
                         <td> {{pc.setor}} </td>
+                        <td v-if="pc.check"><input style="width: 2.5em;" type="number" v-model="pc.count"></td>
                     </tr>
                 </tbody>
             </table>
             </div>
             <div class="modal-footer">
-                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Concluir</a>
+                <a href="#" class="modal-close waves-effect waves-green btn-flat">Concluir</a>
             </div>
         </div>
 
@@ -302,7 +305,7 @@
             </table>
             </div>
             <div class="modal-footer">
-                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Concluir</a>
+                <a href="#" class="modal-close waves-effect waves-green btn-flat">Concluir</a>
             </div>
         </div>
 
@@ -429,10 +432,17 @@ export default {
                 vm.computers = response.data.computers
                 if(vm.update){
                     if(vm.article.computers_id){
+                        let ids = vm.article.computers_id.map(function(e){
+                            return e.id
+                        })
+
                         vm.computers.map(function(e){
-                           if(vm.article.computers_id.indexOf(e.id_computador) > -1){
-                               e.check = true
-                           }
+                            let index = ids.indexOf(e.id_computador)
+
+                            if(index > -1){
+                                e.check = true
+                                e.count = vm.article.computers_id[index].count
+                            }
                        })
                     }
                 }
@@ -482,7 +492,11 @@ export default {
 
             this.computers.forEach(element => {
                 if(element.check){
-                    this.article.computers.push(element.id_computador)
+                    if(element.count){
+                        this.article.computers.push({'id' : element.id_computador, 'count': element.count})
+                    }else{
+                        this.article.computers.push({'id' : element.id_computador, 'count': 1})
+                    }
                 }
             });
 
