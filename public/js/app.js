@@ -2556,6 +2556,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['article'],
@@ -5130,6 +5152,49 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user_id', 'helpdesk'],
@@ -5138,8 +5203,26 @@ __webpack_require__.r(__webpack_exports__);
       respostas: [],
       resposta: '',
       imagens: [],
-      arquivos: []
+      arquivos: [],
+      artigos: [],
+      serach_query_article: ''
     };
+  },
+  computed: {
+    articlesData: function articlesData() {
+      var filterKey = this.serach_query_article && this.serach_query_article.toLowerCase();
+      var dataFilter = this.artigos;
+
+      if (filterKey) {
+        dataFilter = dataFilter.filter(function (row) {
+          return Object.keys(row).some(function (key) {
+            return String(row[key]).toLowerCase().indexOf(filterKey) > -1;
+          });
+        });
+      }
+
+      return dataFilter;
+    }
   },
   methods: {
     onSubmit: function onSubmit() {
@@ -5160,6 +5243,54 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).catch(function (error) {
         vm.$snotify.error('Falha ao alterar prioridade!', 'Erro');
+      });
+    },
+    confirmAssoc: function confirmAssoc() {
+      var vm = this;
+      vm.$snotify.confirm('Deseja associar algum artigo a este atendimento?', 'Associar!', {
+        timeout: false,
+        position: 'centerCenter',
+        buttons: [{
+          text: 'Sim',
+          action: function action(toast) {
+            vm.$snotify.remove(toast.id);
+            $('#modal_articles').modal('open');
+          }
+        }, {
+          text: 'Não',
+          action: function action(toast) {
+            vm.changeStatus('Finalizado');
+            vm.$snotify.remove(toast.id);
+          }
+        }, {
+          text: 'Cancelar',
+          action: function action(toast) {
+            return vm.$snotify.remove(toast.id);
+          }
+        }]
+      });
+    },
+    saveAssocs: function saveAssocs() {
+      var assocs = [];
+      var vm = this;
+      this.artigos.forEach(function (element) {
+        if (element.check) {
+          assocs.push(element.id_artigo);
+        }
+      });
+      axios.post('artigos', {
+        id_atendimento: vm.helpdesk.id_atendimento,
+        artigos: assocs
+      }).then(function (response) {
+        var stored = response.data.success;
+
+        if (stored == true) {
+          vm.changeStatus('Finalizado');
+        } else {
+          vm.$snotify.error('Falha ao alterar prioridade!', 'Erro');
+        }
+      }).catch(function (error) {
+        vm.$snotify.error('Falha ao associar artigos!', 'Erro');
       });
     },
     changeStatus: function changeStatus(status) {
@@ -5268,6 +5399,7 @@ __webpack_require__.r(__webpack_exports__);
           if (upload) {
             $('.modal').modal('close');
             vm.$snotify.success('Sua resposta foi enviada com sucesso!', 'Sucesso');
+            vm.getResponses();
           }
         } else {
           vm.$snotify.error('Falha ao enviar resposta!', 'Erro');
@@ -5279,7 +5411,6 @@ __webpack_require__.r(__webpack_exports__);
         $('#form_response').each(function () {
           this.reset();
         });
-        vm.getResponses();
       });
     },
     getResponses: function getResponses() {
@@ -5291,10 +5422,21 @@ __webpack_require__.r(__webpack_exports__);
           vm.respostas = responses;
         }
       });
+    },
+    getArticles: function getArticles() {
+      var vm = this;
+      axios.get('../artigos/all').then(function (response) {
+        var articles = response.data.articles;
+
+        if (articles) {
+          vm.artigos = articles;
+        }
+      });
     }
   },
   mounted: function mounted() {
     this.getResponses();
+    this.getArticles();
   },
   components: {
     Editor: _tinymce_tinymce_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -6540,7 +6682,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.view-assoc[data-v-2a4ea61e]{padding-left: 1em;}\n", ""]);
+exports.push([module.i, "\n.view-assoc[data-v-2a4ea61e]{padding-left: 1em;}\n.img-user[data-v-2a4ea61e]{ width: 4em; margin-right: 1em;}\n", ""]);
 
 // exports
 
@@ -31768,10 +31910,27 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("h4", { staticClass: "header green-text" }, [
-      _vm._v(_vm._s(_vm.article.titulo))
-    ]),
-    _c("div", { staticClass: "divider" }),
+    _vm.article.autor_foto
+      ? _c("div", [
+          _c("img", {
+            staticClass: "circle img-user left",
+            attrs: { src: _vm.article.autor_foto, alt: "imagem_usuario" }
+          }),
+          _c("h4", { staticClass: "header green-text" }, [
+            _vm._v(_vm._s(_vm.article.titulo))
+          ]),
+          _c("div", { staticClass: "divider" })
+        ])
+      : _c("div", [
+          _c("img", {
+            staticClass: "circle img-user left",
+            attrs: { src: "img/app/usuario-icon.png", alt: "imagem_usuario" }
+          }),
+          _c("h4", { staticClass: "header green-text" }, [
+            _vm._v(_vm._s(_vm.article.titulo))
+          ]),
+          _c("div", { staticClass: "divider" })
+        ]),
     _vm._v(" "),
     _c(
       "div",
@@ -31811,24 +31970,74 @@ var render = function() {
             : _vm._e()
         ]),
         _vm._v(" "),
-        _c("b", [_vm._v("Tags: ")]),
-        _vm._l(_vm.article.tags, function(tag, index) {
-          return _c("div", { key: index, staticClass: "chip" }, [
-            _vm._v(" " + _vm._s(tag) + " ")
-          ])
-        }),
-        _vm._v(" "),
         _c("ul", { staticClass: "collapsible" }, [
           _c("li", [
             _vm._m(0),
             _vm._v(" "),
             _c("div", { staticClass: "collapsible-body" }, [
+              _vm.article.atendimentos
+                ? _c(
+                    "div",
+                    { staticClass: "row" },
+                    [
+                      _c("div", { staticClass: "divider" }),
+                      _vm._v(" "),
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _vm._l(_vm.article.atendimentos, function(
+                        helpdesk,
+                        index
+                      ) {
+                        return _c(
+                          "div",
+                          { key: index, staticClass: "col s12 m6" },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "form-register view-assoc" },
+                              [
+                                _c("p", [
+                                  _c("b", [_vm._v("Título: ")]),
+                                  _vm._v(_vm._s(helpdesk.titulo) + " "),
+                                  _c("br"),
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(helpdesk.autor) +
+                                      " - " +
+                                      _vm._s(helpdesk.created_at)
+                                  ),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c(
+                                    "a",
+                                    {
+                                      attrs: {
+                                        href:
+                                          "../atendimento/" +
+                                          helpdesk.id_atendimento
+                                      }
+                                    },
+                                    [_vm._v("Visualizar")]
+                                  )
+                                ])
+                              ]
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _vm.article.arquivos
                 ? _c(
                     "div",
                     { staticClass: "row" },
                     [
-                      _vm._m(1),
+                      _c("div", { staticClass: "divider" }),
+                      _vm._v(" "),
+                      _vm._m(2),
                       _vm._v(" "),
                       _vm._l(_vm.article.arquivos, function(file, index) {
                         return _c(
@@ -31886,7 +32095,9 @@ var render = function() {
                     "div",
                     { staticClass: "row" },
                     [
-                      _vm._m(2),
+                      _c("div", { staticClass: "divider" }),
+                      _vm._v(" "),
+                      _vm._m(3),
                       _vm._v(" "),
                       _vm._l(_vm.article.senhas, function(pass, index) {
                         return _c(
@@ -31946,7 +32157,9 @@ var render = function() {
                     "div",
                     { staticClass: "row" },
                     [
-                      _vm._m(3),
+                      _c("div", { staticClass: "divider" }),
+                      _vm._v(" "),
+                      _vm._m(4),
                       _vm._v(" "),
                       _vm._l(_vm.article.computadores, function(pc, index) {
                         return _c(
@@ -31992,7 +32205,9 @@ var render = function() {
                     "div",
                     { staticClass: "row" },
                     [
-                      _vm._m(4),
+                      _c("div", { staticClass: "divider" }),
+                      _vm._v(" "),
+                      _vm._m(5),
                       _vm._v(" "),
                       _vm._l(_vm.article.equipamentos, function(equip, index) {
                         return _c(
@@ -32040,7 +32255,16 @@ var render = function() {
         }),
         _c("br"),
         _vm._v(" "),
-        _vm._m(5),
+        _c("b", [_vm._v("Tags: ")]),
+        _vm._l(_vm.article.tags, function(tag, index) {
+          return _c("div", { key: index, staticClass: "chip" }, [
+            _vm._v(" " + _vm._s(tag) + " ")
+          ])
+        }),
+        _c("div", { staticClass: "divider" }),
+        _c("br"),
+        _vm._v(" "),
+        _vm._m(6),
         _vm._v(" "),
         _c(
           "a",
@@ -32076,25 +32300,58 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", [_c("b", [_vm._v("Arquivos:")])])
+    return _c("p", [
+      _c("b", [
+        _c("i", { staticClass: "material-icons left" }, [
+          _vm._v("help_outline")
+        ]),
+        _vm._v(" Atendimentos:")
+      ])
+    ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", [_c("b", [_vm._v("Senhas:")])])
+    return _c("p", [
+      _c("b", [
+        _c("i", { staticClass: "material-icons left" }, [_vm._v("archive")]),
+        _vm._v(" Arquivos:")
+      ])
+    ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", [_c("b", [_vm._v("Computadores:")])])
+    return _c("p", [
+      _c("b", [
+        _c("i", { staticClass: "material-icons left" }, [_vm._v("security")]),
+        _vm._v(" Senhas:")
+      ])
+    ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", [_c("b", [_vm._v("Equipamentos:")])])
+    return _c("p", [
+      _c("b", [
+        _c("i", { staticClass: "material-icons left" }, [_vm._v("computer")]),
+        _vm._v(" Computadores:")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _c("b", [
+        _c("i", { staticClass: "material-icons left" }, [_vm._v("router")]),
+        _vm._v(" Equipamentos:")
+      ])
+    ])
   },
   function() {
     var _vm = this
@@ -36234,6 +36491,144 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c(
+      "div",
+      {
+        staticClass: "modal modal-fixed-footer",
+        attrs: { id: "modal_articles" }
+      },
+      [
+        _c("div", { staticClass: "modal-content" }, [
+          _c("h5", [_vm._v("Associar artigos")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-field col s12 m6 campo-busca" }, [
+            _c("i", { staticClass: "material-icons prefix" }, [
+              _vm._v("search")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.serach_query_article,
+                  expression: "serach_query_article"
+                }
+              ],
+              staticClass: "validate",
+              attrs: { id: "busca_pc", type: "text" },
+              domProps: { value: _vm.serach_query_article },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.serach_query_article = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "busca_pc" } }, [
+              _vm._v("Buscar artigos...")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("table", { staticClass: "highlight" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.articlesData, function(article, index) {
+                return _c("tr", { key: index }, [
+                  _c("td", [
+                    _c("p", [
+                      _c("label", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: article.check,
+                              expression: "article.check"
+                            }
+                          ],
+                          staticClass: "filled-in",
+                          attrs: { type: "checkbox" },
+                          domProps: {
+                            checked: Array.isArray(article.check)
+                              ? _vm._i(article.check, null) > -1
+                              : article.check
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$a = article.check,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = null,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 &&
+                                    _vm.$set(
+                                      article,
+                                      "check",
+                                      $$a.concat([$$v])
+                                    )
+                                } else {
+                                  $$i > -1 &&
+                                    _vm.$set(
+                                      article,
+                                      "check",
+                                      $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1))
+                                    )
+                                }
+                              } else {
+                                _vm.$set(article, "check", $$c)
+                              }
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("span")
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(" " + _vm._s(article.titulo) + " ")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(" " + _vm._s(article.categoria) + " ")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(" " + _vm._s(article.autor) + " ")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(" " + _vm._s(article.created_at) + " ")])
+                ])
+              }),
+              0
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "modal-footer" }, [
+          _c(
+            "a",
+            {
+              staticClass: "modal-close waves-effect waves-green btn-flat",
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.saveAssocs()
+                }
+              }
+            },
+            [_vm._v("Concluir")]
+          )
+        ])
+      ]
+    ),
+    _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col s12" }, [
         _c(
@@ -36464,9 +36859,11 @@ var render = function() {
                             {
                               staticClass:
                                 "waves-effect waves-light green btn secondary-content",
+                              attrs: { href: "#" },
                               on: {
                                 click: function($event) {
-                                  return _vm.changeStatus("Finalizado")
+                                  $event.preventDefault()
+                                  return _vm.confirmAssoc($event)
                                 }
                               }
                             },
@@ -36593,9 +36990,9 @@ var render = function() {
               )
             }),
             _vm._v(" "),
-            _vm._m(0),
-            _vm._v(" "),
             _vm._m(1),
+            _vm._v(" "),
+            _vm._m(2),
             _vm._v(" "),
             _c(
               "div",
@@ -36677,11 +37074,11 @@ var render = function() {
                             })
                           ]),
                           _vm._v(" "),
-                          _vm._m(2)
+                          _vm._m(3)
                         ]
                       ),
                       _vm._v(" "),
-                      _vm._m(3)
+                      _vm._m(4)
                     ])
                   ]
                 )
@@ -36695,6 +37092,24 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th"),
+        _vm._v(" "),
+        _c("th", [_vm._v("Título")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Categoria")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Autor")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Data")])
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

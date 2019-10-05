@@ -13,12 +13,14 @@ use App\Models\Article\ArticleArchive;
 use App\Models\Article\ArticleCategorie;
 use App\Models\Article\ComputerArticle;
 use App\Models\Article\EquipmentArticle;
+use App\Models\Article\HelpdeskArticle;
 use App\Models\Article\PasswordArticle;
 use App\Models\Article\Tag;
 use App\Models\Article\TagArticle;
 use App\Models\Computer\Computer;
 use App\Models\Equipment\Equipment;
 use App\Models\Equipment\EquipmentCategorie;
+use App\Models\HelpDesk\HelpDesk;
 use App\Models\Password\Password;
 use App\Models\Sector\Setor;
 use App\User;
@@ -465,6 +467,17 @@ class ArticleController extends Controller
                 $equipments[] = $get[0];
             }
             $article->equipamentos = $equipments;
+        }
+
+        $helpdesks_article = HelpdeskArticle::where('artigo_id', $article->id_artigo)->get();
+        if(count($helpdesks_article) > 0){
+            $helpdesks = [];
+            foreach($helpdesks_article as $helpdesk){
+                $get = HelpDesk::where('id_atendimento', $helpdesk->atendimento_id)->get();
+                $get[0]->autor = User::find($get[0]->usuario_solicitante_id)->nome;
+                $helpdesks[] = $get[0];
+            }
+            $article->atendimentos = $helpdesks;
         }
 
         return view('article.article', ['article'=> json_encode($article)]);

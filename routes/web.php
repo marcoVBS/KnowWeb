@@ -36,6 +36,7 @@ Route::post('/atendimento/novo/upload', 'HelpDesk\HelpDeskController@uploadFiles
 Route::post('/atendimento/novo/imagem/upload', 'HelpDesk\HelpDeskController@uploadImage');
 Route::get('/atendimento/{id}', 'HelpDesk\HelpDeskController@view');
 Route::post('/atendimento/prioridade', 'HelpDesk\HelpDeskController@changePriority');
+Route::post('/atendimento/artigos', 'HelpDesk\HelpDeskController@saveAssocs');
 Route::post('/atendimento/status', 'HelpDesk\HelpDeskController@changeStatus');
 Route::get('/atendimento/download/{id}', 'HelpDesk\HelpDeskController@downloadFile');
 Route::post('/atendimento/resposta/imagem/upload', 'HelpDesk\HelpDeskResponseController@uploadImage');

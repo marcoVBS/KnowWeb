@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HelpDesk;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Article\HelpdeskArticle;
 use App\Models\HelpDesk\HelpDeskCategorie;
 use Illuminate\Support\Facades\Auth;
 use App\Models\HelpDesk\HelpDesk;
@@ -156,6 +157,23 @@ class HelpDeskController extends Controller
             return response()->json([
                 'success' => false
             ]);
+        }
+    }
+
+    public function saveAssocs(Request $request){
+        foreach ($request->artigos as $artigo) {
+            $assoc = new HelpdeskArticle();
+            $assoc->artigo_id = $artigo;
+            $assoc->atendimento_id = $request->id_atendimento;
+            if($assoc->save()){
+                return response()->json([
+                    'success' => true
+                ]);
+            }else{
+                return response()->json([
+                    'success' => false
+                ]);
+            }
         }
     }
 

@@ -1,5 +1,47 @@
 <template>
     <div>
+        <div id="modal_articles" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                <h5>Associar artigos</h5>
+                <div class="input-field col s12 m6 campo-busca">
+                    <i class="material-icons prefix">search</i>
+                    <input id="busca_pc" type="text" v-model="serach_query_article" class="validate">
+                    <label for="busca_pc">Buscar artigos...</label>
+                </div>
+                <table class="highlight">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Título</th>
+                        <th>Categoria</th>
+                        <th>Autor</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr v-for="(article, index) in articlesData" :key="index">
+                        <td>
+                             <p>
+                                <label>
+                                    <input type="checkbox" class="filled-in" v-model="article.check"/>
+                                    <span></span>
+                                </label>
+                            </p>
+                        </td>
+                        <td> {{article.titulo}} </td>
+                        <td> {{article.categoria}} </td>
+                        <td> {{article.autor}} </td>
+                        <td> {{article.created_at}} </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <div class="modal-footer">
+                <a href="#" @click.prevent="saveAssocs()" class="modal-close waves-effect waves-green btn-flat">Concluir</a>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col s12">
                 <ul class="collection">
@@ -43,7 +85,8 @@
                             <i class="material-icons left">open_in_new</i>Atender</a>
                        
                         <div v-if="helpdesk.usuario_solicitante_id == user_id || helpdesk.atendente_responsavel_id == user_id">
-                            <a v-if="helpdesk.status == 'Em andamento'" @click="changeStatus('Finalizado')" class="waves-effect waves-light green btn secondary-content">
+                            <a href="#" v-if="helpdesk.status == 'Em andamento'" @click.prevent="confirmAssoc"
+                                class="waves-effect waves-light green btn secondary-content">
                                 <i class="material-icons left">check_box</i>Finalizar</a>
                         </div>
                         
@@ -129,8 +172,24 @@ export default {
             respostas: [],
             resposta: '',
             imagens: [],
-            arquivos: []
+            arquivos: [],
+            artigos: [],
+            serach_query_article: ''
         }
+    },
+    computed: {
+        articlesData: function(){
+            var filterKey = this.serach_query_article && this.serach_query_article.toLowerCase()
+            var dataFilter = this.artigos
+            if (filterKey) {
+                dataFilter = dataFilter.filter(function (row) {
+                return Object.keys(row).some(function (key) {
+                    return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                })
+                })
+            }
+            return dataFilter
+        },
     },
     methods: {
          onSubmit(){
@@ -154,6 +213,45 @@ export default {
             .catch(function(error){
                 vm.$snotify.error('Falha ao alterar prioridade!', 'Erro')
             })
+        },
+        confirmAssoc(){
+            let vm = this
+            vm.$snotify.confirm('Deseja associar algum artigo a este atendimento?', 'Associar!', {
+                timeout: false,
+                position: 'centerCenter',
+                buttons:[
+                    {text: 'Sim', action: (toast) => {vm.$snotify.remove(toast.id); $('#modal_articles').modal('open')}},
+                    {text: 'Não', action: (toast) => {vm.changeStatus('Finalizado'); vm.$snotify.remove(toast.id)}},
+                    {text: 'Cancelar', action: (toast) => vm.$snotify.remove(toast.id)}
+                ]
+            })
+        },
+        saveAssocs(){
+            let assocs = []
+            let vm = this
+            this.artigos.forEach(element => {
+                if(element.check){
+                    assocs.push(element.id_artigo)
+                }
+            });
+
+            axios.post('artigos', {
+                id_atendimento: vm.helpdesk.id_atendimento,
+                artigos: assocs
+            })
+            .then(function(response){
+                let stored = response.data.success
+
+                if(stored == true){
+                    vm.changeStatus('Finalizado')
+                }else{
+                    vm.$snotify.error('Falha ao alterar prioridade!', 'Erro')
+                }
+            })
+            .catch(function(error){
+                vm.$snotify.error('Falha ao associar artigos!', 'Erro')
+            })
+
         },
         changeStatus(status){
             let vm = this
@@ -268,6 +366,7 @@ export default {
                     if(upload){
                         $('.modal').modal('close')
                         vm.$snotify.success('Sua resposta foi enviada com sucesso!', 'Sucesso')
+                        vm.getResponses()
                     }
                 
                 }else{
@@ -282,7 +381,6 @@ export default {
                 $('#form_response').each(function(){
                     this.reset();
                 })
-                vm.getResponses()
             })
         },
         getResponses(){
@@ -294,11 +392,23 @@ export default {
                 if(responses){
                     vm.respostas = responses
                 }
+            })      
+        },
+        getArticles(){
+            let vm = this
+            axios.get('../artigos/all')
+            .then(function(response){
+                let articles = response.data.articles
+
+                if(articles){
+                    vm.artigos = articles
+                }
             })
         }      
     },
     mounted(){
         this.getResponses();
+        this.getArticles();
     },
     components: {
         Editor
