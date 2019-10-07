@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Equipment;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Equipment\Equipment;
 use App\Models\Equipment\EquipmentCategorie;
 
 class EquipmentCategorieController extends Controller
@@ -37,16 +38,23 @@ class EquipmentCategorieController extends Controller
     }
 
     public function delete($id){
-        $categorie = EquipmentCategorie::find($id);
-        
-        if($categorie->delete()){
-            return response()->json([
-                'message' => "Categoria {$categorie->nome} excluída com sucesso!",
-                'deleted' => true
-            ]);
+        if(count(Equipment::where('categoria_equipamento_id', $id)->get()) == 0){
+            $categorie = EquipmentCategorie::find($id);
+            
+            if($categorie->delete()){
+                return response()->json([
+                    'message' => "Categoria {$categorie->nome} excluída com sucesso!",
+                    'deleted' => true
+                ]);
+            }else{
+                return response()->json([
+                    'message' => "Falha ao excluir categoria!",
+                    'deleted' => false
+                ]);
+            }
         }else{
             return response()->json([
-                'message' => "Falha ao excluir categoria!",
+                'message' => "Existem equipamentos cadastrados com esta categoria, favor desvinculá-los!",
                 'deleted' => false
             ]);
         }

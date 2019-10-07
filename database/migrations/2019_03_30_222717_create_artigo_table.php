@@ -21,6 +21,7 @@ class CreateArtigoTable extends Migration
             $table->foreign('categoria_artigo_id')->references('id_categoria_artigo')->on('tb_categoria_artigo')
                 ->onDelete('cascade')->onUpdate('cascade');
             $table->text('conteudo');
+            $table->integer('publico');
             $table->integer('usuario_autor_id')->unsigned();
             $table->foreign('usuario_autor_id')->references('id_usuario')->on('tb_usuario')
                 ->onDelete('cascade')->onUpdate('cascade');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Archive;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Archive\Archive;
 use App\Models\Archive\ArchiveCategorie;
 
 class ArchiveCategorieController extends Controller
@@ -37,16 +38,23 @@ class ArchiveCategorieController extends Controller
     }
 
     public function delete($id){
-        $categorie = ArchiveCategorie::find($id);
-        
-        if($categorie->delete()){
-            return response()->json([
-                'message' => "Categoria {$categorie->nome} excluída com sucesso!",
-                'deleted' => true
-            ]);
+        if(count(Archive::where('categoria_arquivo_id', $id)->get()) == 0){
+            $categorie = ArchiveCategorie::find($id);
+            
+            if($categorie->delete()){
+                return response()->json([
+                    'message' => "Categoria {$categorie->nome} excluída com sucesso!",
+                    'deleted' => true
+                ]);
+            }else{
+                return response()->json([
+                    'message' => "Falha ao excluir categoria!",
+                    'deleted' => false
+                ]);
+            }
         }else{
             return response()->json([
-                'message' => "Falha ao excluir categoria!",
+                'message' => "Existem arquivos cadstrados com essa categoria!",
                 'deleted' => false
             ]);
         }

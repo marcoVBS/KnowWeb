@@ -10,7 +10,7 @@
                                 <div class="input-field">
                                     <i class="material-icons prefix">add_circle</i>
                                     <input id="permissao" type="text" v-model="permission.label" class="validate">
-                                    <label for="permissao">Nova permissão. Ex: insert-user</label>
+                                    <label for="permissao">Nova permissão. Ex: create-user</label>
                                 </div>
                             </form>
                         </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HelpDesk;
 use Illuminate\Http\Request;
 use App\Models\HelpDesk\HelpDeskCategorie;
 use App\Http\Controllers\Controller;
+use App\Models\HelpDesk\HelpDesk;
 
 class HelpDeskCategorieController extends Controller
 {
@@ -38,16 +39,23 @@ class HelpDeskCategorieController extends Controller
     }
 
     public function delete($id){
-        $categorie = HelpDeskCategorie::find($id);
-        
-        if($categorie->delete()){
-            return response()->json([
-                'message' => "Categoria {$categorie->nome} excluída com sucesso!",
-                'deleted' => true
-            ]);
+        if(count(HelpDesk::where('categoria_atendimento_id', $id)->get()) == 0){
+            $categorie = HelpDeskCategorie::find($id);
+            
+            if($categorie->delete()){
+                return response()->json([
+                    'message' => "Categoria {$categorie->nome} excluída com sucesso!",
+                    'deleted' => true
+                ]);
+            }else{
+                return response()->json([
+                    'message' => "Falha ao excluir categoria!",
+                    'deleted' => false
+                ]);
+            }
         }else{
             return response()->json([
-                'message' => "Falha ao excluir categoria!",
+                'message' => "Existem atendimentos cadastrados com esta categoria!",
                 'deleted' => false
             ]);
         }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Permission\Permission;
 use App\Models\Permission\UserPermission;
+use App\Models\Sector\Setor;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -19,15 +20,20 @@ class PermissionController extends Controller
     {
         $user = User::find($request->id);
 
-        $permissions = UserPermission::where('usuario_id', $request->id)->get();
-        if(count($permissions) > 0){
-            foreach ($permissions as $perm) {
-                $permissions_id[] = $perm->permissao_id;
+        if($user->tipo_usuario == "Membro"){
+            $permissions = UserPermission::where('usuario_id', $request->id)->get();
+            if(count($permissions) > 0){
+                foreach ($permissions as $perm) {
+                    $permissions_id[] = $perm->permissao_id;
+                }
+                $user->permissoes = $permissions_id;
             }
-            $user->permissoes = $permissions_id;
+    
+            return view('users.userpermissions', ['user' => json_encode($user)]);
+        }else{
+            return redirect()->route('users');
         }
 
-        return view('users.userpermissions', ['user' => json_encode($user)]);
     }
 
     public function getPermissions()

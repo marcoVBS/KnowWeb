@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Computer;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Computer\Computer;
 use App\Models\Computer\OperationalSystem;
 
 class OperationalSystemController extends Controller
@@ -61,16 +62,23 @@ class OperationalSystemController extends Controller
 
     public function delete($id)
     {
-        $operSystem = OperationalSystem::find($id);
-        
-        if($operSystem->delete()){
-            return response()->json([
-                'message' => "Sistema operacional {$operSystem->nome} excluído com sucesso!",
-                'deleted' => true
-            ]);
+        if(count(Computer::where('sistema_operacional_id', $id)->get()) == 0){
+            $operSystem = OperationalSystem::find($id);
+            
+            if($operSystem->delete()){
+                return response()->json([
+                    'message' => "Sistema operacional {$operSystem->nome} excluído com sucesso!",
+                    'deleted' => true
+                ]);
+            }else{
+                return response()->json([
+                    'message' => "Falha ao extensão sistema operacional!",
+                    'deleted' => false
+                ]);
+            }
         }else{
             return response()->json([
-                'message' => "Falha ao extensão sistema operacional!",
+                'message' => "Existem computadores cadastrados com esse sistema operacional!",
                 'deleted' => false
             ]);
         }

@@ -2649,13 +2649,71 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user_id'],
   data: function data() {
     return {
       articles: [],
-      search_query: ''
+      search_query: '',
+      sortKey: 'updated_at'
     };
+  },
+  watch: {
+    sortKey: function sortKey(val) {
+      if (val == 'titulo') {
+        this.articles.sort(function (a, b) {
+          return a.titulo.toLowerCase() < b.titulo.toLowerCase() ? -1 : a.titulo.toLowerCase() > b.titulo.toLowerCase() ? 1 : 0;
+        });
+      } else if (val == 'categoria') {
+        this.articles.sort(function (a, b) {
+          return a.categoria < b.categoria ? -1 : a.categoria > b.categoria ? 1 : 0;
+        });
+      } else if (val == 'autor') {
+        this.articles.sort(function (a, b) {
+          return a.autor < b.autor ? -1 : a.autor > b.autor ? 1 : 0;
+        });
+      } else if (val == 'updated_at') {
+        this.articles.sort(function (a, b) {
+          var dateA = a.updated_at.split(' ');
+          var hourA = dateA[1];
+          dateA = new Date(dateA[0].split('/').reverse().join('/'));
+          var dateB = b.updated_at.split(' ');
+          var hourB = dateB[1];
+          dateB = new Date(dateB[0].split('/').reverse().join('/'));
+
+          if (dateA > dateB) {
+            return 1;
+          } else if (dateA < dateB) {
+            return -1;
+          } else {
+            return hourA > hourB ? 1 : hourA < hourB ? -1 : 0;
+          }
+        }).reverse();
+      }
+    }
   },
   computed: {
     filteredData: function filteredData() {
@@ -2733,6 +2791,11 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tinymce_tinymce_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @tinymce/tinymce-vue */ "./node_modules/@tinymce/tinymce-vue/lib/es2015/index.js");
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3269,6 +3332,7 @@ __webpack_require__.r(__webpack_exports__);
         titulo: vm.article.titulo,
         descricao: vm.article.descricao,
         conteudo: vm.article.conteudo,
+        publico: vm.article.publico,
         categoria_id: vm.article.categoria_artigo_id,
         imagens: vm.imagens,
         tags: vm.tags,
@@ -3299,6 +3363,7 @@ __webpack_require__.r(__webpack_exports__);
         titulo: vm.article.titulo,
         descricao: vm.article.descricao,
         conteudo: vm.article.conteudo,
+        publico: vm.article.publico,
         categoria_id: vm.article.categoria_artigo_id,
         imagens: vm.imagens,
         tags: vm.tags,
@@ -6621,6 +6686,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user_logged', 'sectors'],
   data: function data() {
@@ -6629,7 +6723,11 @@ __webpack_require__.r(__webpack_exports__);
       user: {},
       update: false,
       update_pass: false,
-      search_query: ''
+      search_query: '',
+      permissions: [],
+      permission: {
+        label: ""
+      }
     };
   },
   computed: {
@@ -6649,6 +6747,60 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    getPermissions: function getPermissions() {
+      var vm = this;
+      axios.get("usuarios/permissoes/get/all").then(function (response) {
+        vm.permissions = response.data.permissions;
+
+        if (vm.user.permissoes) {
+          vm.permissions.map(function (e) {
+            if (vm.user.permissoes.indexOf(e.id_permissao) > -1) {
+              e.check = true;
+            }
+          });
+        }
+      });
+    },
+    onSubmitPermission: function onSubmitPermission() {
+      var vm = this;
+      axios.post('usuarios/permissoes/create', {
+        permissao: vm.permission.label
+      }).then(function (response) {
+        var stored = response.data.stored;
+        var message = response.data.message;
+        vm.getPermissions();
+
+        if (stored == true) {
+          vm.$snotify.success(message, 'Sucesso');
+          vm.permission.label = "";
+        } else {
+          vm.$snotify.error(message, 'Erro');
+          vm.permission.label = "";
+        }
+      }).catch(function (error) {
+        vm.$snotify.error('Falha ao cadastrar permissão!', 'Erro');
+      }).finally(function () {
+        $('#form_permission').each(function () {
+          this.reset();
+        });
+      });
+    },
+    deletePermission: function deletePermission(id) {
+      var vm = this;
+      axios.delete("usuarios/permissoes/delete/".concat(id)).then(function (response) {
+        var stored = response.data.deleted;
+        var message = response.data.message;
+
+        if (stored == true) {
+          vm.$snotify.success(message, 'Sucesso');
+          vm.getPermissions();
+        } else {
+          vm.$snotify.error(message, 'Erro');
+        }
+      }).catch(function (error) {
+        vm.$snotify.error('Falha ao excluir o permissão!', 'Erro');
+      });
+    },
     closeModal: function closeModal() {
       $('.modal').modal('close');
       $('#form_user').each(function () {
@@ -6815,6 +6967,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    this.getPermissions();
     this.getUsers();
   }
 });
@@ -32613,7 +32766,7 @@ var render = function() {
     _vm._v(" "),
     _vm._m(1),
     _vm._v(" "),
-    _c("div", { staticClass: "input-field col s12 m7" }, [
+    _c("div", { staticClass: "input-field col s12 m6" }, [
       _c("i", { staticClass: "material-icons prefix" }, [_vm._v("search")]),
       _vm._v(" "),
       _c("input", {
@@ -32640,6 +32793,99 @@ var render = function() {
       _vm._v(" "),
       _c("label", { attrs: { for: "icon_prefix" } }, [
         _vm._v("Buscar artigos...")
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col s12 m6" }, [
+      _vm._v("\n        Ordenar por: \n        "),
+      _c("p", [
+        _c("label", [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.sortKey,
+                expression: "sortKey"
+              }
+            ],
+            attrs: { name: "group1", type: "radio", value: "titulo" },
+            domProps: { checked: _vm._q(_vm.sortKey, "titulo") },
+            on: {
+              change: function($event) {
+                _vm.sortKey = "titulo"
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("span", [_vm._v("Título")])
+        ]),
+        _vm._v(" "),
+        _c("label", [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.sortKey,
+                expression: "sortKey"
+              }
+            ],
+            attrs: { name: "group1", type: "radio", value: "categoria" },
+            domProps: { checked: _vm._q(_vm.sortKey, "categoria") },
+            on: {
+              change: function($event) {
+                _vm.sortKey = "categoria"
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("span", [_vm._v("Categoria")])
+        ]),
+        _vm._v(" "),
+        _c("label", [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.sortKey,
+                expression: "sortKey"
+              }
+            ],
+            attrs: { name: "group1", type: "radio", value: "autor" },
+            domProps: { checked: _vm._q(_vm.sortKey, "autor") },
+            on: {
+              change: function($event) {
+                _vm.sortKey = "autor"
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("span", [_vm._v("Autor")])
+        ]),
+        _vm._v(" "),
+        _c("label", [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.sortKey,
+                expression: "sortKey"
+              }
+            ],
+            attrs: { name: "group1", type: "radio", value: "updated_at" },
+            domProps: { checked: _vm._q(_vm.sortKey, "updated_at") },
+            on: {
+              change: function($event) {
+                _vm.sortKey = "updated_at"
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("span", [_vm._v("Última atualização")])
+        ])
       ])
     ]),
     _vm._v(" "),
@@ -32782,13 +33028,15 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col s12 m5" }, [
-      _c("h4", { staticClass: "header grey-text center-align" }, [
+    return _c("div", { staticClass: "col s12" }, [
+      _c("h5", { staticClass: "header grey-text" }, [
         _c("i", { staticClass: "small material-icons" }, [
           _vm._v("library_books")
         ]),
         _vm._v(" Artigos")
-      ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "divider" })
     ])
   }
 ]
@@ -32982,13 +33230,66 @@ var render = function() {
               1
             ),
             _vm._v(" "),
-            _vm._m(0)
+            _c("div", { staticClass: "input-field col s12" }, [
+              _c("p", [
+                _c("label", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.article.publico,
+                        expression: "article.publico"
+                      }
+                    ],
+                    staticClass: "filled-in",
+                    attrs: { type: "checkbox" },
+                    domProps: {
+                      checked: Array.isArray(_vm.article.publico)
+                        ? _vm._i(_vm.article.publico, null) > -1
+                        : _vm.article.publico
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.article.publico,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.article,
+                                "publico",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.article,
+                                "publico",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
+                        } else {
+                          _vm.$set(_vm.article, "publico", $$c)
+                        }
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", [
+                    _vm._v("Artigo público para usuários convencionais?")
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "chips chips-autocomplete" })
+            ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "divider" }),
-          _c("br"),
-          _vm._v(" "),
-          _vm._m(1)
+          _vm._m(0)
         ]
       )
     ]),
@@ -32999,11 +33300,11 @@ var render = function() {
       ]),
       _c("div", { staticClass: "divider" }),
       _vm._v(" "),
-      _vm._m(2),
+      _vm._m(1),
       _vm._v(" "),
       _c("ul", { staticClass: "collapsible" }, [
         _c("li", [
-          _vm._m(3),
+          _vm._m(2),
           _vm._v(" "),
           _c(
             "div",
@@ -33044,7 +33345,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("li", [
-          _vm._m(4),
+          _vm._m(3),
           _vm._v(" "),
           _c(
             "div",
@@ -33080,7 +33381,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("li", [
-          _vm._m(5),
+          _vm._m(4),
           _vm._v(" "),
           _c(
             "div",
@@ -33125,7 +33426,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("li", [
-          _vm._m(6),
+          _vm._m(5),
           _vm._v(" "),
           _c(
             "div",
@@ -33195,7 +33496,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("table", { staticClass: "highlight" }, [
-            _vm._m(7),
+            _vm._m(6),
             _vm._v(" "),
             _c(
               "tbody",
@@ -33273,7 +33574,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(8)
+        _vm._m(7)
       ]
     ),
     _vm._v(" "),
@@ -33320,7 +33621,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("table", { staticClass: "highlight" }, [
-            _vm._m(9),
+            _vm._m(8),
             _vm._v(" "),
             _c(
               "tbody",
@@ -33394,7 +33695,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(10)
+        _vm._m(9)
       ]
     ),
     _vm._v(" "),
@@ -33441,7 +33742,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("table", { staticClass: "highlight" }, [
-            _vm._m(11),
+            _vm._m(10),
             _vm._v(" "),
             _c(
               "tbody",
@@ -33543,7 +33844,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(12)
+        _vm._m(11)
       ]
     ),
     _vm._v(" "),
@@ -33590,7 +33891,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("table", { staticClass: "highlight" }, [
-            _vm._m(13),
+            _vm._m(12),
             _vm._v(" "),
             _c(
               "tbody",
@@ -33658,20 +33959,12 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(14)
+        _vm._m(13)
       ]
     )
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-field col s12" }, [
-      _c("div", { staticClass: "chips chips-autocomplete" })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -39102,7 +39395,7 @@ var render = function() {
                     }),
                     _vm._v(" "),
                     _c("label", { attrs: { for: "permissao" } }, [
-                      _vm._v("Nova permissão. Ex: insert-user")
+                      _vm._v("Nova permissão. Ex: create-user")
                     ])
                   ])
                 ]
@@ -39717,7 +40010,101 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "divider" }),
+    _c("div", { staticClass: "col s12" }, [
+      _c("ul", { staticClass: "collapsible" }, [
+        _c("li", [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("div", { staticClass: "collapsible-body" }, [
+            _c("div", { staticClass: "row" }, [
+              _c(
+                "form",
+                {
+                  attrs: { method: "post", action: "#", id: "form_permission" },
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.onSubmitPermission($event)
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "input-field" }, [
+                    _c("i", { staticClass: "material-icons prefix" }, [
+                      _vm._v("add_circle")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.permission.label,
+                          expression: "permission.label"
+                        }
+                      ],
+                      staticClass: "validate",
+                      attrs: { id: "permissao", type: "text" },
+                      domProps: { value: _vm.permission.label },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.permission, "label", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "permissao" } }, [
+                      _vm._v("Nova permissão. Ex: create-user")
+                    ])
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "row" },
+              [
+                _c("span", { staticClass: "text-center" }, [
+                  _vm._v("Permissões cadastradas no sistema:")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "divider" }),
+                _c("br"),
+                _vm._v(" "),
+                _vm._l(_vm.permissions, function(perm, index) {
+                  return _c("div", { key: index, staticClass: "chip" }, [
+                    _c("b", [_vm._v(_vm._s(perm.nome))]),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.deletePermission(perm.id_permissao)
+                          }
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "close material-icons" }, [
+                          _vm._v("close")
+                        ])
+                      ]
+                    )
+                  ])
+                })
+              ],
+              2
+            )
+          ])
+        ])
+      ])
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "col s12" }, [
       _c("div", { staticClass: "input-field col s12 m6" }, [
@@ -39751,7 +40138,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("table", [
-        _vm._m(1),
+        _vm._m(2),
         _vm._v(" "),
         _c(
           "tbody",
@@ -39785,14 +40172,22 @@ var render = function() {
               _c("td", [_vm._v(_vm._s(user.setor))]),
               _vm._v(" "),
               _c("td", { staticClass: "row" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "green-text darken-4",
-                    attrs: { href: "usuarios/permissoes/" + user.id_usuario }
-                  },
-                  [_c("i", { staticClass: "material-icons" }, [_vm._v("lock")])]
-                ),
+                user.tipo_usuario == "Membro"
+                  ? _c(
+                      "a",
+                      {
+                        staticClass: "green-text darken-4",
+                        attrs: {
+                          href: "usuarios/permissoes/" + user.id_usuario
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "material-icons" }, [
+                          _vm._v("lock")
+                        ])
+                      ]
+                    )
+                  : _vm._e(),
                 _vm._v(" "),
                 _c(
                   "a",
@@ -39868,6 +40263,19 @@ var staticRenderFns = [
         ]
       )
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "collapsible-header green-text darken-4" },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("settings")]),
+        _vm._v("Gerenciar permissões do sistema")
+      ]
+    )
   },
   function() {
     var _vm = this

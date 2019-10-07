@@ -85,7 +85,36 @@
             </div>
         </div>
 
-        <div class="divider"></div>
+        <div class="col s12">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header green-text darken-4"><i class="material-icons">settings</i>Gerenciar permissões do sistema</div>
+                    <div class="collapsible-body">
+                        <div class="row">
+                            <form @submit.prevent="onSubmitPermission" method="post" action="#" id="form_permission">
+                                <div class="input-field">
+                                    <i class="material-icons prefix">add_circle</i>
+                                    <input id="permissao" type="text" v-model="permission.label" class="validate">
+                                    <label for="permissao">Nova permissão. Ex: create-user</label>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="row">
+                            <span class="text-center">Permissões cadastradas no sistema:</span>
+                            <div class="divider"></div><br>
+
+                            <div v-for="(perm, index) in permissions" :key="index" class="chip">
+                                <b>{{ perm.nome }}</b>
+                                <a href="#" @click.prevent="deletePermission(perm.id_permissao)"><i class="close material-icons">close</i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </li>
+            </ul>
+        </div>
+
         <div class="col s12">
 
             <div class="input-field col s12 m6">
@@ -120,7 +149,7 @@
                         <td>{{ user.tipo_usuario }}</td>
                         <td>{{ user.setor }}</td>
                         <td class="row">
-                            <a :href="`usuarios/permissoes/${user.id_usuario}`" class="green-text darken-4"><i class="material-icons">lock</i></a>
+                            <a v-if="user.tipo_usuario == 'Membro'" :href="`usuarios/permissoes/${user.id_usuario}`" class="green-text darken-4"><i class="material-icons">lock</i></a>
                             <a href="#modaluser" class="modal-trigger" @click.prevent="loadForm(user)"><i class="material-icons">edit</i></a>
                             <a v-if="user.id_usuario !== user_logged.id_usuario" class="red-text" href="#" @click.prevent="confirmDelete(user.id_usuario, user.nome)"><i class="material-icons">delete</i></a>
                         </td>
@@ -140,7 +169,11 @@ export default {
             user: {},
             update: false,
             update_pass: false,
-            search_query: ''
+            search_query: '',
+            permissions: [],
+            permission: {
+                label: ""
+            },
         }
     },
     computed: {
@@ -158,6 +191,68 @@ export default {
         }
     },
     methods: {
+        getPermissions(){
+            let vm = this
+                        
+            axios.get("usuarios/permissoes/get/all")
+            .then(function(response){
+                vm.permissions = response.data.permissions
+                if(vm.user.permissoes){
+                    vm.permissions.map(function(e){
+                        if(vm.user.permissoes.indexOf(e.id_permissao) > -1){
+                            e.check = true
+                        }
+                    })
+                }
+            })
+        },
+        onSubmitPermission(){
+            let vm = this
+            
+            axios.post('usuarios/permissoes/create', {
+                permissao: vm.permission.label,
+            })
+            .then(function(response){
+                let stored = response.data.stored
+                let message = response.data.message
+
+                vm.getPermissions();
+
+                if(stored == true){
+                    vm.$snotify.success(message, 'Sucesso')
+                    vm.permission.label = ""
+                }else{
+                    vm.$snotify.error(message, 'Erro')
+                    vm.permission.label = ""
+                }
+            })
+            .catch(function(error){
+                vm.$snotify.error('Falha ao cadastrar permissão!', 'Erro')
+            })
+            .finally(function() {
+                $('#form_permission').each(function(){
+                    this.reset();
+                })
+            })    
+        },
+        deletePermission(id){
+            let vm = this
+            axios.delete(`usuarios/permissoes/delete/${id}`)
+                .then(function(response){
+                    let stored = response.data.deleted
+                    let message = response.data.message
+
+                    if(stored == true){
+                        vm.$snotify.success(message, 'Sucesso')
+                        vm.getPermissions()
+                    }else{
+                        vm.$snotify.error(message, 'Erro')
+                    }
+                })
+                .catch(function(error){
+                    vm.$snotify.error('Falha ao excluir o permissão!', 'Erro')
+                })
+        },
         closeModal(){
             $('.modal').modal('close')
             $('#form_user').each(function(){
@@ -326,6 +421,7 @@ export default {
         }
     },
     mounted() {
+        this.getPermissions()
         this.getUsers()
     }
 }

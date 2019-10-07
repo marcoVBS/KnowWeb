@@ -82,6 +82,7 @@ class ArticleController extends Controller
         $categories = ArticleCategorie::all();
         $tags = Tag::all();
         $article = Article::find($id);
+        $article->publico = $article->publico == 0 ? false : true;
 
         $tag_article = TagArticle::where('artigo_id', $id)->get();
         if(count($tag_article) > 0){
@@ -148,6 +149,7 @@ class ArticleController extends Controller
         $article->titulo = $request->titulo;
         $article->descricao = $request->descricao;
         $article->conteudo = $request->conteudo;
+        $article->publico = $request->publico ? 1 : 0;
         $article->categoria_artigo_id = $request->categoria_id;
         $article->usuario_autor_id = Auth::id();
         
@@ -247,6 +249,7 @@ class ArticleController extends Controller
         $article->titulo = $request->titulo;
         $article->descricao = $request->descricao;
         $article->conteudo = $request->conteudo;
+        $article->publico = $request->publico ? 1 : 0;
         $article->categoria_artigo_id = $request->categoria_id;
         $article->usuario_atualizador_id = Auth::id();
         

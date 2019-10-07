@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Sector;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Computer\Computer;
 use App\Models\Sector\Setor;
+use App\User;
 
 class SectorController extends Controller
 {
@@ -63,19 +65,25 @@ class SectorController extends Controller
 
     public function delete($id)
     {
-        $setor = Setor::find($id);
-        
-        if($setor->delete()){
-            return response()->json([
-                'message' => "Setor {$setor->nome} excluído com sucesso!",
-                'deleted' => true
-            ]);
+        if(count(User::where('setor_id', $id)->get()) == 0 && count(Computer::where('setor_id', $id)->get()) == 0){
+            $setor = Setor::find($id);
+            
+            if($setor->delete()){
+                return response()->json([
+                    'message' => "Setor {$setor->nome} excluído com sucesso!",
+                    'deleted' => true
+                ]);
+            }else{
+                return response()->json([
+                    'message' => "Falha ao excluir setor!",
+                    'deleted' => false
+                ]);
+            }
         }else{
             return response()->json([
-                'message' => "Falha ao excluir setor!",
+                'message' => "Existem usuários e/ou computadores cadastrados com este setor!",
                 'deleted' => false
             ]);
         }
     }
-
 }

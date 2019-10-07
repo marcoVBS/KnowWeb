@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Article;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Article\Article;
 use App\Models\Article\ArticleCategorie;
 
 class ArticleCategorieController extends Controller
@@ -37,16 +38,23 @@ class ArticleCategorieController extends Controller
     }
 
     public function delete($id){
-        $categorie = ArticleCategorie::find($id);
-        
-        if($categorie->delete()){
-            return response()->json([
-                'message' => "Categoria {$categorie->nome} excluída com sucesso!",
-                'deleted' => true
-            ]);
+        if(count(Article::where('categoria_artigo_id',$id)->get()) == 0){
+            $categorie = ArticleCategorie::find($id);
+            
+            if($categorie->delete()){
+                return response()->json([
+                    'message' => "Categoria {$categorie->nome} excluída com sucesso!",
+                    'deleted' => true
+                ]);
+            }else{
+                return response()->json([
+                    'message' => "Falha ao excluir categoria!",
+                    'deleted' => false
+                ]);
+            }
         }else{
             return response()->json([
-                'message' => "Falha ao excluir categoria!",
+                'message' => "Existem artigos cadastrados com esta categoria, favor desvinculá-los!",
                 'deleted' => false
             ]);
         }

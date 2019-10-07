@@ -40,12 +40,17 @@
                                 alignleft aligncenter alignright alignjustify | numlist bullist outdent indent">
                         </editor>
                     </div>
+                    
                     <div class="input-field col s12">
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" v-model="article.publico"/>
+                                <span>Artigo público para usuários convencionais?</span>
+                            </label>
+                        </p>
                         <div class="chips chips-autocomplete"></div>
                     </div>
                 </div>
-
-                <div class="divider"></div><br>
 
                 <div class="row center-align">   
                     <button class="btn waves-effect waves-light green" type="submit">Salvar
@@ -531,6 +536,7 @@ export default {
                 titulo: vm.article.titulo,
                 descricao : vm.article.descricao,
                 conteudo: vm.article.conteudo,
+                publico: vm.article.publico,
                 categoria_id: vm.article.categoria_artigo_id,
                 imagens: vm.imagens,
                 tags: vm.tags,
@@ -564,6 +570,7 @@ export default {
                 titulo: vm.article.titulo,
                 descricao : vm.article.descricao,
                 conteudo: vm.article.conteudo,
+                publico: vm.article.publico,
                 categoria_id: vm.article.categoria_artigo_id,
                 imagens: vm.imagens,
                 tags: vm.tags,

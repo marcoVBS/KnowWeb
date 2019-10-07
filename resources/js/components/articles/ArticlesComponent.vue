@@ -6,14 +6,37 @@
             </a>
         </div>
 
-        <div class="col s12 m5">
-            <h4 class="header grey-text center-align"><i class="small material-icons">library_books</i> Artigos</h4>
+        <div class="col s12">
+            <h5 class="header grey-text"><i class="small material-icons">library_books</i> Artigos</h5>
+            <div class="divider"></div>
         </div>
 
-        <div class="input-field col s12 m7">
+        <div class="input-field col s12 m6">
             <i class="material-icons prefix">search</i>
             <input id="icon_prefix" type="text" v-model="search_query" class="validate">
             <label for="icon_prefix">Buscar artigos...</label>
+        </div>
+
+        <div class="col s12 m6">
+            Ordenar por: 
+            <p>
+                <label>
+                    <input name="group1" type="radio" value="titulo" v-model="sortKey"/>
+                    <span>Título</span>
+                </label>
+                <label>
+                    <input name="group1" type="radio" value="categoria" v-model="sortKey"/>
+                    <span>Categoria</span>
+                </label>
+                <label>
+                    <input name="group1" type="radio" value="autor" v-model="sortKey"/>
+                    <span>Autor</span>
+                </label>
+                <label>
+                    <input name="group1" type="radio" value="updated_at" v-model="sortKey"/>
+                    <span>Última atualização</span>
+                </label>
+            </p>
         </div>
 
          <ul class="collection col s12">
@@ -46,7 +69,43 @@ export default {
     data() {
         return {
             articles: [],
-            search_query: ''
+            search_query: '',
+            sortKey: 'updated_at'
+        }
+    },
+    watch: {
+        sortKey: function(val){
+            if(val == 'titulo'){
+                this.articles.sort(function(a,b){
+                    return a.titulo.toLowerCase() < b.titulo.toLowerCase() ? -1 : a.titulo.toLowerCase() > b.titulo.toLowerCase() ? 1 : 0
+                })
+            }else if(val == 'categoria'){
+                this.articles.sort(function(a,b){
+                    return a.categoria < b.categoria ? -1 : a.categoria > b.categoria ? 1 : 0
+                })
+            }else if(val == 'autor'){
+                this.articles.sort(function(a,b){
+                    return a.autor < b.autor ? -1 : a.autor > b.autor ? 1 : 0
+                })
+            }else if(val == 'updated_at'){
+                this.articles.sort(function(a,b){
+                    let dateA = a.updated_at.split(' ')
+                    let hourA = dateA[1]
+                    dateA = new Date(dateA[0].split('/').reverse().join('/'))
+                    
+                    let dateB = b.updated_at.split(' ')
+                    let hourB = dateB[1]
+                    dateB = new Date(dateB[0].split('/').reverse().join('/'))
+
+                    if(dateA > dateB){
+                        return 1
+                    }else if(dateA < dateB){
+                        return -1
+                    }else{
+                        return hourA > hourB ? 1 : hourA < hourB ? -1 : 0
+                    }
+                }).reverse()
+            }
         }
     },
     computed: {

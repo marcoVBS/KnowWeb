@@ -23,7 +23,7 @@ class UsersController extends Controller
     }
 
     public function getUsers(){
-        $users = User::all();
+        $users = User::orderBy('tipo_usuario', 'asc')->orderBy('nome', 'asc')->get();
         foreach ($users as $user) {
             $user->setor = Setor::find($user->setor_id)->nome;
         }
