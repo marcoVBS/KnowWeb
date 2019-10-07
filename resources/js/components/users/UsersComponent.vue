@@ -120,7 +120,7 @@
                         <td>{{ user.tipo_usuario }}</td>
                         <td>{{ user.setor }}</td>
                         <td class="row">
-                            <a href="#" class="green-text darken-4"><i class="material-icons">lock</i></a>
+                            <a :href="`usuarios/permissoes/${user.id_usuario}`" class="green-text darken-4"><i class="material-icons">lock</i></a>
                             <a href="#modaluser" class="modal-trigger" @click.prevent="loadForm(user)"><i class="material-icons">edit</i></a>
                             <a v-if="user.id_usuario !== user_logged.id_usuario" class="red-text" href="#" @click.prevent="confirmDelete(user.id_usuario, user.nome)"><i class="material-icons">delete</i></a>
                         </td>

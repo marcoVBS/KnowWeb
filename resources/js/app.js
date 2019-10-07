@@ -36,6 +36,7 @@ Vue.component('computer-component', require('./components/computers/ComputerComp
 Vue.component('passwords-component', require('./components/passwords/PasswordsComponent.vue').default);
 Vue.component('profile-component', require('./components/profile/ProfileComponent.vue').default);
 Vue.component('users-component', require('./components/users/UsersComponent.vue').default);
+Vue.component('user-permissions-component', require('./components/users/UserPermissionsComponent.vue').default);
 
 
 const app = new Vue({

@@ -41,6 +41,7 @@
                 </li>
             </ul>
         </div>
+        <a href="../computadores" class="btn"><i class="material-icons left">keyboard_return</i>Voltar</a>
 
     </div>
 </template>

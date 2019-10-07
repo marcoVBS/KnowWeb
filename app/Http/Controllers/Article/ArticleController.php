@@ -335,7 +335,7 @@ class ArticleController extends Controller
             ]);
         }else{
             return response()->json([
-                'message' => "Falha ao atualizado artigo!",
+                'message' => "Falha ao atualizar artigo!",
                 'stored' => false
             ]);
         }

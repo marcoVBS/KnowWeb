@@ -135,3 +135,10 @@ Route::get('/usuarios/all', 'User\UsersController@getUsers');
 Route::post('/usuarios/create', 'User\UsersController@create');
 Route::delete('/usuarios/delete/{id}', 'User\UsersController@delete');
 Route::put('/usuarios/update', 'User\UsersController@update');
+
+//Permissões
+Route::get('/usuarios/permissoes/{id}', 'User\PermissionController@index');
+Route::post('/usuarios/permissoes/create', 'User\PermissionController@create');
+Route::get('/usuarios/permissoes/get/all', 'User\PermissionController@getPermissions');
+Route::delete('/usuarios/permissoes/delete/{id}', 'User\PermissionController@delete');
+Route::put('/usuarios/permissoes/update', 'User\PermissionController@updateUserPermissions');

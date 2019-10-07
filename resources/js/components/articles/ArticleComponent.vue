@@ -4,7 +4,7 @@
             <img :src="article.autor_foto" alt="imagem_usuario" class="circle img-user left"><h4 class="header green-text">{{ article.titulo }}</h4><div class="divider"></div>
         </div>
         <div v-else>
-            <img src="img/app/usuario-icon.png" alt="imagem_usuario" class="circle img-user left"><h4 class="header green-text">{{ article.titulo }}</h4><div class="divider"></div>
+            <img src="/KnowWeb/public/img/app/usuario-icon.png" alt="imagem_usuario" class="circle img-user left"><h4 class="header green-text">{{ article.titulo }}</h4><div class="divider"></div>
         </div>
         
         <div class="col s12">
