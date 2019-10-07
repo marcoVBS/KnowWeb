@@ -68,7 +68,7 @@ class PermissionController extends Controller
 
         if(count($verifica_registros) > 0){
             return response()->json([
-                'message' => "Existem arquivos usuarios que possuem essa permissão, favor desvinculá-los!",
+                'message' => "Existem usuarios que possuem essa permissão, favor desvinculá-los!",
                 'deleted' => false
             ]);
         }else{

@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\Permission\Permission;
+use App\Models\Permission\UserPermission;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -39,4 +41,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //Função do sistema de ACLs
+    //Verifica se o usuário possui a determinada permissão
+    public function testPermission($id, Permission $permission){
+        $user_permissions = UserPermission::where('usuario_id', $id)->get();
+        return $user_permissions->contains('permissao_id', $permission->id_permissao);
+    }
+
 }
