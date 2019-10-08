@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Archive\Archive;
 use App\Models\Archive\ArchiveExtension;
+use Illuminate\Support\Facades\Gate;
 
 class ArchiveExtensionController extends Controller
 {
@@ -22,6 +23,10 @@ class ArchiveExtensionController extends Controller
     }
 
     public function create(Request $request){
+        if (Gate::denies('manage-file-extensions')) {
+            return false;
+        }
+
         $extensao = new ArchiveExtension();
         $extensao->extensao = $request->extensao;
         if($extensao->save()){
@@ -39,6 +44,10 @@ class ArchiveExtensionController extends Controller
 
     public function delete($id)
     {
+        if (Gate::denies('manage-file-extensions')) {
+            return false;
+        }
+
         $extensao = ArchiveExtension::find($id);
         $verifica_registros = Archive::where('extensao_arquivo_id', $id)->get();
 

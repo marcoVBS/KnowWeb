@@ -123,6 +123,7 @@ class RegisterController extends Controller
             'foto' => $foto,
             'password' => Hash::make($data['password']),
             'tipo_usuario'=> 'Usuario',
+            'status'=> 1,
             'setor_id'=>$data['setor_id']
         ]);
     }

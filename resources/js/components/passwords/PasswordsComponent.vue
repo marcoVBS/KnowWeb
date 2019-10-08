@@ -2,7 +2,7 @@
     <div>
         <div class="divider"></div>
 
-        <div class="fixed-action-btn">
+        <div v-if="create_password" class="fixed-action-btn">
             <a class="btn-floating tooltipped btn-large teal darken-3 modal-trigger" href="#modalpassword" data-position="left" data-tooltip="Nova!" @click="newPassword()">
                 <i class="large material-icons">add</i>
             </a>
@@ -13,7 +13,7 @@
                 <h5>Descrição da senha: {{ view.descricao }}</h5>
                 <div class="divider"></div>
                 <p><b>Login:</b> {{ view.login }}</p>
-                <p><b>Senha:</b> 
+                <p v-if="view_password"><b>Senha:</b> 
                     <span v-if="show">{{ view.senha }}</span>
                     <a v-else href="#" @click.prevent="showPass()">Exibir senha</a>
                 </p>
@@ -92,7 +92,7 @@
             </div>
         </div>
 
-        <div class="col s12">
+        <div v-if="list_passwords" class="col s12">
 
             <div class="input-field col s12 m6">
                 <i class="material-icons prefix">search</i>
@@ -116,9 +116,9 @@
                             <td v-if="pass.equipamento"> {{pass.equipamento.descricao}} </td>
                             <td v-else></td>
                             <td class="row">
-                                    <a href="#modalpassword" class="modal-trigger" @click.prevent="loadForm(pass)"><i class="material-icons">edit</i></a>
-                                    <a href="#modal_view" class="modal-trigger green-text" @click.prevent="loadView(pass)"><i class="material-icons">remove_red_eye</i></a>
-                                    <a class="red-text" href="#" @click.prevent="confirmDelete(pass.id_senha, pass.descricao)"><i class="material-icons">delete</i></a>
+                                    <a v-if="edit_password" href="#modalpassword" class="modal-trigger" @click.prevent="loadForm(pass)"><i class="material-icons">edit</i></a>
+                                    <a v-if="view_password" href="#modal_view" class="modal-trigger green-text" @click.prevent="loadView(pass)"><i class="material-icons">remove_red_eye</i></a>
+                                    <a v-if="delete_password" class="red-text" href="#" @click.prevent="confirmDelete(pass.id_senha, pass.descricao)"><i class="material-icons">delete</i></a>
                             </td>
                         </tr>
                 </tbody>
@@ -134,7 +134,7 @@
 <script>
 
 export default {
-    props: ['equipamentos'],
+    props: ['equipamentos', 'list_passwords', 'view_password', 'create_password', 'edit_password', 'delete_password'],
     data() {
         return {
             passwords: [],
@@ -189,6 +189,10 @@ export default {
             this.password.equipamento_id = id[0]
         },
         insertPassword(){
+            if(!this.create_password){
+                return false;
+            }
+
             if (this.assoc == false) {
                 this.password.equipamento_id = null
             }
@@ -227,6 +231,10 @@ export default {
             })
         },
         getPasswords(){
+            if(!this.list_passwords){
+                return false;
+            }
+
             let vm = this
                         
             axios.get("senhas/all")
@@ -237,6 +245,9 @@ export default {
         loadView(pass){
             this.show = false
             this.view = pass
+            if(!this.view_password){
+                this.view.senha = '';
+            }
         },
         showPass(){
             this.show = true
@@ -254,6 +265,10 @@ export default {
             }
         },
         updatePassword(){
+            if(!this.edit_password){
+                return false;
+            }
+
             if(this.assoc == false){
                 this.password.equipamento_id = null
             }
@@ -291,6 +306,10 @@ export default {
             })
         },
         deletePassword(id){
+            if(!this.delete_password){
+                return false;
+            }
+
             let vm = this
             axios.delete(`senhas/delete/${id}`)
                 .then(function(response){

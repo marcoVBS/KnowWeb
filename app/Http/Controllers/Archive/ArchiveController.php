@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Archive\ArchiveExtension;
 use Illuminate\Support\Facades\Storage;
 use App\User;
+use Illuminate\Support\Facades\Gate;
 
 class ArchiveController extends Controller
 {
@@ -20,8 +21,12 @@ class ArchiveController extends Controller
 
     public function index()
     {
-        $categories = ArchiveCategorie::all();
-        return view('archives', ['categorias' => json_encode($categories)]);
+        if(Gate::allows('list-files')){
+            $categories = ArchiveCategorie::all();
+            return view('archives', ['categorias' => json_encode($categories)]);
+        }else{
+            abort(403,'Você não possui permissão para gerenciar arquivos. Contate o administrador!');
+        }
     }
 
     public function getFiles()
@@ -57,6 +62,10 @@ class ArchiveController extends Controller
     }
 
     public function create(Request $request){
+        if (Gate::denies('upload-files')) {
+            return false;
+        }
+
         $file = $request->file('file');
 
         $name = \strtolower($file->getClientOriginalName());
@@ -121,12 +130,20 @@ class ArchiveController extends Controller
     }
 
     public function downloadFile(Request $request){
+        if (Gate::denies('download-files')) {
+            abort(403,'Você não possui permissão para fazer Download de arquivos. Contate o administrador!');
+        }
+
         $file = Archive::find($request->id);
         return response()->download(storage_path('app/public'.$file->caminho));
     }
 
     public function delete($id)
     {
+        if (Gate::denies('delete-file')) {
+            return false;
+        }
+
         $file = Archive::find($id);
         if(Storage::delete($file->caminho)){
             if($file->delete()){

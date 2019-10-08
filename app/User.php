@@ -46,7 +46,11 @@ class User extends Authenticatable
     //Verifica se o usuário possui a determinada permissão
     public function testPermission($id, Permission $permission){
         $user_permissions = UserPermission::where('usuario_id', $id)->get();
-        return $user_permissions->contains('permissao_id', $permission->id_permissao);
+        if($user_permissions->contains('permissao_id', $permission->id_permissao)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }

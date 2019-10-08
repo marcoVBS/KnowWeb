@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Computer\Computer;
 use App\Models\Sector\Setor;
 use App\User;
+use Illuminate\Support\Facades\Gate;
 
 class SectorController extends Controller
 {
@@ -17,7 +18,11 @@ class SectorController extends Controller
 
     public function index()
     {
-        return view('sectors');
+        if (Gate::allows('manage-sectors')) {
+            return view('sectors');
+        }else{
+            abort(403,'Você não possui permissão para fazer gerenciar setores. Contate o administrador!');
+        }
     }
 
     public function getSectors()
@@ -29,6 +34,10 @@ class SectorController extends Controller
 
     public function create(Request $request)
     {
+        if (Gate::denies('manage-sectors')) {
+            return false;
+        }
+
         $setor = new Setor();
         $setor->nome = $request->nome;
         $setor->descricao = $request->descricao;
@@ -47,6 +56,10 @@ class SectorController extends Controller
 
     public function update(Request $request)
     {
+        if (Gate::denies('manage-sectors')) {
+            return false;
+        }
+
         $setor = Setor::find($request->id_setor);
         $setor->nome = $request->nome;
         $setor->descricao = $request->descricao;
@@ -65,6 +78,10 @@ class SectorController extends Controller
 
     public function delete($id)
     {
+        if (Gate::denies('manage-sectors')) {
+            return false;
+        }
+
         if(count(User::where('setor_id', $id)->get()) == 0 && count(Computer::where('setor_id', $id)->get()) == 0){
             $setor = Setor::find($id);
             

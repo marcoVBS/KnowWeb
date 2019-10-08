@@ -2276,7 +2276,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['categories'],
+  props: ['categories', 'manage_file_extensions', 'list_files', 'upload_files', 'download_files', 'delete_file'],
   data: function data() {
     return {
       extension: {
@@ -2335,6 +2335,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     uploadFiles: function uploadFiles() {
+      if (!this.upload_files) {
+        return false;
+      }
+
       var vm = this;
       this.progress = true;
 
@@ -2388,6 +2392,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     deleteFile: function deleteFile(id) {
+      if (!this.delete_file) {
+        return false;
+      }
+
       var vm = this;
       axios.delete("arquivos/delete/".concat(id)).then(function (response) {
         var stored = response.data.deleted;
@@ -2404,6 +2412,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     insertExtension: function insertExtension() {
+      if (!this.manage_file_extensions) {
+        return false;
+      }
+
       var vm = this;
       axios.post('arquivos/extensao/create', {
         extensao: vm.extension.name
@@ -2427,18 +2439,30 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getFiles: function getFiles() {
+      if (!this.list_files) {
+        return false;
+      }
+
       var vm = this;
       axios.get("arquivos/all").then(function (response) {
         vm.files = response.data.files;
       });
     },
     getExtensions: function getExtensions() {
+      if (!this.manage_file_extensions) {
+        return false;
+      }
+
       var vm = this;
       axios.get("arquivos/extensao/all").then(function (response) {
         vm.extensions = response.data.extensions;
       });
     },
     deleteExtension: function deleteExtension(id) {
+      if (!this.manage_file_extensions) {
+        return false;
+      }
+
       var vm = this;
       axios.delete("arquivos/extensao/delete/".concat(id)).then(function (response) {
         var stored = response.data.deleted;
@@ -4755,7 +4779,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['categories'],
+  props: ['categories', 'list_equipments', 'view_equipment', 'create_equipment', 'edit_equipment', 'delete_equipment'],
   data: function data() {
     return {
       equipments: [],
@@ -4797,6 +4821,10 @@ __webpack_require__.r(__webpack_exports__);
       $('#modalequipment').modal('close');
     },
     insertEquipment: function insertEquipment() {
+      if (!this.create_equipment) {
+        return false;
+      }
+
       var vm = this;
       axios.post('equipamentos/create', {
         descricao: vm.equipment.descricao,
@@ -4824,6 +4852,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getEquipments: function getEquipments() {
+      if (!this.list_equipments) {
+        return false;
+      }
+
       var vm = this;
       axios.get("equipamentos/all").then(function (response) {
         vm.equipments = response.data.equipments;
@@ -4849,6 +4881,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     deleteEquipment: function deleteEquipment(id) {
+      if (!this.delete_equipment) {
+        return false;
+      }
+
       var vm = this;
       axios.delete("equipamentos/delete/".concat(id)).then(function (response) {
         var stored = response.data.deleted;
@@ -4872,6 +4908,10 @@ __webpack_require__.r(__webpack_exports__);
       this.view = equip;
     },
     updateEquipment: function updateEquipment() {
+      if (!this.edit_equipment) {
+        return false;
+      }
+
       var vm = this;
       axios.put('equipamentos/update', vm.equipment).then(function (response) {
         var stored = response.data.stored;
@@ -5743,7 +5783,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['equipamentos'],
+  props: ['equipamentos', 'list_passwords', 'view_password', 'create_password', 'edit_password', 'delete_password'],
   data: function data() {
     return {
       passwords: [],
@@ -5800,6 +5840,10 @@ __webpack_require__.r(__webpack_exports__);
       this.password.equipamento_id = id[0];
     },
     insertPassword: function insertPassword() {
+      if (!this.create_password) {
+        return false;
+      }
+
       if (this.assoc == false) {
         this.password.equipamento_id = null;
       }
@@ -5833,6 +5877,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getPasswords: function getPasswords() {
+      if (!this.list_passwords) {
+        return false;
+      }
+
       var vm = this;
       axios.get("senhas/all").then(function (response) {
         vm.passwords = response.data.passwords;
@@ -5841,6 +5889,10 @@ __webpack_require__.r(__webpack_exports__);
     loadView: function loadView(pass) {
       this.show = false;
       this.view = pass;
+
+      if (!this.view_password) {
+        this.view.senha = '';
+      }
     },
     showPass: function showPass() {
       this.show = true;
@@ -5861,6 +5913,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     updatePassword: function updatePassword() {
+      if (!this.edit_password) {
+        return false;
+      }
+
       if (this.assoc == false) {
         this.password.equipamento_id = null;
       }
@@ -5905,6 +5961,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     deletePassword: function deletePassword(id) {
+      if (!this.delete_password) {
+        return false;
+      }
+
       var vm = this;
       axios.delete("senhas/delete/".concat(id)).then(function (response) {
         var stored = response.data.deleted;
@@ -6445,8 +6505,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user'],
+  props: ['user', 'manage_permissions', 'set_user_permissions'],
   data: function data() {
     return {
       permissions: [],
@@ -6457,6 +6518,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getPermissions: function getPermissions() {
+      if (!this.set_user_permissions) {
+        return false;
+      }
+
       var vm = this;
       axios.get("get/all").then(function (response) {
         vm.permissions = response.data.permissions;
@@ -6471,6 +6536,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     onSubmitPermission: function onSubmitPermission() {
+      if (!this.manage_permissions) {
+        return false;
+      }
+
       var vm = this;
       axios.post('create', {
         permissao: vm.permission.label
@@ -6495,6 +6564,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     deletePermission: function deletePermission(id) {
+      if (!this.manage_permissions) {
+        return false;
+      }
+
       var vm = this;
       axios.delete("delete/".concat(id)).then(function (response) {
         var stored = response.data.deleted;
@@ -6512,6 +6585,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     saveUserPermissions: function saveUserPermissions() {
       var _this = this;
+
+      if (!this.set_user_permissions) {
+        return false;
+      }
 
       this.user.permissoes = [];
       this.permissions.forEach(function (element) {
@@ -6715,8 +6792,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user_logged', 'sectors'],
+  props: ['user_logged', 'sectors', 'manage_permissions', 'set_user_permissions', 'list_users', 'create_user', 'disable_user', 'edit_user'],
   data: function data() {
     return {
       users: [],
@@ -6748,6 +6826,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getPermissions: function getPermissions() {
+      if (!this.manage_permissions) {
+        return false;
+      }
+
       var vm = this;
       axios.get("usuarios/permissoes/get/all").then(function (response) {
         vm.permissions = response.data.permissions;
@@ -6762,6 +6844,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     onSubmitPermission: function onSubmitPermission() {
+      if (!this.manage_permissions) {
+        return false;
+      }
+
       var vm = this;
       axios.post('usuarios/permissoes/create', {
         permissao: vm.permission.label
@@ -6786,6 +6872,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     deletePermission: function deletePermission(id) {
+      if (!this.manage_permissions) {
+        return false;
+      }
+
       var vm = this;
       axios.delete("usuarios/permissoes/delete/".concat(id)).then(function (response) {
         var stored = response.data.deleted;
@@ -6821,6 +6911,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getUsers: function getUsers() {
+      if (!this.list_users) {
+        return false;
+      }
+
       var vm = this;
       axios.get("usuarios/all").then(function (response) {
         vm.users = response.data.users;
@@ -6831,6 +6925,10 @@ __webpack_require__.r(__webpack_exports__);
       this.user = user;
     },
     insertUser: function insertUser() {
+      if (!this.create_user) {
+        return false;
+      }
+
       if (this.user.password == this.user.password2) {
         if (this.user.password.length >= 8) {
           var vm = this;
@@ -6865,6 +6963,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     updateUser: function updateUser() {
+      if (!this.edit_user) {
+        return false;
+      }
+
       if (this.user.password) {
         if (this.user.password == this.user.password2) {
           if (this.user.password.length >= 8) {
@@ -6930,15 +7032,16 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
-    confirmDelete: function confirmDelete(id, name) {
+    confirmStatus: function confirmStatus(user) {
       var vm = this;
-      vm.$snotify.confirm("Deseja realmente excluir o usuario ".concat(name, "?"), 'Exclusão!', {
+      var action = user.status == 1 ? 'desabilitar' : 'habilitar';
+      vm.$snotify.confirm("Deseja ".concat(action, " o usuario ").concat(user.nome, "?"), 'Exclusão!', {
         timeout: false,
         position: 'centerCenter',
         buttons: [{
           text: 'Sim',
           action: function action(toast) {
-            vm.deleteUser(id);
+            vm.changeStatus(user);
             vm.$snotify.remove(toast.id);
           }
         }, {
@@ -6949,9 +7052,16 @@ __webpack_require__.r(__webpack_exports__);
         }]
       });
     },
-    deleteUser: function deleteUser(id) {
+    changeStatus: function changeStatus(user) {
+      if (!this.disable_user) {
+        return false;
+      }
+
       var vm = this;
-      axios.delete("usuarios/delete/".concat(id)).then(function (response) {
+      axios.put('usuarios/status/', {
+        id: user.id_usuario,
+        status: user.status == 1 ? 0 : 1
+      }).then(function (response) {
         var stored = response.data.deleted;
         var message = response.data.message;
 
@@ -6962,7 +7072,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.$snotify.error(message, 'Erro');
         }
       }).catch(function (error) {
-        return vm.$snotify.error('Falha ao excluir o usuario!', 'Erro');
+        return vm.$snotify.error('Falha ao atualizar status do usuario!', 'Erro');
       });
     }
   },
@@ -31847,199 +31957,226 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container container2" }, [
-    _c("div", { staticClass: "row" }, [
-      _c("ul", { staticClass: "collapsible" }, [
-        _c("li", [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "collapsible-body" }, [
-            _c("div", { staticClass: "row" }, [
-              _c(
-                "form",
-                {
-                  attrs: { method: "post", action: "#", id: "form_extension" },
-                  on: {
-                    submit: function($event) {
-                      $event.preventDefault()
-                      return _vm.onSubmitExtension($event)
-                    }
-                  }
-                },
-                [
-                  _c("div", { staticClass: "input-field" }, [
-                    _c("i", { staticClass: "material-icons prefix" }, [
-                      _vm._v("add_circle")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.extension.name,
-                          expression: "extension.name"
-                        }
-                      ],
-                      staticClass: "validate",
-                      attrs: { id: "extensao", type: "text" },
-                      domProps: { value: _vm.extension.name },
+    _vm.manage_file_extensions
+      ? _c("div", { staticClass: "row" }, [
+          _c("ul", { staticClass: "collapsible" }, [
+            _c("li", [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "collapsible-body" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "form",
+                    {
+                      attrs: {
+                        method: "post",
+                        action: "#",
+                        id: "form_extension"
+                      },
                       on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.extension, "name", $event.target.value)
+                        submit: function($event) {
+                          $event.preventDefault()
+                          return _vm.onSubmitExtension($event)
                         }
                       }
-                    }),
-                    _vm._v(" "),
-                    _c("label", { attrs: { for: "extensao" } }, [
-                      _vm._v("Nova extensão. Ex: jpg")
-                    ])
-                  ])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "row" },
-              [
-                _c("span", { staticClass: "text-center" }, [
-                  _vm._v("Tipos de arquivos permitidos para upload:")
+                    },
+                    [
+                      _c("div", { staticClass: "input-field" }, [
+                        _c("i", { staticClass: "material-icons prefix" }, [
+                          _vm._v("add_circle")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.extension.name,
+                              expression: "extension.name"
+                            }
+                          ],
+                          staticClass: "validate",
+                          attrs: { id: "extensao", type: "text" },
+                          domProps: { value: _vm.extension.name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.extension,
+                                "name",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: "extensao" } }, [
+                          _vm._v("Nova extensão. Ex: jpg")
+                        ])
+                      ])
+                    ]
+                  )
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "divider" }),
-                _c("br"),
-                _vm._v(" "),
-                _vm._l(_vm.extensions, function(ext, index) {
-                  return _c("div", { key: index, staticClass: "chip" }, [
-                    _c("b", [_vm._v(_vm._s(ext.extensao))]),
+                _c(
+                  "div",
+                  { staticClass: "row" },
+                  [
+                    _c("span", { staticClass: "text-center" }, [
+                      _vm._v("Tipos de arquivos permitidos para upload:")
+                    ]),
                     _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        attrs: { href: "#" },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.deleteExtension(ext.id_extensao_arquivo)
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "close material-icons" }, [
-                          _vm._v("close")
-                        ])
-                      ]
-                    )
-                  ])
-                })
-              ],
-              2
-            )
-          ])
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _vm._m(1),
-    _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "input-field col s12 m6 campo-busca" }, [
-        _c("i", { staticClass: "material-icons prefix" }, [_vm._v("search")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.search_query,
-              expression: "search_query"
-            }
-          ],
-          staticClass: "validate",
-          attrs: { id: "icon_prefix", type: "text" },
-          domProps: { value: _vm.search_query },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.search_query = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "icon_prefix" } }, [
-          _vm._v("Buscar arquivos...")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("table", { staticClass: "highlight" }, [
-        _vm._m(2),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.filteredData, function(file, index) {
-            return _c("tr", { key: index }, [
-              _c("td", [
-                _c("img", {
-                  staticClass: "icon_files",
-                  attrs: { src: file.img_ext }
-                }),
-                _c("span", { staticClass: "text_files" }, [
-                  _c("b", [_vm._v(_vm._s(file.nome))])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(file.categoria))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(file.tamanho))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(file.usuario))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(file.created_at))]),
-              _vm._v(" "),
-              _c("td", [
-                _c(
-                  "a",
-                  {
-                    staticClass: "green-text",
-                    attrs: { href: "arquivos/download/" + file.id_arquivo }
-                  },
-                  [
-                    _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("cloud_download")
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "red-text darken-4",
-                    attrs: { href: "#!" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.confirmDelete(file.id_arquivo, file.nome)
-                      }
-                    }
-                  },
-                  [
-                    _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("delete")
-                    ])
-                  ]
+                    _c("div", { staticClass: "divider" }),
+                    _c("br"),
+                    _vm._v(" "),
+                    _vm._l(_vm.extensions, function(ext, index) {
+                      return _c("div", { key: index, staticClass: "chip" }, [
+                        _c("b", [_vm._v(_vm._s(ext.extensao))]),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.deleteExtension(
+                                  ext.id_extensao_arquivo
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "close material-icons" }, [
+                              _vm._v("close")
+                            ])
+                          ]
+                        )
+                      ])
+                    })
+                  ],
+                  2
                 )
               ])
             ])
-          }),
-          0
-        )
-      ])
-    ]),
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.upload_files
+      ? _c("div", { staticClass: "fixed-action-btn" }, [_vm._m(1)])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.list_files
+      ? _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "input-field col s12 m6 campo-busca" }, [
+            _c("i", { staticClass: "material-icons prefix" }, [
+              _vm._v("search")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search_query,
+                  expression: "search_query"
+                }
+              ],
+              staticClass: "validate",
+              attrs: { id: "icon_prefix", type: "text" },
+              domProps: { value: _vm.search_query },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search_query = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "icon_prefix" } }, [
+              _vm._v("Buscar arquivos...")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("table", { staticClass: "highlight" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.filteredData, function(file, index) {
+                return _c("tr", { key: index }, [
+                  _c("td", [
+                    _c("img", {
+                      staticClass: "icon_files",
+                      attrs: { src: file.img_ext }
+                    }),
+                    _c("span", { staticClass: "text_files" }, [
+                      _c("b", [_vm._v(_vm._s(file.nome))])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(file.categoria))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(file.tamanho))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(file.usuario))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(file.created_at))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm.download_files
+                      ? _c(
+                          "a",
+                          {
+                            staticClass: "green-text",
+                            attrs: {
+                              href: "arquivos/download/" + file.id_arquivo
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("cloud_download")
+                            ])
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.delete_file
+                      ? _c(
+                          "a",
+                          {
+                            staticClass: "red-text darken-4",
+                            attrs: { href: "#!" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.confirmDelete(
+                                  file.id_arquivo,
+                                  file.nome
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("delete")
+                            ])
+                          ]
+                        )
+                      : _vm._e()
+                  ])
+                ])
+              }),
+              0
+            )
+          ])
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "modal", attrs: { id: "modalfiles" } }, [
       _c("div", { staticClass: "modal-content" }, [
@@ -32176,25 +32313,23 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "fixed-action-btn" }, [
-      _c(
-        "a",
-        {
-          staticClass:
-            "btn-floating tooltipped btn-large teal darken-3 modal-trigger pulse",
-          attrs: {
-            href: "#modalfiles",
-            "data-position": "left",
-            "data-tooltip": "Enviar arquivos!"
-          }
-        },
-        [
-          _c("i", { staticClass: "large material-icons" }, [
-            _vm._v("attach_file")
-          ])
-        ]
-      )
-    ])
+    return _c(
+      "a",
+      {
+        staticClass:
+          "btn-floating tooltipped btn-large teal darken-3 modal-trigger pulse",
+        attrs: {
+          href: "#modalfiles",
+          "data-position": "left",
+          "data-tooltip": "Enviar arquivos!"
+        }
+      },
+      [
+        _c("i", { staticClass: "large material-icons" }, [
+          _vm._v("attach_file")
+        ])
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -36356,53 +36491,60 @@ var render = function() {
   return _c("div", [
     _c("div", { staticClass: "divider" }),
     _vm._v(" "),
-    _c("div", { staticClass: "fixed-action-btn" }, [
-      _c(
-        "a",
-        {
-          staticClass:
-            "btn-floating tooltipped btn-large teal darken-3 modal-trigger",
-          attrs: {
-            href: "#modalequipment",
-            "data-position": "left",
-            "data-tooltip": "Novo!"
-          },
-          on: {
-            click: function($event) {
-              return _vm.newEquipment()
-            }
-          }
-        },
-        [_c("i", { staticClass: "large material-icons" }, [_vm._v("add")])]
-      )
-    ]),
+    _vm.create_equipment
+      ? _c("div", { staticClass: "fixed-action-btn" }, [
+          _c(
+            "a",
+            {
+              staticClass:
+                "btn-floating tooltipped btn-large teal darken-3 modal-trigger",
+              attrs: {
+                href: "#modalequipment",
+                "data-position": "left",
+                "data-tooltip": "Novo!"
+              },
+              on: {
+                click: function($event) {
+                  return _vm.newEquipment()
+                }
+              }
+            },
+            [_c("i", { staticClass: "large material-icons" }, [_vm._v("add")])]
+          )
+        ])
+      : _vm._e(),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "modal modal-fixed-footer", attrs: { id: "modal_view" } },
-      [
-        _c("div", { staticClass: "modal-content" }, [
-          _c("h4", [_vm._v(_vm._s(_vm.view.descricao))]),
-          _vm._v(" "),
-          _c("div", { staticClass: "divider" }),
-          _vm._v(" "),
-          _c("p", [
-            _c("b", [_vm._v("Categoria:")]),
-            _vm._v(" " + _vm._s(_vm.view.categoria))
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "divider" }),
-          _vm._v(" "),
-          _c("p", [
-            _c("b", [_vm._v("Características: ")]),
-            _c("br"),
-            _vm._v(_vm._s(_vm.view.caracteristicas))
-          ])
-        ]),
-        _vm._v(" "),
-        _vm._m(0)
-      ]
-    ),
+    _vm.view_equipment
+      ? _c(
+          "div",
+          {
+            staticClass: "modal modal-fixed-footer",
+            attrs: { id: "modal_view" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("h4", [_vm._v(_vm._s(_vm.view.descricao))]),
+              _vm._v(" "),
+              _c("div", { staticClass: "divider" }),
+              _vm._v(" "),
+              _c("p", [
+                _c("b", [_vm._v("Categoria:")]),
+                _vm._v(" " + _vm._s(_vm.view.categoria))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "divider" }),
+              _vm._v(" "),
+              _c("p", [
+                _c("b", [_vm._v("Características: ")]),
+                _c("br"),
+                _vm._v(_vm._s(_vm.view.caracteristicas))
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(0)
+          ]
+        )
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "modal", attrs: { id: "modalequipment" } }, [
       _c("div", { staticClass: "modal-content" }, [
@@ -36573,115 +36715,125 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "col s12" }, [
-      _c("div", { staticClass: "input-field col s12 m6" }, [
-        _c("i", { staticClass: "material-icons prefix" }, [_vm._v("search")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.search_query,
-              expression: "search_query"
-            }
-          ],
-          staticClass: "validate",
-          attrs: { id: "icon_prefix", type: "text" },
-          domProps: { value: _vm.search_query },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+    _vm.list_equipments
+      ? _c("div", { staticClass: "col s12" }, [
+          _c("div", { staticClass: "input-field col s12 m6" }, [
+            _c("i", { staticClass: "material-icons prefix" }, [
+              _vm._v("search")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search_query,
+                  expression: "search_query"
+                }
+              ],
+              staticClass: "validate",
+              attrs: { id: "icon_prefix", type: "text" },
+              domProps: { value: _vm.search_query },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search_query = $event.target.value
+                }
               }
-              _vm.search_query = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "icon_prefix" } }, [
-          _vm._v("Buscar equipamentos...")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("table", { staticClass: "striped" }, [
-        _vm._m(2),
-        _vm._v(" "),
-        _vm.equipments.length > 0
-          ? _c(
-              "tbody",
-              _vm._l(_vm.filteredData, function(equip, index) {
-                return _c("tr", { key: index }, [
-                  _c("td", [_vm._v(" " + _vm._s(equip.descricao) + " ")]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(" " + _vm._s(equip.categoria) + " ")]),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "row" }, [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "modal-trigger",
-                        attrs: { href: "#modalequipment" },
-                        on: {
-                          click: function($event) {
-                            return _vm.loadForm(equip)
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("edit")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "modal-trigger green-text",
-                        attrs: { href: "#modal_view" },
-                        on: {
-                          click: function($event) {
-                            return _vm.loadView(equip)
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("remove_red_eye")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "red-text",
-                        attrs: { href: "#" },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.confirmDelete(
-                              equip.id_equipamento,
-                              equip.descricao
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "icon_prefix" } }, [
+              _vm._v("Buscar equipamentos...")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("table", { staticClass: "striped" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _vm.equipments.length > 0
+              ? _c(
+                  "tbody",
+                  _vm._l(_vm.filteredData, function(equip, index) {
+                    return _c("tr", { key: index }, [
+                      _c("td", [_vm._v(" " + _vm._s(equip.descricao) + " ")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(" " + _vm._s(equip.categoria) + " ")]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "row" }, [
+                        _vm.edit_equipment
+                          ? _c(
+                              "a",
+                              {
+                                staticClass: "modal-trigger",
+                                attrs: { href: "#modalequipment" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.loadForm(equip)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("edit")
+                                ])
+                              ]
                             )
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("delete")
-                        ])
-                      ]
-                    )
-                  ])
-                ])
-              }),
-              0
-            )
-          : _c("tbody", [_vm._m(3)])
-      ])
-    ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.view_equipment
+                          ? _c(
+                              "a",
+                              {
+                                staticClass: "modal-trigger green-text",
+                                attrs: { href: "#modal_view" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.loadView(equip)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("remove_red_eye")
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.delete_equipment
+                          ? _c(
+                              "a",
+                              {
+                                staticClass: "red-text",
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.confirmDelete(
+                                      equip.id_equipamento,
+                                      equip.descricao
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("delete")
+                                ])
+                              ]
+                            )
+                          : _vm._e()
+                      ])
+                    ])
+                  }),
+                  0
+                )
+              : _c("tbody", [_vm._m(3)])
+          ])
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -37966,26 +38118,28 @@ var render = function() {
   return _c("div", [
     _c("div", { staticClass: "divider" }),
     _vm._v(" "),
-    _c("div", { staticClass: "fixed-action-btn" }, [
-      _c(
-        "a",
-        {
-          staticClass:
-            "btn-floating tooltipped btn-large teal darken-3 modal-trigger",
-          attrs: {
-            href: "#modalpassword",
-            "data-position": "left",
-            "data-tooltip": "Nova!"
-          },
-          on: {
-            click: function($event) {
-              return _vm.newPassword()
-            }
-          }
-        },
-        [_c("i", { staticClass: "large material-icons" }, [_vm._v("add")])]
-      )
-    ]),
+    _vm.create_password
+      ? _c("div", { staticClass: "fixed-action-btn" }, [
+          _c(
+            "a",
+            {
+              staticClass:
+                "btn-floating tooltipped btn-large teal darken-3 modal-trigger",
+              attrs: {
+                href: "#modalpassword",
+                "data-position": "left",
+                "data-tooltip": "Nova!"
+              },
+              on: {
+                click: function($event) {
+                  return _vm.newPassword()
+                }
+              }
+            },
+            [_c("i", { staticClass: "large material-icons" }, [_vm._v("add")])]
+          )
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c(
       "div",
@@ -38003,25 +38157,27 @@ var render = function() {
             _vm._v(" " + _vm._s(_vm.view.login))
           ]),
           _vm._v(" "),
-          _c("p", [
-            _c("b", [_vm._v("Senha:")]),
-            _vm._v(" "),
-            _vm.show
-              ? _c("span", [_vm._v(_vm._s(_vm.view.senha))])
-              : _c(
-                  "a",
-                  {
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.showPass()
-                      }
-                    }
-                  },
-                  [_vm._v("Exibir senha")]
-                )
-          ]),
+          _vm.view_password
+            ? _c("p", [
+                _c("b", [_vm._v("Senha:")]),
+                _vm._v(" "),
+                _vm.show
+                  ? _c("span", [_vm._v(_vm._s(_vm.view.senha))])
+                  : _c(
+                      "a",
+                      {
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.showPass()
+                          }
+                        }
+                      },
+                      [_vm._v("Exibir senha")]
+                    )
+              ])
+            : _vm._e(),
           _vm._v(" "),
           _c("p", [
             _c("b", [_vm._v("Observações:")]),
@@ -38379,123 +38535,135 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "col s12" }, [
-      _c("div", { staticClass: "input-field col s12 m6" }, [
-        _c("i", { staticClass: "material-icons prefix" }, [_vm._v("search")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.search_query,
-              expression: "search_query"
-            }
-          ],
-          staticClass: "validate",
-          attrs: { id: "icon_prefix", type: "text" },
-          domProps: { value: _vm.search_query },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+    _vm.list_passwords
+      ? _c("div", { staticClass: "col s12" }, [
+          _c("div", { staticClass: "input-field col s12 m6" }, [
+            _c("i", { staticClass: "material-icons prefix" }, [
+              _vm._v("search")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search_query,
+                  expression: "search_query"
+                }
+              ],
+              staticClass: "validate",
+              attrs: { id: "icon_prefix", type: "text" },
+              domProps: { value: _vm.search_query },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search_query = $event.target.value
+                }
               }
-              _vm.search_query = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "icon_prefix" } }, [
-          _vm._v("Buscar senha...")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("table", { staticClass: "striped" }, [
-        _vm._m(3),
-        _vm._v(" "),
-        _vm.passwords.length > 0
-          ? _c(
-              "tbody",
-              _vm._l(_vm.filteredData, function(pass, index) {
-                return _c("tr", { key: index }, [
-                  _c("td", [_vm._v(" " + _vm._s(pass.descricao) + " ")]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(" " + _vm._s(pass.login) + " ")]),
-                  _vm._v(" "),
-                  pass.equipamento
-                    ? _c("td", [
-                        _vm._v(" " + _vm._s(pass.equipamento.descricao) + " ")
-                      ])
-                    : _c("td"),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "row" }, [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "modal-trigger",
-                        attrs: { href: "#modalpassword" },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.loadForm(pass)
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("edit")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "modal-trigger green-text",
-                        attrs: { href: "#modal_view" },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.loadView(pass)
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("remove_red_eye")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "red-text",
-                        attrs: { href: "#" },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.confirmDelete(
-                              pass.id_senha,
-                              pass.descricao
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "icon_prefix" } }, [
+              _vm._v("Buscar senha...")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("table", { staticClass: "striped" }, [
+            _vm._m(3),
+            _vm._v(" "),
+            _vm.passwords.length > 0
+              ? _c(
+                  "tbody",
+                  _vm._l(_vm.filteredData, function(pass, index) {
+                    return _c("tr", { key: index }, [
+                      _c("td", [_vm._v(" " + _vm._s(pass.descricao) + " ")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(" " + _vm._s(pass.login) + " ")]),
+                      _vm._v(" "),
+                      pass.equipamento
+                        ? _c("td", [
+                            _vm._v(
+                              " " + _vm._s(pass.equipamento.descricao) + " "
                             )
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("delete")
-                        ])
-                      ]
-                    )
-                  ])
-                ])
-              }),
-              0
-            )
-          : _c("tbody", [_vm._m(4)])
-      ])
-    ])
+                          ])
+                        : _c("td"),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "row" }, [
+                        _vm.edit_password
+                          ? _c(
+                              "a",
+                              {
+                                staticClass: "modal-trigger",
+                                attrs: { href: "#modalpassword" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.loadForm(pass)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("edit")
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.view_password
+                          ? _c(
+                              "a",
+                              {
+                                staticClass: "modal-trigger green-text",
+                                attrs: { href: "#modal_view" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.loadView(pass)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("remove_red_eye")
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.delete_password
+                          ? _c(
+                              "a",
+                              {
+                                staticClass: "red-text",
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.confirmDelete(
+                                      pass.id_senha,
+                                      pass.descricao
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("delete")
+                                ])
+                              ]
+                            )
+                          : _vm._e()
+                      ])
+                    ])
+                  }),
+                  0
+                )
+              : _c("tbody", [_vm._m(4)])
+          ])
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -39348,214 +39516,236 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "row" }, [
-      _c("ul", { staticClass: "collapsible" }, [
-        _c("li", [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "collapsible-body" }, [
-            _c("div", { staticClass: "row" }, [
-              _c(
-                "form",
-                {
-                  attrs: { method: "post", action: "#", id: "form_permission" },
-                  on: {
-                    submit: function($event) {
-                      $event.preventDefault()
-                      return _vm.onSubmitPermission($event)
-                    }
-                  }
-                },
-                [
-                  _c("div", { staticClass: "input-field" }, [
-                    _c("i", { staticClass: "material-icons prefix" }, [
-                      _vm._v("add_circle")
+    _vm.manage_permissions
+      ? _c("div", { staticClass: "row" }, [
+          _c("ul", { staticClass: "collapsible" }, [
+            _c("li", [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "collapsible-body" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "form",
+                    {
+                      attrs: {
+                        method: "post",
+                        action: "#",
+                        id: "form_permission"
+                      },
+                      on: {
+                        submit: function($event) {
+                          $event.preventDefault()
+                          return _vm.onSubmitPermission($event)
+                        }
+                      }
+                    },
+                    [
+                      _c("div", { staticClass: "input-field" }, [
+                        _c("i", { staticClass: "material-icons prefix" }, [
+                          _vm._v("add_circle")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.permission.label,
+                              expression: "permission.label"
+                            }
+                          ],
+                          staticClass: "validate",
+                          attrs: { id: "permissao", type: "text" },
+                          domProps: { value: _vm.permission.label },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.permission,
+                                "label",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: "permissao" } }, [
+                          _vm._v("Nova permissão. Ex: create-user")
+                        ])
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "row" },
+                  [
+                    _c("span", { staticClass: "text-center" }, [
+                      _vm._v("Permissões cadastradas no sistema:")
                     ]),
                     _vm._v(" "),
+                    _c("div", { staticClass: "divider" }),
+                    _c("br"),
+                    _vm._v(" "),
+                    _vm._l(_vm.permissions, function(perm, index) {
+                      return _c("div", { key: index, staticClass: "chip" }, [
+                        _c("b", [_vm._v(_vm._s(perm.nome))]),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.deletePermission(perm.id_permissao)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "close material-icons" }, [
+                              _vm._v("close")
+                            ])
+                          ]
+                        )
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ])
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.set_user_permissions
+      ? _c(
+          "div",
+          { staticClass: "row" },
+          [
+            _vm.user.foto
+              ? _c("div", [
+                  _c("img", {
+                    staticClass: "circle img-user left",
+                    attrs: { src: _vm.user.foto, alt: "imagem_usuario" }
+                  })
+                ])
+              : _c("div", [
+                  _c("img", {
+                    staticClass: "circle img-user left",
+                    attrs: {
+                      src: "/KnowWeb/public/img/app/usuario-icon.png",
+                      alt: "imagem_usuario"
+                    }
+                  })
+                ]),
+            _vm._v(" "),
+            _c("h5", [
+              _vm._v("Permissões de "),
+              _c("b", [_vm._v(_vm._s(_vm.user.nome))])
+            ]),
+            _vm._v(" "),
+            _c("h6", { staticClass: "header grey-text" }, [
+              _c("b", [_vm._v("Tipo do usuário: ")]),
+              _vm._v(_vm._s(_vm.user.tipo_usuario))
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "divider" }),
+            _c("br"),
+            _vm._v(" "),
+            _vm._l(_vm.permissions, function(perm, index) {
+              return _c(
+                "div",
+                { key: index, staticClass: "switch col s12 m4 form-register" },
+                [
+                  _c("b", [_vm._v(_vm._s(perm.nome) + ": ")]),
+                  _vm._v(" "),
+                  _c("label", [
+                    _vm._v("\n                Off\n                "),
                     _c("input", {
                       directives: [
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.permission.label,
-                          expression: "permission.label"
+                          value: perm.check,
+                          expression: "perm.check"
                         }
                       ],
-                      staticClass: "validate",
-                      attrs: { id: "permissao", type: "text" },
-                      domProps: { value: _vm.permission.label },
+                      attrs: { type: "checkbox" },
+                      domProps: {
+                        checked: Array.isArray(perm.check)
+                          ? _vm._i(perm.check, null) > -1
+                          : perm.check
+                      },
                       on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                        change: function($event) {
+                          var $$a = perm.check,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = null,
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 &&
+                                _vm.$set(perm, "check", $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                _vm.$set(
+                                  perm,
+                                  "check",
+                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                )
+                            }
+                          } else {
+                            _vm.$set(perm, "check", $$c)
                           }
-                          _vm.$set(_vm.permission, "label", $event.target.value)
                         }
                       }
                     }),
                     _vm._v(" "),
-                    _c("label", { attrs: { for: "permissao" } }, [
-                      _vm._v("Nova permissão. Ex: create-user")
-                    ])
-                  ])
+                    _c("span", { staticClass: "lever" }),
+                    _vm._v("\n                On\n            ")
+                  ]),
+                  _c("br"),
+                  _c("br")
                 ]
               )
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "row" },
-              [
-                _c("span", { staticClass: "text-center" }, [
-                  _vm._v("Permissões cadastradas no sistema:")
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "divider" }),
-                _c("br"),
-                _vm._v(" "),
-                _vm._l(_vm.permissions, function(perm, index) {
-                  return _c("div", { key: index, staticClass: "chip" }, [
-                    _c("b", [_vm._v(_vm._s(perm.nome))]),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        attrs: { href: "#" },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.deletePermission(perm.id_permissao)
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "close material-icons" }, [
-                          _vm._v("close")
-                        ])
-                      ]
-                    )
-                  ])
-                })
-              ],
-              2
-            )
-          ])
+            })
+          ],
+          2
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.set_user_permissions
+      ? _c("div", { staticClass: "center-align" }, [
+          _c("div", { staticClass: "divider" }),
+          _c("br"),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn waves-effect waves-light green",
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.saveUserPermissions()
+                }
+              }
+            },
+            [
+              _vm._v("Salvar alterações"),
+              _c("i", { staticClass: "material-icons right" }, [_vm._v("send")])
+            ]
+          )
         ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "row" },
-      [
-        _vm.user.foto
-          ? _c("div", [
-              _c("img", {
-                staticClass: "circle img-user left",
-                attrs: { src: _vm.user.foto, alt: "imagem_usuario" }
-              })
-            ])
-          : _c("div", [
-              _c("img", {
-                staticClass: "circle img-user left",
-                attrs: {
-                  src: "/KnowWeb/public/img/app/usuario-icon.png",
-                  alt: "imagem_usuario"
-                }
-              })
-            ]),
-        _vm._v(" "),
-        _c("h5", [
-          _vm._v("Permissões de "),
-          _c("b", [_vm._v(_vm._s(_vm.user.nome))])
-        ]),
-        _vm._v(" "),
-        _c("h6", { staticClass: "header grey-text" }, [
-          _c("b", [_vm._v("Tipo do usuário: ")]),
-          _vm._v(_vm._s(_vm.user.tipo_usuario))
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "divider" }),
-        _c("br"),
-        _vm._v(" "),
-        _vm._l(_vm.permissions, function(perm, index) {
-          return _c("div", { key: index, staticClass: "switch" }, [
-            _c("b", [_vm._v(_vm._s(perm.nome) + ": ")]),
-            _vm._v(" "),
-            _c("label", [
-              _vm._v("\n                Off\n                "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: perm.check,
-                    expression: "perm.check"
-                  }
-                ],
-                attrs: { type: "checkbox" },
-                domProps: {
-                  checked: Array.isArray(perm.check)
-                    ? _vm._i(perm.check, null) > -1
-                    : perm.check
-                },
-                on: {
-                  change: function($event) {
-                    var $$a = perm.check,
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = null,
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 && _vm.$set(perm, "check", $$a.concat([$$v]))
-                      } else {
-                        $$i > -1 &&
-                          _vm.$set(
-                            perm,
-                            "check",
-                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                          )
-                      }
-                    } else {
-                      _vm.$set(perm, "check", $$c)
-                    }
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "lever" }),
-              _vm._v("\n                On\n            ")
-            ]),
-            _c("br"),
-            _c("br")
-          ])
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "divider" })
-      ],
-      2
-    ),
-    _vm._v(" "),
-    _vm._m(1),
-    _vm._v(" "),
-    _c(
-      "a",
-      {
-        staticClass: "btn waves-effect waves-light green",
-        attrs: { href: "#" },
-        on: {
-          click: function($event) {
-            $event.preventDefault()
-            return _vm.saveUserPermissions()
-          }
-        }
-      },
-      [
-        _vm._v("Salvar alterações"),
-        _c("i", { staticClass: "material-icons right" }, [_vm._v("send")])
-      ]
-    )
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -39606,26 +39796,28 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "fixed-action-btn" }, [
-      _c(
-        "a",
-        {
-          staticClass:
-            "btn-floating tooltipped btn-large teal darken-3 modal-trigger",
-          attrs: {
-            href: "#modaluser",
-            "data-position": "left",
-            "data-tooltip": "Novo!"
-          },
-          on: {
-            click: function($event) {
-              return _vm.newSector()
-            }
-          }
-        },
-        [_c("i", { staticClass: "large material-icons" }, [_vm._v("add")])]
-      )
-    ]),
+    _vm.create_user
+      ? _c("div", { staticClass: "fixed-action-btn" }, [
+          _c(
+            "a",
+            {
+              staticClass:
+                "btn-floating tooltipped btn-large teal darken-3 modal-trigger",
+              attrs: {
+                href: "#modaluser",
+                "data-position": "left",
+                "data-tooltip": "Novo!"
+              },
+              on: {
+                click: function($event) {
+                  return _vm.newSector()
+                }
+              }
+            },
+            [_c("i", { staticClass: "large material-icons" }, [_vm._v("add")])]
+          )
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "modal", attrs: { id: "modaluser" } }, [
       _c("div", { staticClass: "modal-content" }, [
@@ -40010,227 +40202,274 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "col s12" }, [
-      _c("ul", { staticClass: "collapsible" }, [
-        _c("li", [
-          _vm._m(1),
-          _vm._v(" "),
-          _c("div", { staticClass: "collapsible-body" }, [
-            _c("div", { staticClass: "row" }, [
-              _c(
-                "form",
-                {
-                  attrs: { method: "post", action: "#", id: "form_permission" },
-                  on: {
-                    submit: function($event) {
-                      $event.preventDefault()
-                      return _vm.onSubmitPermission($event)
-                    }
-                  }
-                },
-                [
-                  _c("div", { staticClass: "input-field" }, [
-                    _c("i", { staticClass: "material-icons prefix" }, [
-                      _vm._v("add_circle")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.permission.label,
-                          expression: "permission.label"
-                        }
-                      ],
-                      staticClass: "validate",
-                      attrs: { id: "permissao", type: "text" },
-                      domProps: { value: _vm.permission.label },
+    _vm.manage_permissions
+      ? _c("div", { staticClass: "col s12" }, [
+          _c("ul", { staticClass: "collapsible" }, [
+            _c("li", [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "collapsible-body" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "form",
+                    {
+                      attrs: {
+                        method: "post",
+                        action: "#",
+                        id: "form_permission"
+                      },
                       on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.permission, "label", $event.target.value)
+                        submit: function($event) {
+                          $event.preventDefault()
+                          return _vm.onSubmitPermission($event)
                         }
                       }
-                    }),
-                    _vm._v(" "),
-                    _c("label", { attrs: { for: "permissao" } }, [
-                      _vm._v("Nova permissão. Ex: create-user")
-                    ])
-                  ])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "row" },
-              [
-                _c("span", { staticClass: "text-center" }, [
-                  _vm._v("Permissões cadastradas no sistema:")
+                    },
+                    [
+                      _c("div", { staticClass: "input-field" }, [
+                        _c("i", { staticClass: "material-icons prefix" }, [
+                          _vm._v("add_circle")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.permission.label,
+                              expression: "permission.label"
+                            }
+                          ],
+                          staticClass: "validate",
+                          attrs: { id: "permissao", type: "text" },
+                          domProps: { value: _vm.permission.label },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.permission,
+                                "label",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: "permissao" } }, [
+                          _vm._v("Nova permissão. Ex: create-user")
+                        ])
+                      ])
+                    ]
+                  )
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "divider" }),
-                _c("br"),
-                _vm._v(" "),
-                _vm._l(_vm.permissions, function(perm, index) {
-                  return _c("div", { key: index, staticClass: "chip" }, [
-                    _c("b", [_vm._v(_vm._s(perm.nome))]),
+                _c(
+                  "div",
+                  { staticClass: "row" },
+                  [
+                    _c("span", { staticClass: "text-center" }, [
+                      _vm._v("Permissões cadastradas no sistema:")
+                    ]),
                     _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        attrs: { href: "#" },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.deletePermission(perm.id_permissao)
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "close material-icons" }, [
-                          _vm._v("close")
-                        ])
-                      ]
-                    )
-                  ])
-                })
+                    _c("div", { staticClass: "divider" }),
+                    _c("br"),
+                    _vm._v(" "),
+                    _vm._l(_vm.permissions, function(perm, index) {
+                      return _c("div", { key: index, staticClass: "chip" }, [
+                        _c("b", [_vm._v(_vm._s(perm.nome))]),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.deletePermission(perm.id_permissao)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "close material-icons" }, [
+                              _vm._v("close")
+                            ])
+                          ]
+                        )
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ])
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.list_users
+      ? _c("div", { staticClass: "col s12" }, [
+          _c("div", { staticClass: "input-field col s12 m6" }, [
+            _c("i", { staticClass: "material-icons prefix" }, [
+              _vm._v("search")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search_query,
+                  expression: "search_query"
+                }
               ],
-              2
+              staticClass: "validate",
+              attrs: { id: "icon_prefix", type: "text" },
+              domProps: { value: _vm.search_query },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search_query = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "icon_prefix" } }, [
+              _vm._v("Buscar usuários...")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("table", [
+            _vm._m(2),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.filteredData, function(user, index) {
+                return _c("tr", { key: index }, [
+                  user.foto
+                    ? _c("td", [
+                        _c("img", {
+                          staticClass: "circle img-user",
+                          attrs: { src: user.foto, alt: "imagem_usuario" }
+                        })
+                      ])
+                    : _c("td", [
+                        _c("img", {
+                          staticClass: "circle img-user",
+                          attrs: {
+                            src: "img/app/usuario-icon.png",
+                            alt: "imagem_usuario"
+                          }
+                        })
+                      ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(user.nome))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(user.email))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(user.telefone))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(user.tipo_usuario))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(user.setor))]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "row" }, [
+                    user.id_usuario !== _vm.user_logged.id_usuario &&
+                    user.tipo_usuario == "Membro" &&
+                    _vm.set_user_permissions
+                      ? _c(
+                          "a",
+                          {
+                            staticClass: "green-text darken-4",
+                            attrs: {
+                              href: "usuarios/permissoes/" + user.id_usuario
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("lock")
+                            ])
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.edit_user
+                      ? _c(
+                          "a",
+                          {
+                            staticClass: "modal-trigger",
+                            attrs: { href: "#modaluser" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.loadForm(user)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("edit")
+                            ])
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    user.id_usuario !== _vm.user_logged.id_usuario &&
+                    _vm.disable_user &&
+                    user.status == 1
+                      ? _c(
+                          "a",
+                          {
+                            staticClass: "red-text",
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.confirmStatus(user)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("check")
+                            ])
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    user.id_usuario !== _vm.user_logged.id_usuario &&
+                    _vm.disable_user &&
+                    user.status == 0
+                      ? _c(
+                          "a",
+                          {
+                            staticClass: "red-text",
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.confirmStatus(user)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("block")
+                            ])
+                          ]
+                        )
+                      : _vm._e()
+                  ])
+                ])
+              }),
+              0
             )
           ])
         ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col s12" }, [
-      _c("div", { staticClass: "input-field col s12 m6" }, [
-        _c("i", { staticClass: "material-icons prefix" }, [_vm._v("search")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.search_query,
-              expression: "search_query"
-            }
-          ],
-          staticClass: "validate",
-          attrs: { id: "icon_prefix", type: "text" },
-          domProps: { value: _vm.search_query },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.search_query = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "icon_prefix" } }, [
-          _vm._v("Buscar usuários...")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("table", [
-        _vm._m(2),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.filteredData, function(user, index) {
-            return _c("tr", { key: index }, [
-              user.foto
-                ? _c("td", [
-                    _c("img", {
-                      staticClass: "circle img-user",
-                      attrs: { src: user.foto, alt: "imagem_usuario" }
-                    })
-                  ])
-                : _c("td", [
-                    _c("img", {
-                      staticClass: "circle img-user",
-                      attrs: {
-                        src: "img/app/usuario-icon.png",
-                        alt: "imagem_usuario"
-                      }
-                    })
-                  ]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(user.nome))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(user.email))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(user.telefone))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(user.tipo_usuario))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(user.setor))]),
-              _vm._v(" "),
-              _c("td", { staticClass: "row" }, [
-                user.tipo_usuario == "Membro"
-                  ? _c(
-                      "a",
-                      {
-                        staticClass: "green-text darken-4",
-                        attrs: {
-                          href: "usuarios/permissoes/" + user.id_usuario
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("lock")
-                        ])
-                      ]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "modal-trigger",
-                    attrs: { href: "#modaluser" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.loadForm(user)
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "material-icons" }, [_vm._v("edit")])]
-                ),
-                _vm._v(" "),
-                user.id_usuario !== _vm.user_logged.id_usuario
-                  ? _c(
-                      "a",
-                      {
-                        staticClass: "red-text",
-                        attrs: { href: "#" },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.confirmDelete(user.id_usuario, user.nome)
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("delete")
-                        ])
-                      ]
-                    )
-                  : _vm._e()
-              ])
-            ])
-          }),
-          0
-        )
-      ])
-    ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = [

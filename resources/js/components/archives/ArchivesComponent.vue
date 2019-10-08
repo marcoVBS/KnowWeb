@@ -1,7 +1,7 @@
 <template>
     <div class="container container2">
 
-        <div class="row">
+        <div v-if="manage_file_extensions" class="row">
             <ul class="collapsible">
                 <li>
                     <div class="collapsible-header green-text darken-4"><i class="material-icons">settings</i>Extensões de arquivo permitidas</div>
@@ -31,13 +31,13 @@
             </ul>
         </div>
 
-        <div class="fixed-action-btn">
+        <div v-if="upload_files" class="fixed-action-btn">
             <a class="btn-floating tooltipped btn-large teal darken-3 modal-trigger pulse"  href="#modalfiles" data-position="left" data-tooltip="Enviar arquivos!">
                 <i class="large material-icons">attach_file</i>
             </a>
         </div>
 
-        <div class="row">
+        <div v-if="list_files" class="row">
             <div class="input-field col s12 m6 campo-busca">
                 <i class="material-icons prefix">search</i>
                 <input id="icon_prefix" type="text" v-model="search_query" class="validate">
@@ -66,8 +66,8 @@
                         <td>{{file.usuario}}</td>
                         <td>{{file.created_at}}</td>
                         <td>
-                            <a :href="`arquivos/download/${file.id_arquivo}`" class="green-text"><i class="material-icons">cloud_download</i></a>
-                            <a href="#!" class="red-text darken-4" @click.prevent="confirmDelete(file.id_arquivo, file.nome)"><i class="material-icons">delete</i></a>
+                            <a v-if="download_files" :href="`arquivos/download/${file.id_arquivo}`" class="green-text"><i class="material-icons">cloud_download</i></a>
+                            <a v-if="delete_file" href="#!" class="red-text darken-4" @click.prevent="confirmDelete(file.id_arquivo, file.nome)"><i class="material-icons">delete</i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -122,7 +122,7 @@
 
 <script>
 export default {
-    props: ['categories'],
+    props: ['categories','manage_file_extensions', 'list_files', 'upload_files', 'download_files', 'delete_file'],
     data() {
         return {
             extension: {
@@ -180,6 +180,10 @@ export default {
 
         },
         uploadFiles(){
+            if(!this.upload_files){
+                return false;
+            }
+
             let vm = this
             this.progress = true
 
@@ -230,6 +234,10 @@ export default {
             })
         },
         deleteFile(id){
+            if(!this.delete_file){
+                return false;
+            }
+
             let vm = this
             axios.delete(`arquivos/delete/${id}`)
                 .then(function(response){
@@ -246,6 +254,10 @@ export default {
                 .catch((error) => (vm.$snotify.error('Falha ao excluir o arquivo!', 'Erro')))
         },
         insertExtension(){
+            if(!this.manage_file_extensions){
+                return false;
+            }
+
             let vm = this
             
             axios.post('arquivos/extensao/create', {
@@ -274,6 +286,10 @@ export default {
             })    
         },
         getFiles(){
+            if(!this.list_files){
+                return false;
+            }
+
             let vm = this
                         
             axios.get("arquivos/all")
@@ -282,6 +298,10 @@ export default {
             })
         },
         getExtensions(){
+            if(!this.manage_file_extensions){
+                return false;
+            }
+
             let vm = this
                         
             axios.get("arquivos/extensao/all")
@@ -290,6 +310,10 @@ export default {
             })
         },
         deleteExtension(id){
+            if(!this.manage_file_extensions){
+                return false;
+            }
+
             let vm = this
             axios.delete(`arquivos/extensao/delete/${id}`)
                 .then(function(response){

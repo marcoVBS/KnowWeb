@@ -7,6 +7,7 @@ use App\Models\Sector\Setor;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
@@ -18,11 +19,19 @@ class UsersController extends Controller
 
     public function index()
     {
-        $sectors = Setor::all();
-        return view('users.users', ['sectors' => json_encode($sectors)]);
+        if(Gate::allows('list-users')) {
+            $sectors = Setor::all();
+            return view('users.users', ['sectors' => json_encode($sectors)]);
+        }else{
+            abort(403,'Você não possui permissão para gerenciar usuários. Contate o administrador!');
+        }
     }
 
     public function getUsers(){
+        if (Gate::denies('list-users')) {
+            return false;
+        }
+
         $users = User::orderBy('tipo_usuario', 'asc')->orderBy('nome', 'asc')->get();
         foreach ($users as $user) {
             $user->setor = Setor::find($user->setor_id)->nome;
@@ -34,6 +43,10 @@ class UsersController extends Controller
 
     public function create(Request $request)
     {
+        if (Gate::denies('create-user')) {
+            return false;
+        }
+
         $user = new User();
         $user->nome = $request->nome;
         
@@ -59,6 +72,7 @@ class UsersController extends Controller
         
         $user->password = Hash::make($request->password);
         $user->tipo_usuario = $request->tipo_usuario;
+        $user->status = 1;
         $user->setor_id = $request->setor_id;
         
         if($user->save()){
@@ -76,6 +90,10 @@ class UsersController extends Controller
 
     public function update(Request $request)
     {
+        if (Gate::denies('edit-user')) {
+            return false;
+        }
+
         $user = User::find($request->id_usuario);
         $user->nome = $request->nome;
         
@@ -123,18 +141,24 @@ class UsersController extends Controller
         }
     }
 
-    public function delete($id)
+    public function changeStatus(Request $request)
     {
-        $user = User::find($id);
+        if (Gate::denies('disable-user')) {
+            return false;
+        }
+
+        $user = User::find($request->id);
+        $user->status = $request->status;
         
-        if($user->delete()){
+        if($user->save()){
+            $action = $user->status == 1 ? 'habilitado' : 'desabilitado';
             return response()->json([
-                'message' => "Usuario {$user->nome} excluído com sucesso!",
+                'message' => "Usuario {$user->nome} {$action} com sucesso!",
                 'deleted' => true
             ]);
         }else{
             return response()->json([
-                'message' => "Falha ao excluir usuário!",
+                'message' => "Falha ao atualizar status do usuario!",
                 'deleted' => false
             ]);
         }

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Archive\Archive;
 use App\Models\Archive\ArchiveCategorie;
-
+use Illuminate\Support\Facades\Gate;
 class ArchiveCategorieController extends Controller
 {
     public function __construct()
@@ -15,6 +15,10 @@ class ArchiveCategorieController extends Controller
     }
 
     public function create(Request $request){
+        if (Gate::denies('manage-categorie-file')) {
+            return false;
+        }
+        
         $categoria = new ArchiveCategorie();
         $categoria->nome = $request->nome;
         $categoria->descricao = $request->descricao;
@@ -38,6 +42,10 @@ class ArchiveCategorieController extends Controller
     }
 
     public function delete($id){
+        if (Gate::denies('manage-categorie-file')) {
+            return false;
+        }
+        
         if(count(Archive::where('categoria_arquivo_id', $id)->get()) == 0){
             $categorie = ArchiveCategorie::find($id);
             
@@ -61,6 +69,10 @@ class ArchiveCategorieController extends Controller
     }
 
     public function update(Request $request){
+        if (Gate::denies('manage-categorie-file')) {
+            return false;
+        }
+        
         $categorie = ArchiveCategorie::find($request->id_categoria_arquivo);
         $categorie->nome = $request->nome;
         $categorie->descricao = $request->descricao;

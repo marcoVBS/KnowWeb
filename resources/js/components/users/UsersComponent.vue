@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <div class="fixed-action-btn">
+        <div v-if="create_user" class="fixed-action-btn">
             <a class="btn-floating tooltipped btn-large teal darken-3 modal-trigger" href="#modaluser" data-position="left" data-tooltip="Novo!" @click="newSector()">
                 <i class="large material-icons">add</i>
             </a>
@@ -85,7 +85,7 @@
             </div>
         </div>
 
-        <div class="col s12">
+        <div v-if="manage_permissions" class="col s12">
             <ul class="collapsible">
                 <li>
                     <div class="collapsible-header green-text darken-4"><i class="material-icons">settings</i>Gerenciar permissões do sistema</div>
@@ -115,7 +115,7 @@
             </ul>
         </div>
 
-        <div class="col s12">
+        <div v-if="list_users" class="col s12">
 
             <div class="input-field col s12 m6">
                 <i class="material-icons prefix">search</i>
@@ -149,9 +149,10 @@
                         <td>{{ user.tipo_usuario }}</td>
                         <td>{{ user.setor }}</td>
                         <td class="row">
-                            <a v-if="user.tipo_usuario == 'Membro'" :href="`usuarios/permissoes/${user.id_usuario}`" class="green-text darken-4"><i class="material-icons">lock</i></a>
-                            <a href="#modaluser" class="modal-trigger" @click.prevent="loadForm(user)"><i class="material-icons">edit</i></a>
-                            <a v-if="user.id_usuario !== user_logged.id_usuario" class="red-text" href="#" @click.prevent="confirmDelete(user.id_usuario, user.nome)"><i class="material-icons">delete</i></a>
+                            <a v-if="user.id_usuario !== user_logged.id_usuario && user.tipo_usuario == 'Membro' && set_user_permissions" :href="`usuarios/permissoes/${user.id_usuario}`" class="green-text darken-4"><i class="material-icons">lock</i></a>
+                            <a v-if="edit_user" href="#modaluser" class="modal-trigger" @click.prevent="loadForm(user)"><i class="material-icons">edit</i></a>
+                            <a v-if="user.id_usuario !== user_logged.id_usuario && disable_user && user.status == 1" class="red-text" href="#" @click.prevent="confirmStatus(user)"><i class="material-icons">check</i></a>
+                            <a v-if="user.id_usuario !== user_logged.id_usuario && disable_user && user.status == 0" class="red-text" href="#" @click.prevent="confirmStatus(user)"><i class="material-icons">block</i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -162,7 +163,7 @@
 
 <script>
 export default {
-    props: ['user_logged', 'sectors'],
+    props: ['user_logged', 'sectors', 'manage_permissions', 'set_user_permissions', 'list_users', 'create_user', 'disable_user', 'edit_user'],
     data() {
         return {
             users: [],
@@ -188,10 +189,14 @@ export default {
                 })
             }
             return dataFilter
-        }
+        },
     },
     methods: {
         getPermissions(){
+            if(!this.manage_permissions){
+                return false;
+            }
+            
             let vm = this
                         
             axios.get("usuarios/permissoes/get/all")
@@ -207,6 +212,10 @@ export default {
             })
         },
         onSubmitPermission(){
+            if(!this.manage_permissions){
+                return false;
+            }
+
             let vm = this
             
             axios.post('usuarios/permissoes/create', {
@@ -236,6 +245,10 @@ export default {
             })    
         },
         deletePermission(id){
+            if(!this.manage_permissions){
+                return false;
+            }
+
             let vm = this
             axios.delete(`usuarios/permissoes/delete/${id}`)
                 .then(function(response){
@@ -273,6 +286,10 @@ export default {
             }
         },
         getUsers(){
+            if(!this.list_users){
+                return false;
+            }
+
             let vm = this
                         
             axios.get("usuarios/all")
@@ -285,6 +302,10 @@ export default {
             this.user = user            
         },
         insertUser(){
+            if(!this.create_user){
+                return false;
+            }
+
             if(this.user.password == this.user.password2){
                 if(this.user.password.length >= 8){
                     let vm = this
@@ -323,6 +344,10 @@ export default {
             }
         },
         updateUser(){
+            if(!this.edit_user){
+                return false;
+            }
+
             if(this.user.password){
                 if(this.user.password == this.user.password2){
                     if(this.user.password.length >= 8){
@@ -392,32 +417,41 @@ export default {
                 })
             }
         },
-        confirmDelete(id, name){
+        confirmStatus(user){
             let vm = this
-            vm.$snotify.confirm(`Deseja realmente excluir o usuario ${name}?`, 'Exclusão!', {
+            let action = user.status == 1 ? 'desabilitar' : 'habilitar'
+
+            vm.$snotify.confirm(`Deseja ${action} o usuario ${user.nome}?`, 'Exclusão!', {
                 timeout: false,
                 position: 'centerCenter',
                 buttons:[
-                    {text: 'Sim', action: (toast) => {vm.deleteUser(id); vm.$snotify.remove(toast.id)}},
+                    {text: 'Sim', action: (toast) => {vm.changeStatus(user); vm.$snotify.remove(toast.id)}},
                     {text: 'Não', action: (toast) => vm.$snotify.remove(toast.id)},
                 ]
             })
         },
-        deleteUser(id){
-            let vm = this
-            axios.delete(`usuarios/delete/${id}`)
-                .then(function(response){
-                    let stored = response.data.deleted
-                    let message = response.data.message
+        changeStatus(user){
+            if(!this.disable_user){
+                return false;
+            }
 
-                    if(stored == true){
-                        vm.$snotify.success(message, 'Sucesso')
-                        vm.getUsers()
-                    }else{
-                        vm.$snotify.error(message, 'Erro')
-                    }
-                })
-                .catch((error) => (vm.$snotify.error('Falha ao excluir o usuario!', 'Erro')))
+            let vm = this
+            axios.put('usuarios/status/',{
+                id : user.id_usuario,
+                status : user.status == 1 ? 0 : 1  
+            })
+            .then(function(response){
+                let stored = response.data.deleted
+                let message = response.data.message
+
+                if(stored == true){
+                    vm.$snotify.success(message, 'Sucesso')
+                    vm.getUsers()
+                }else{
+                    vm.$snotify.error(message, 'Erro')
+                }
+            })
+            .catch((error) => (vm.$snotify.error('Falha ao atualizar status do usuario!', 'Erro')))
         }
     },
     mounted() {

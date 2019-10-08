@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\HelpDesk\HelpDeskCategorie;
 use App\Http\Controllers\Controller;
 use App\Models\HelpDesk\HelpDesk;
-
+use Illuminate\Support\Facades\Gate;
 class HelpDeskCategorieController extends Controller
 {
 
@@ -16,6 +16,10 @@ class HelpDeskCategorieController extends Controller
     }
 
     public function create(Request $request){
+        if (Gate::denies('manage-categorie-helpdesk')) {
+            return false;
+        }
+
         $categoria = new HelpDeskCategorie();
         $categoria->nome = $request->nome;
         $categoria->descricao = $request->descricao;
@@ -39,6 +43,10 @@ class HelpDeskCategorieController extends Controller
     }
 
     public function delete($id){
+        if (Gate::denies('manage-categorie-helpdesk')) {
+            return false;
+        }
+        
         if(count(HelpDesk::where('categoria_atendimento_id', $id)->get()) == 0){
             $categorie = HelpDeskCategorie::find($id);
             
@@ -62,6 +70,10 @@ class HelpDeskCategorieController extends Controller
     }
 
     public function update(Request $request){
+        if (Gate::denies('manage-categorie-helpdesk')) {
+            return false;
+        }
+        
         $categorie = HelpDeskCategorie::find($request->id_categoria_atendimento);
         $categorie->nome = $request->nome;
         $categorie->descricao = $request->descricao;

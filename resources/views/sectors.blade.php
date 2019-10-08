@@ -8,7 +8,9 @@
         <h4 class="header grey-text center-align">Gestão de setores</h4>
         <div class="row">
             <div class="col s12">
-                <sectors-component></sectors-component>
+                @can('manage-sectors')
+                    <sectors-component></sectors-component>
+                @endcan
             </div>
         </div>
     </div>

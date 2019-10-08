@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('tipo_usuario', 45);
+            $table->integer('status');
             $table->integer('setor_id')->unsigned();
             $table->foreign('setor_id')->references('id_setor')->on('tb_setor')
                 ->onDelete('cascade')->onUpdate('cascade');

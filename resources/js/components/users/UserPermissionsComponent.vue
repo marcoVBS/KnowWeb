@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="row">
+        <div v-if="manage_permissions" class="row">
             <ul class="collapsible">
                 <li>
                     <div class="collapsible-header green-text darken-4"><i class="material-icons">settings</i>Gerenciar permissões do sistema</div>
@@ -30,7 +30,7 @@
             </ul>
         </div>
 
-        <div class="row">
+        <div v-if="set_user_permissions" class="row">
             <div v-if="user.foto">
                 <img :src="user.foto" alt="imagem_usuario" class="circle img-user left">
             </div>
@@ -42,7 +42,7 @@
             <h6 class="header grey-text"><b>Tipo do usuário: </b>{{user.tipo_usuario}}</h6>
             <div class="divider"></div><br>
 
-             <div v-for="(perm, index) in permissions" :key="index" class="switch">
+             <div v-for="(perm, index) in permissions" :key="index" class="switch col s12 m4 form-register">
                 <b>{{ perm.nome }}: </b>
                 <label>
                     Off
@@ -51,17 +51,18 @@
                     On
                 </label><br><br>
             </div>
-
-            <div class="divider"></div>
         </div>
-        <a href="../../usuarios" class="btn"><i class="material-icons left">keyboard_return</i>Cancelar</a>
-        <a href="#" @click.prevent="saveUserPermissions()" class="btn waves-effect waves-light green">Salvar alterações<i class="material-icons right">send</i></a>
+        <div v-if="set_user_permissions" class="center-align">
+            <div class="divider"></div><br>
+            <a href="../../usuarios" class="btn"><i class="material-icons left">keyboard_return</i>Cancelar</a>
+            <a href="#" @click.prevent="saveUserPermissions()" class="btn waves-effect waves-light green">Salvar alterações<i class="material-icons right">send</i></a>
+        </div>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['user'],
+    props: ['user', 'manage_permissions', 'set_user_permissions'],
     data() {
         return {
             permissions: [],
@@ -72,6 +73,10 @@ export default {
     },
     methods: {
         getPermissions(){
+            if(!this.set_user_permissions){
+                return false;
+            }
+            
             let vm = this
                         
             axios.get("get/all")
@@ -87,6 +92,10 @@ export default {
             })
         },
         onSubmitPermission(){
+            if(!this.manage_permissions){
+                return false;
+            }
+            
             let vm = this
             
             axios.post('create', {
@@ -116,6 +125,10 @@ export default {
             })    
         },
         deletePermission(id){
+            if(!this.manage_permissions){
+                return false;
+            }
+            
             let vm = this
             axios.delete(`delete/${id}`)
                 .then(function(response){
@@ -134,6 +147,10 @@ export default {
                 })
         },
         saveUserPermissions(){
+            if(!this.set_user_permissions){
+                return false;
+            }
+            
             this.user.permissoes = []
             this.permissions.forEach(element => {
                 if(element.check){

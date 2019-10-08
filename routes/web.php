@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Gate;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -57,7 +59,11 @@ Route::get('/artigos/{id}', 'Article\ArticleController@view');
 
 //GESTÃO DE CATEGORIAS
 Route::get('/categorias', function() {
-    return view('categories');
+    if(Gate::any(['manage-categorie-helpdesk', 'manage-categorie-file', 'manage-categorie-equipment', 'manage-categorie-article'])){
+        return view('categories');
+    }else{
+        abort(403,'Você não possui permissão para fazer gerenciar categorias. Contate o administrador!');
+    }
 })->middleware('auth')->name('categories');
 
 //Categorias de Atendimento
@@ -133,7 +139,7 @@ Route::put('/perfil/updatePassword', 'User\ProfileController@updatePassword');
 Route::get('/usuarios', 'User\UsersController@index')->name('users');
 Route::get('/usuarios/all', 'User\UsersController@getUsers');
 Route::post('/usuarios/create', 'User\UsersController@create');
-Route::delete('/usuarios/delete/{id}', 'User\UsersController@delete');
+Route::put('/usuarios/status', 'User\UsersController@changeStatus');
 Route::put('/usuarios/update', 'User\UsersController@update');
 
 //Permissões

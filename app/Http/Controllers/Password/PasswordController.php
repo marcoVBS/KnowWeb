@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Equipment\Equipment;
 use App\Models\Password\Password;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PasswordController extends Controller
 {
@@ -16,8 +17,12 @@ class PasswordController extends Controller
 
     public function index()
     {
-        $equipments = Equipment::all();
-        return view('passwords', ['equipamentos' => json_encode($equipments)]);
+        if(Gate::allows('list-passwords')){
+            $equipments = Equipment::all();
+            return view('passwords', ['equipamentos' => json_encode($equipments)]);
+        }else{
+            abort(403,'Você não possui permissão para gerenciar senhas. Contate o administrador!');
+        }
     }
 
     public function getPasswords()
@@ -36,6 +41,10 @@ class PasswordController extends Controller
 
     public function create(Request $request)
     {
+        if (Gate::denies('create-password')) {
+            return false;
+        }
+
         $password = new Password();
         $password->descricao = $request->descricao;
         $password->login = $request->login;
@@ -57,6 +66,10 @@ class PasswordController extends Controller
 
     public function update(Request $request)
     {
+        if (Gate::denies('edit-password')) {
+            return false;
+        }
+
         $password = Password::find($request->id_senha);
         $password->descricao = $request->descricao;
         $password->login = $request->login;
@@ -78,6 +91,10 @@ class PasswordController extends Controller
 
     public function delete($id)
     {
+        if (Gate::denies('delete-password')) {
+            return false;
+        }
+
         $password = Password::find($id);
         
         if($password->delete()){

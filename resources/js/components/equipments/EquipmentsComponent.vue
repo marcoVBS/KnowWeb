@@ -2,13 +2,13 @@
     <div>
         <div class="divider"></div>
 
-        <div class="fixed-action-btn">
+        <div v-if="create_equipment" class="fixed-action-btn">
             <a class="btn-floating tooltipped btn-large teal darken-3 modal-trigger" href="#modalequipment" data-position="left" data-tooltip="Novo!" @click="newEquipment()">
                 <i class="large material-icons">add</i>
             </a>
         </div>
 
-         <div id="modal_view" class="modal modal-fixed-footer">
+         <div v-if="view_equipment" id="modal_view" class="modal modal-fixed-footer">
             <div class="modal-content">
                 <h4>{{ view.descricao }}</h4>
                 <div class="divider"></div>
@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <div class="col s12">
+        <div v-if="list_equipments" class="col s12">
 
             <div class="input-field col s12 m6">
                 <i class="material-icons prefix">search</i>
@@ -85,9 +85,9 @@
                         <td> {{equip.descricao}} </td>
                         <td> {{equip.categoria}} </td>
                         <td class="row">
-                                <a href="#modalequipment" class="modal-trigger" @click="loadForm(equip)"><i class="material-icons">edit</i></a>
-                                <a href="#modal_view" class="modal-trigger green-text" @click="loadView(equip)"><i class="material-icons">remove_red_eye</i></a>
-                                <a class="red-text" href="#" @click.prevent="confirmDelete(equip.id_equipamento, equip.descricao)"><i class="material-icons">delete</i></a>
+                                <a v-if="edit_equipment" href="#modalequipment" class="modal-trigger" @click="loadForm(equip)"><i class="material-icons">edit</i></a>
+                                <a v-if="view_equipment" href="#modal_view" class="modal-trigger green-text" @click="loadView(equip)"><i class="material-icons">remove_red_eye</i></a>
+                                <a v-if="delete_equipment" class="red-text" href="#" @click.prevent="confirmDelete(equip.id_equipamento, equip.descricao)"><i class="material-icons">delete</i></a>
                         </td>
                         </tr>
                 </tbody>
@@ -102,7 +102,7 @@
 
 <script>
 export default {
-    props: ['categories'],
+    props: ['categories', 'list_equipments', 'view_equipment', 'create_equipment', 'edit_equipment', 'delete_equipment'],
     data() {
         return {
             equipments: [],
@@ -142,6 +142,10 @@ export default {
             $('#modalequipment').modal('close')
         },
         insertEquipment(){
+            if(!this.create_equipment){
+                return false;
+            }
+
             let vm = this
             
             axios.post('equipamentos/create', {
@@ -174,6 +178,10 @@ export default {
             })
         },
         getEquipments(){
+            if(!this.list_equipments){
+                return false;
+            }
+
             let vm = this
                         
             axios.get("equipamentos/all")
@@ -193,6 +201,10 @@ export default {
             })
         },
         deleteEquipment(id){
+            if(!this.delete_equipment){
+                return false;
+            }
+
             let vm = this
             axios.delete(`equipamentos/delete/${id}`)
                 .then(function(response){
@@ -216,6 +228,10 @@ export default {
             this.view = equip
         },
         updateEquipment(){
+            if(!this.edit_equipment){
+                return false;
+            }
+
             let vm = this
             axios.put('equipamentos/update', vm.equipment)
             .then(function(response){

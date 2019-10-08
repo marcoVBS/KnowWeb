@@ -65,13 +65,32 @@
                 </li>
                 <li><a class="waves-effect white-text" href="{{ route('articles') }}"><i class="material-icons white-text">library_books</i>Artigos</a></li>
                 <li><a class="waves-effect white-text" href="{{ route('computers') }}"><i class="material-icons white-text">computer</i>Computadores</a></li>
-                <li><a class="waves-effect white-text" href="{{ route('archives') }}"><i class="material-icons white-text">archive</i>Arquivos</a></li>
-                <li><a class="waves-effect white-text" href="{{ route('equipments') }}"><i class="material-icons white-text">router</i>Equipamentos</a></li>
-                <li><a class="waves-effect white-text" href="{{ route('passwords') }}"><i class="material-icons white-text">security</i>Senhas</a></li>
+                
+                @can('list-files')
+                    <li><a class="waves-effect white-text" href="{{ route('archives') }}"><i class="material-icons white-text">archive</i>Arquivos</a></li>
+                @endcan
+                
+                @can('list-equipments')
+                    <li><a class="waves-effect white-text" href="{{ route('equipments') }}"><i class="material-icons white-text">router</i>Equipamentos</a></li>
+                @endcan
+
+                @can('list-passwords')
+                    <li><a class="waves-effect white-text" href="{{ route('passwords') }}"><i class="material-icons white-text">security</i>Senhas</a></li>
+                @endcan
+                
                 <li><a class="waves-effect white-text" href="{{ route('helpdesks') }}"><i class="material-icons white-text">help_outline</i>Atendimentos</a></li>
-                <li><a class="waves-effect white-text" href="{{ route('categories') }}"><i class="material-icons white-text">more</i>Categorias</a></li>
-                <li><a class="waves-effect white-text" href="{{ route('sectors') }}"><i class="material-icons white-text">domain</i>Setores</a></li>
-                <li><a class="waves-effect white-text" href="{{ route('users') }}"><i class="material-icons white-text">supervisor_account</i>Usuários</a></li>
+                
+                @canany(['manage-categorie-helpdesk', 'manage-categorie-file', 'manage-categorie-equipment', 'manage-categorie-article'])
+                    <li><a class="waves-effect white-text" href="{{ route('categories') }}"><i class="material-icons white-text">more</i>Categorias</a></li>
+                @endcanany
+                
+                @can('manage-sectors')
+                    <li><a class="waves-effect white-text" href="{{ route('sectors') }}"><i class="material-icons white-text">domain</i>Setores</a></li>
+                @endcan
+                
+                @can('list-users')
+                    <li><a class="waves-effect white-text" href="{{ route('users') }}"><i class="material-icons white-text">supervisor_account</i>Usuários</a></li>
+                @endcan
             </ul>
         </div>
         

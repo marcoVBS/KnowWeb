@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Equipment\EquipmentCategorie;
 use App\Models\Equipment\Equipment;
+use Illuminate\Support\Facades\Gate;
 
 class EquipmentController extends Controller
 {
@@ -16,8 +17,12 @@ class EquipmentController extends Controller
 
     public function index()
     {
-        $categories = EquipmentCategorie::all();
-        return view('equipments', ['categorias' => json_encode($categories)]);
+        if(Gate::allows('list-equipments')){
+            $categories = EquipmentCategorie::all();
+            return view('equipments', ['categorias' => json_encode($categories)]);
+        }else{
+            abort(403,'Você não possui permissão para gerenciar equipamentos. Contate o administrador!');
+        }
     }
 
     public function getEquipments()
@@ -34,6 +39,10 @@ class EquipmentController extends Controller
 
     public function create(Request $request)
     {
+        if (Gate::denies('create-equipment')) {
+            return false;
+        }
+
         $equipment = new Equipment();
         $equipment->descricao = $request->descricao;
         $equipment->caracteristicas = $request->caracteristicas;
@@ -53,6 +62,10 @@ class EquipmentController extends Controller
 
     public function update(Request $request)
     {
+        if (Gate::denies('edit-equipment')) {
+            return false;
+        }
+
         $equipment = Equipment::find($request->id_equipamento);
         $equipment->descricao = $request->descricao;
         $equipment->caracteristicas = $request->caracteristicas;
@@ -72,6 +85,10 @@ class EquipmentController extends Controller
 
     public function delete($id)
     {
+        if (Gate::denies('delete-equipment')) {
+            return false;
+        }
+
         $equipment = Equipment::find($id);
         
         if($equipment->delete()){

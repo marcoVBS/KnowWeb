@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Equipment\Equipment;
 use App\Models\Equipment\EquipmentCategorie;
-
+use Illuminate\Support\Facades\Gate;
 class EquipmentCategorieController extends Controller
 {
     public function __construct()
@@ -15,6 +15,10 @@ class EquipmentCategorieController extends Controller
     }
 
     public function create(Request $request){
+        if (Gate::denies('manage-categorie-equipment')) {
+            return false;
+        }
+        
         $categoria = new EquipmentCategorie();
         $categoria->nome = $request->nome;
         $categoria->descricao = $request->descricao;
@@ -38,6 +42,10 @@ class EquipmentCategorieController extends Controller
     }
 
     public function delete($id){
+        if (Gate::denies('manage-categorie-equipment')) {
+            return false;
+        }
+        
         if(count(Equipment::where('categoria_equipamento_id', $id)->get()) == 0){
             $categorie = EquipmentCategorie::find($id);
             
@@ -61,6 +69,10 @@ class EquipmentCategorieController extends Controller
     }
 
     public function update(Request $request){
+        if (Gate::denies('manage-categorie-equipment')) {
+            return false;
+        }
+        
         $categorie = EquipmentCategorie::find($request->id_categoria_equipamento);
         $categorie->nome = $request->nome;
         $categorie->descricao = $request->descricao;

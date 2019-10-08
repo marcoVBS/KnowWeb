@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Article\Article;
 use App\Models\Article\ArticleCategorie;
-
+use Illuminate\Support\Facades\Gate;
 class ArticleCategorieController extends Controller
 {
     public function __construct()
@@ -15,6 +15,10 @@ class ArticleCategorieController extends Controller
     }
 
     public function create(Request $request){
+        if (Gate::denies('manage-categorie-article')) {
+            return false;
+        }
+        
         $categoria = new ArticleCategorie();
         $categoria->nome = $request->nome;
         $categoria->descricao = $request->descricao;
@@ -38,6 +42,10 @@ class ArticleCategorieController extends Controller
     }
 
     public function delete($id){
+        if (Gate::denies('manage-categorie-article')) {
+            return false;
+        }
+        
         if(count(Article::where('categoria_artigo_id',$id)->get()) == 0){
             $categorie = ArticleCategorie::find($id);
             
@@ -61,6 +69,10 @@ class ArticleCategorieController extends Controller
     }
 
     public function update(Request $request){
+        if (Gate::denies('manage-categorie-article')) {
+            return false;
+        }
+        
         $categorie = ArticleCategorie::find($request->id_categoria_artigo);
         $categorie->nome = $request->nome;
         $categorie->descricao = $request->descricao;
