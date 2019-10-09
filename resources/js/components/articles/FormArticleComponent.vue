@@ -3,7 +3,7 @@
         <h5 v-if="update" class="header grey-text">Editar Artigo</h5>
         <h5 v-else class="header grey-text">Novo Artigo</h5>
     
-        <div class="col s12 m8">
+        <div v-if="create_article || edit_article" class="col s12 m8">
             
             <form @submit.prevent="onSubmit" action="#" method="post" id="form_article">
                 
@@ -69,7 +69,7 @@
 
         </div>
 
-        <div class="col s12 m4 form-register">
+        <div v-if="create_article || edit_article" class="col s12 m4 form-register">
             <h5 class="header grey-text center-align">Associações</h5><div class="divider"></div>
             <div>
                 <p><b>Ações:</b>
@@ -321,7 +321,7 @@
 import Editor from '@tinymce/tinymce-vue';
 
 export default {
-    props: ['update', 'categories', 'all_tags', 'articleupdate'],
+    props: ['update', 'categories', 'all_tags', 'articleupdate', 'create_article', 'edit_article'],
     data() {
         return {
             article: {
@@ -530,6 +530,10 @@ export default {
             })    
         },
         createArticle(){
+            if(!this.create_article){
+                return false
+            }
+
             let vm = this
 
             axios.post('novo/create', {
@@ -563,6 +567,10 @@ export default {
             })
         },
         updateArticle(){
+            if(!this.edit_article){
+                return false
+            }
+
             let vm = this
 
             axios.put('update', {

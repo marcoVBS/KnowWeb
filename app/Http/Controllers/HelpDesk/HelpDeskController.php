@@ -20,7 +20,11 @@ class HelpDeskController extends Controller
 
     public function index()
     {
-        $helpdesks = HelpDesk::all();
+        if(Auth::user()->tipo_usuario == 'Usuario'){
+            $helpdesks = HelpDesk::where('usuario_solicitante_id', Auth::id())->get();
+        }else{
+            $helpdesks = HelpDesk::all();
+        }
         foreach ($helpdesks as $helpdesk) {
             $helpdesk->autor = User::find($helpdesk->usuario_solicitante_id)->nome;
             $helpdesk->categoria = HelpDeskCategorie::find($helpdesk->categoria_atendimento_id)->nome;
@@ -137,13 +141,17 @@ class HelpDeskController extends Controller
 
     public function view(Request $request){
         $helpdesk = HelpDesk::find($request->id);
+        if(Auth::user()->tipo_usuario == 'Usuario' && Auth::id() !== $helpdesk->usuario_solicitante_id){
+            abort(403,'Você não possui permissão para vizualizar chamados de outros usuários!');
+        }
+
         $user = User::find($helpdesk->usuario_solicitante_id);
         $helpdesk->autor = $user->nome;
         $helpdesk->autor_foto = $user->foto;
         $helpdesk->categoria = HelpDeskCategorie::find($helpdesk->categoria_atendimento_id)->nome;
         $arquivos = HelpDeskArchive::where('atendimento_id', $request->id)->whereNull('resposta_atendimento_id')->where('tipo', '<>', 'Imagem')->get();
         $helpdesk->arquivos = $arquivos;
-        return view('helpdesk.helpdesk', ['helpdesk'=> json_encode($helpdesk)]);
+        return view('helpdesk.helpdesk', ['helpdesk'=> json_encode($helpdesk), 'user_type' => json_encode(Auth::user()->tipo_usuario)]);
     }
 
     public function changePriority(Request $request){

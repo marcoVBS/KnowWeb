@@ -2,7 +2,7 @@
     <div>
         <div class="divider"></div>
 
-        <div class="row">
+        <div v-if="manage_operational_systems" class="row">
             <ul class="collapsible">
                 <li>
                     <div class="collapsible-header green-text darken-4"><i class="material-icons">settings</i>Sistemas Operacionais</div>
@@ -72,7 +72,7 @@
             </ul>
         </div>
 
-        <div class="row">
+        <div v-if="create_computer || edit_computer" class="row">
             <h5 v-if="updateComputer" class="header grey-text">Editar Computador</h5>
             <h5 v-else class="header grey-text">Novo Computador</h5>
 
@@ -158,7 +158,7 @@
 
 <script>
 export default {
-    props: ['update', 'sos', 'setores', 'computerupdate'],
+    props: ['update', 'sos', 'setores', 'computerupdate', 'create_computer', 'edit_computer', 'manage_operational_systems'],
     data() {
         return {
             operSystems: [],
@@ -188,6 +188,10 @@ export default {
             }
         },
         insertComputer(){
+            if(!this.create_computer){
+                return false;
+            }
+            
             let vm = this
             
             axios.post('novo/create', {
@@ -228,6 +232,10 @@ export default {
             })    
         },
         updatePC(){
+            if(!this.edit_computer){
+                return false;
+            }
+            
             let vm = this
             axios.put('update', vm.computer)
             .then(function(response){
@@ -250,17 +258,27 @@ export default {
             }
         },
         getSOs(){
+            if(!this.manage_operational_systems){
+                return false;
+            }
+            
             let vm = this
+            let route = this.updateComputer ? '../so/all' : 'so/all'
                         
-            axios.get("so/all")
+            axios.get(route)
             .then(function(response){
                 vm.operSystems = response.data.systems
             })
         },
         insertSO(){
-            let vm = this
+            if(!this.manage_operational_systems){
+                return false;
+            }
             
-            axios.post('so/create', {
+            let vm = this
+            let route = this.updateComputer ? '../so/create' : 'so/create'
+            
+            axios.post(route, {
                 nome: vm.operSystem.nome,
                 versao: vm.operSystem.versao,
                 arquitetura: vm.operSystem.arquitetura
@@ -299,8 +317,14 @@ export default {
             })
         },
         deleteSO(id){
+            if(!this.manage_operational_systems){
+                return false;
+            }
+            
             let vm = this
-            axios.delete(`so/delete/${id}`)
+            let route = this.updateComputer ? `../so/delete/${id}` : `so/delete/${id}`
+            
+            axios.delete(route)
                 .then(function(response){
                     let stored = response.data.deleted
                     let message = response.data.message
@@ -319,8 +343,14 @@ export default {
             this.operSystem = SO
         },
         updateSystem(){
+            if(!this.manage_operational_systems){
+                return false;
+            }
+            
             let vm = this
-            axios.put('so/update', vm.operSystem)
+            let route = this.updateComputer ? '../so/update' : 'so/update'
+
+            axios.put(route, vm.operSystem)
             .then(function(response){
                 let stored = response.data.stored
                 let message = response.data.message

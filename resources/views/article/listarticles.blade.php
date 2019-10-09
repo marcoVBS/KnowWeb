@@ -5,9 +5,11 @@
 @section('content')
 
     <div class="container container2">
-        {{--  <h5 class="header grey-text center-align">Artigos</h5>  --}}
         <div class="row">
-            <articles-component :user_id="{{ Auth::user()->id_usuario }}"></articles-component>
+            <articles-component :user_id="{{ Auth::user()->id_usuario }}"
+                :create_article="{{ Auth::user()->can('create-article') ? 1 : 0 }}"
+                :edit_article="{{ Auth::user()->can('edit-article') ? 1 : 0 }}"
+                :delete_article="{{ Auth::user()->can('delete-article') ? 1 : 0 }}"></articles-component>
         </div>
         
     </div>

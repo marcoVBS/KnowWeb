@@ -1,13 +1,13 @@
 <template>
     <div>
         <div class="divider"></div>
-        <div class="fixed-action-btn">
+        <div v-if="create_computer" class="fixed-action-btn">
             <a class="btn-floating tooltipped btn-large teal darken-3 modal-trigger" href="computadores/novo" data-position="left" data-tooltip="Novo!">
                 <i class="large material-icons">add</i>
             </a>
         </div>
 
-        <div class="col s12">
+        <div v-if="list_computers" class="col s12">
 
             <div class="input-field col s12 m6">
                 <i class="material-icons prefix">search</i>
@@ -36,9 +36,9 @@
                         <td> {{pc.identificador_computador}} </td>
                         <td> {{pc.setor}} </td>
                         <td class="row">
-                                <a :href="`computadores/atualizar/${pc.id_computador}`"><i class="material-icons">edit</i></a>
-                                <a :href="`computadores/${pc.id_computador}`" class="green-text"><i class="material-icons">remove_red_eye</i></a>
-                                <a class="red-text" href="#" @click.prevent="confirmDelete(pc.id_computador)"><i class="material-icons">delete</i></a>
+                                <a v-if="edit_computer" :href="`computadores/atualizar/${pc.id_computador}`"><i class="material-icons">edit</i></a>
+                                <a v-if="view_computer" :href="`computadores/${pc.id_computador}`" class="green-text"><i class="material-icons">remove_red_eye</i></a>
+                                <a v-if="delete_computer" class="red-text" href="#" @click.prevent="confirmDelete(pc.id_computador)"><i class="material-icons">delete</i></a>
                         </td>
                         </tr>
                 </tbody>
@@ -53,6 +53,7 @@
 
 <script>
 export default {
+    props: ['list_computers', 'view_computer', 'create_computer', 'edit_computer', 'delete_computer'],
     data() {
         return {
             computers: [],
@@ -75,6 +76,10 @@ export default {
     },
     methods: {
         getComputers(){
+            if(!this.list_computers){
+                return false;
+            }
+            
             let vm = this
                         
             axios.get("computadores/all")
@@ -94,6 +99,10 @@ export default {
             })
         },
         deleteComputer(id){
+            if(!this.delete_computer){
+                return false;
+            }
+            
             let vm = this
             axios.delete(`computadores/delete/${id}`)
             .then(function(response){

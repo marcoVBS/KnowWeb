@@ -25,6 +25,7 @@ use App\Models\Password\Password;
 use App\Models\Sector\Setor;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
@@ -41,7 +42,11 @@ class ArticleController extends Controller
 
     public function getArticles(){
 
-        $articles = Article::orderBy('updated_at', 'desc')->get();
+        if(Auth::user()->tipo_usuario == 'Usuario'){
+            $articles = Article::where('publico', '1')->orderBy('updated_at', 'desc')->get();
+        }else{
+            $articles = Article::orderBy('updated_at', 'desc')->get();
+        }
         foreach ($articles as $article) {
             $article->autor = User::find($article->usuario_autor_id)->nome;
             
@@ -73,12 +78,20 @@ class ArticleController extends Controller
     
     public function new()
     {
-        $categories = ArticleCategorie::all();
-        $tags = Tag::all();
-        return view('article.newarticle', ['update' => json_encode(false), 'categories' => json_encode($categories), 'tags' => json_encode($tags)]);
+        if(Gate::allows('create-article')){
+            $categories = ArticleCategorie::all();
+            $tags = Tag::all();
+            return view('article.newarticle', ['update' => json_encode(false), 'categories' => json_encode($categories), 'tags' => json_encode($tags)]);
+        }else{
+            abort(403,'Você não possui permissão para adicionar artigos. Contate o administrador!');
+        }
     }
     
     public function change($id){
+        if(Gate::denies('edit-article')){
+            abort(403,'Você não possui permissão para editar artigos. Contate o administrador!');
+        }
+
         $categories = ArticleCategorie::all();
         $tags = Tag::all();
         $article = Article::find($id);
@@ -145,6 +158,10 @@ class ArticleController extends Controller
 
     public function create(Request $request)
     {
+        if (Gate::denies('create-article')) {
+            return false;
+        }
+
         $article = new Article();
         $article->titulo = $request->titulo;
         $article->descricao = $request->descricao;
@@ -243,6 +260,10 @@ class ArticleController extends Controller
     }
 
     public function update(Request $request){
+        if (Gate::denies('edit-article')) {
+            return false;
+        }
+
         $stored = true;
 
         $article = Article::find($request->id_artigo);
@@ -346,6 +367,12 @@ class ArticleController extends Controller
 
     public function delete($id)
     {
+        $article = Article::find($id);
+
+        if (Gate::denies('delete-article') && $article->usuario_autor_id !== Auth::id()) {
+            return false;
+        }
+
         TagArticle::where('artigo_id', $id)->delete();
         ArchiveArticle::where('artigo_id', $id)->delete();
         PasswordArticle::where('artigo_id', $id)->delete();
@@ -365,7 +392,6 @@ class ArticleController extends Controller
             Storage::delete('/artigos/imagens/'.$img->nome);
         }
 
-        $article = Article::find($id);
         
         if($article->delete()){
             return response()->json([

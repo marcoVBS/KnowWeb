@@ -64,8 +64,10 @@
                     </div>
                 </li>
                 <li><a class="waves-effect white-text" href="{{ route('articles') }}"><i class="material-icons white-text">library_books</i>Artigos</a></li>
-                <li><a class="waves-effect white-text" href="{{ route('computers') }}"><i class="material-icons white-text">computer</i>Computadores</a></li>
-                
+                @can('list-computers')
+                    <li><a class="waves-effect white-text" href="{{ route('computers') }}"><i class="material-icons white-text">computer</i>Computadores</a></li>
+                @endcan
+
                 @can('list-files')
                     <li><a class="waves-effect white-text" href="{{ route('archives') }}"><i class="material-icons white-text">archive</i>Arquivos</a></li>
                 @endcan

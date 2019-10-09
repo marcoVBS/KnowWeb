@@ -37,7 +37,8 @@
                             <p><b><i class="material-icons left">archive</i> Arquivos:</b></p>
                             <div class="col s12 m4" v-for="(file, index) in article.arquivos" :key="index">
                                 <div class="form-register view-assoc">
-                                    <a :href="`../arquivos/download/${file.id_arquivo}`"><img :src="'../'+file.img_ext" class="icon_files"><b><span class="text_files">{{file.nome}}</span></b></a>
+                                    <a v-if="download_files" :href="`../arquivos/download/${file.id_arquivo}`"><img :src="'../'+file.img_ext" class="icon_files"><b><span class="text_files">{{file.nome}}</span></b></a>
+                                    <span v-else><img :src="'../'+file.img_ext" class="icon_files">{{file.nome}}</span>
                                     <p><b>Categoria: </b>{{file.categoria}} <br>
                                     <b>Tamanho: </b>{{file.tamanho}}</p>
                                 </div>
@@ -49,11 +50,14 @@
                             <p><b><i class="material-icons left">security</i> Senhas:</b></p>
                             <div class="col s12 m6" v-for="(pass, index) in article.senhas" :key="index">
                                 <div class="form-register view-assoc">
-                                    <p><b>Descrição: </b>{{pass.descricao}} <br>
-                                    <b>Login: </b>{{pass.login}} <br>
-                                    <b>Senha:</b> 
-                                    <span v-if="show">{{ pass.senha }}</span>
-                                    <a v-else href="#" @click.prevent="showPass()">Exibir senha</a></p>
+                                    <p>
+                                        <b>Descrição: </b>{{pass.descricao}} <br>
+                                        <b>Login: </b>{{pass.login}} <br>
+                                        <b>Senha:</b> 
+                                            <span v-if="show && view_password">{{ pass.senha }}</span>
+                                            <a v-else-if="!show && view_password" href="#" @click.prevent="showPass()">Exibir senha</a>
+                                            <span v-else>********</span>
+                                    </p>
 
                                     <p v-if="pass.equipamento"><b>Equipamento: </b>{{pass.equipamento.descricao}}</p>
                                 </div>
@@ -97,7 +101,7 @@
             <b>Tags: </b><div v-for="(tag, index) in article.tags" :key="index" class="chip"> {{ tag }} </div><div class="divider"></div><br>
                     
             <a href="../artigos" class="btn"><i class="material-icons left">keyboard_return</i>Voltar</a>
-            <a :href="`../artigos/atualizar${article.id_artigo}`" class="btn green"><i class="material-icons left">edit</i>Editar</a>
+            <a v-if="edit_article" :href="`../artigos/atualizar${article.id_artigo}`" class="btn green"><i class="material-icons left">edit</i>Editar</a>
             
         </div>
     </div>
@@ -107,7 +111,7 @@
 import Editor from '@tinymce/tinymce-vue';
 
 export default {
-    props: ['article'],
+    props: ['article', 'edit_article', 'download_files', 'view_password'],
     data() {
         return {
             show: false

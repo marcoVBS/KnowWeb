@@ -1,14 +1,9 @@
 <template>
     <div>
-        <div class="fixed-action-btn">
+        <div v-if="create_article" class="fixed-action-btn">
             <a class="btn-floating tooltipped btn-large teal darken-3 modal-trigger" href="artigos/novo" data-position="left" data-tooltip="Novo!">
                 <i class="large material-icons">add</i>
             </a>
-        </div>
-
-        <div class="col s12">
-            <h5 class="header grey-text"><i class="small material-icons">library_books</i> Artigos</h5>
-            <div class="divider"></div>
         </div>
 
         <div class="input-field col s12 m6">
@@ -52,8 +47,8 @@
                     <div v-for="(tag, index) in article.tags" :key="index" class="chip"> {{ tag }} </div>
                     
                     <div class="secondary-content">
-                        <a :href="`artigos/atualizar${article.id_artigo}`"><i class="material-icons green-text">edit</i></a>
-                        <a v-if="(user_id == article.usuario_autor_id)" @click.prevent="confirmDelete(article.id_artigo, article.titulo)" href="#"><i class="material-icons red-text">delete</i></a>
+                        <a v-if="edit_article" :href="`artigos/atualizar${article.id_artigo}`"><i class="material-icons green-text">edit</i></a>
+                        <a v-if="user_id == article.usuario_autor_id || delete_article" @click.prevent="confirmDelete(article.id_artigo, article.titulo)" href="#"><i class="material-icons red-text">delete</i></a>
                     </div>
                 </a>
             </li>
@@ -65,7 +60,7 @@
 
 <script>
 export default {
-    props: ['user_id'],
+    props: ['user_id', 'create_article', 'edit_article', 'delete_article'],
     data() {
         return {
             articles: [],
@@ -143,6 +138,7 @@ export default {
             })
         },
         deleteArticle(id){
+            
             let vm = this
             axios.delete(`artigos/delete/${id}`)
             .then(function(response){

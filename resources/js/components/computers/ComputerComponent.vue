@@ -2,7 +2,7 @@
     <div>
         <h5 class="header grey-text"><i class="medium material-icons left">settings</i>Informações do Computador</h5><div class="divider"></div><br>
         
-        <div class="row">
+        <div v-if="view_computer" class="row">
             <div class="col s12 m6 form-register">
                 <p><b>Placa-mãe: </b>{{ computer.placa_mae }}<br>
                 <b>Processador: </b>{{ computer.processador }}<br>
@@ -48,6 +48,6 @@
 
 <script>
 export default {
-    props: ['computer' , 'articles']
+    props: ['computer' , 'articles', 'view_computer']
 }
 </script>

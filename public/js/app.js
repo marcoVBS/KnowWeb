@@ -2602,9 +2602,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['article'],
+  props: ['article', 'edit_article', 'download_files', 'view_password'],
   data: function data() {
     return {
       show: false
@@ -2691,13 +2695,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user_id'],
+  props: ['user_id', 'create_article', 'edit_article', 'delete_article'],
   data: function data() {
     return {
       articles: [],
@@ -3136,7 +3135,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['update', 'categories', 'all_tags', 'articleupdate'],
+  props: ['update', 'categories', 'all_tags', 'articleupdate', 'create_article', 'edit_article'],
   data: function data() {
     return {
       article: {
@@ -3351,6 +3350,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     createArticle: function createArticle() {
+      if (!this.create_article) {
+        return false;
+      }
+
       var vm = this;
       axios.post('novo/create', {
         titulo: vm.article.titulo,
@@ -3381,6 +3384,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     updateArticle: function updateArticle() {
+      if (!this.edit_article) {
+        return false;
+      }
+
       var vm = this;
       axios.put('update', {
         id_artigo: vm.article.id_artigo,
@@ -4167,7 +4174,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['computer', 'articles']
+  props: ['computer', 'articles', 'view_computer']
 });
 
 /***/ }),
@@ -4235,6 +4242,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['list_computers', 'view_computer', 'create_computer', 'edit_computer', 'delete_computer'],
   data: function data() {
     return {
       computers: [],
@@ -4259,6 +4267,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getComputers: function getComputers() {
+      if (!this.list_computers) {
+        return false;
+      }
+
       var vm = this;
       axios.get("computadores/all").then(function (response) {
         vm.computers = response.data.computers;
@@ -4284,6 +4296,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     deleteComputer: function deleteComputer(id) {
+      if (!this.delete_computer) {
+        return false;
+      }
+
       var vm = this;
       axios.delete("computadores/delete/".concat(id)).then(function (response) {
         var stored = response.data.deleted;
@@ -4475,7 +4491,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['update', 'sos', 'setores', 'computerupdate'],
+  props: ['update', 'sos', 'setores', 'computerupdate', 'create_computer', 'edit_computer', 'manage_operational_systems'],
   data: function data() {
     return {
       operSystems: [],
@@ -4505,6 +4521,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     insertComputer: function insertComputer() {
+      if (!this.create_computer) {
+        return false;
+      }
+
       var vm = this;
       axios.post('novo/create', {
         placa_mae: vm.computer.placa_mae,
@@ -4541,6 +4561,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     updatePC: function updatePC() {
+      if (!this.edit_computer) {
+        return false;
+      }
+
       var vm = this;
       axios.put('update', vm.computer).then(function (response) {
         var stored = response.data.stored;
@@ -4563,14 +4587,24 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getSOs: function getSOs() {
+      if (!this.manage_operational_systems) {
+        return false;
+      }
+
       var vm = this;
-      axios.get("so/all").then(function (response) {
+      var route = this.updateComputer ? '../so/all' : 'so/all';
+      axios.get(route).then(function (response) {
         vm.operSystems = response.data.systems;
       });
     },
     insertSO: function insertSO() {
+      if (!this.manage_operational_systems) {
+        return false;
+      }
+
       var vm = this;
-      axios.post('so/create', {
+      var route = this.updateComputer ? '../so/create' : 'so/create';
+      axios.post(route, {
         nome: vm.operSystem.nome,
         versao: vm.operSystem.versao,
         arquitetura: vm.operSystem.arquitetura
@@ -4613,8 +4647,13 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     deleteSO: function deleteSO(id) {
+      if (!this.manage_operational_systems) {
+        return false;
+      }
+
       var vm = this;
-      axios.delete("so/delete/".concat(id)).then(function (response) {
+      var route = this.updateComputer ? "../so/delete/".concat(id) : "so/delete/".concat(id);
+      axios.delete(route).then(function (response) {
         var stored = response.data.deleted;
         var message = response.data.message;
 
@@ -4633,8 +4672,13 @@ __webpack_require__.r(__webpack_exports__);
       this.operSystem = SO;
     },
     updateSystem: function updateSystem() {
+      if (!this.manage_operational_systems) {
+        return false;
+      }
+
       var vm = this;
-      axios.put('so/update', vm.operSystem).then(function (response) {
+      var route = this.updateComputer ? '../so/update' : 'so/update';
+      axios.put(route, vm.operSystem).then(function (response) {
         var stored = response.data.stored;
         var message = response.data.message;
         vm.operSystem = {};
@@ -5303,7 +5347,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user_id', 'helpdesk'],
+  props: ['user_id', 'user_type', 'helpdesk'],
   data: function data() {
     return {
       respostas: [],
@@ -5335,6 +5379,10 @@ __webpack_require__.r(__webpack_exports__);
       this.createResponse();
     },
     changePriority: function changePriority() {
+      if (this.user_type == 'Usuario') {
+        return false;
+      }
+
       var vm = this;
       axios.post('prioridade', {
         id_atendimento: vm.helpdesk.id_atendimento,
@@ -5352,6 +5400,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     confirmAssoc: function confirmAssoc() {
+      if (this.user_type == 'Usuario') {
+        this.changeStatus('Finalizado');
+        return true;
+      }
+
       var vm = this;
       vm.$snotify.confirm('Deseja associar algum artigo a este atendimento?', 'Associar!', {
         timeout: false,
@@ -5393,7 +5446,7 @@ __webpack_require__.r(__webpack_exports__);
         if (stored == true) {
           vm.changeStatus('Finalizado');
         } else {
-          vm.$snotify.error('Falha ao alterar prioridade!', 'Erro');
+          vm.$snotify.error('Falha ao associar artigos!', 'Erro');
         }
       }).catch(function (error) {
         vm.$snotify.error('Falha ao associar artigos!', 'Erro');
@@ -6444,8 +6497,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
 //
 //
 //
@@ -32558,29 +32609,37 @@ var render = function() {
                               "div",
                               { staticClass: "form-register view-assoc" },
                               [
-                                _c(
-                                  "a",
-                                  {
-                                    attrs: {
-                                      href:
-                                        "../arquivos/download/" +
-                                        file.id_arquivo
-                                    }
-                                  },
-                                  [
-                                    _c("img", {
-                                      staticClass: "icon_files",
-                                      attrs: { src: "../" + file.img_ext }
-                                    }),
-                                    _c("b", [
-                                      _c(
-                                        "span",
-                                        { staticClass: "text_files" },
-                                        [_vm._v(_vm._s(file.nome))]
-                                      )
-                                    ])
-                                  ]
-                                ),
+                                _vm.download_files
+                                  ? _c(
+                                      "a",
+                                      {
+                                        attrs: {
+                                          href:
+                                            "../arquivos/download/" +
+                                            file.id_arquivo
+                                        }
+                                      },
+                                      [
+                                        _c("img", {
+                                          staticClass: "icon_files",
+                                          attrs: { src: "../" + file.img_ext }
+                                        }),
+                                        _c("b", [
+                                          _c(
+                                            "span",
+                                            { staticClass: "text_files" },
+                                            [_vm._v(_vm._s(file.nome))]
+                                          )
+                                        ])
+                                      ]
+                                    )
+                                  : _c("span", [
+                                      _c("img", {
+                                        staticClass: "icon_files",
+                                        attrs: { src: "../" + file.img_ext }
+                                      }),
+                                      _vm._v(_vm._s(file.nome))
+                                    ]),
                                 _vm._v(" "),
                                 _c("p", [
                                   _c("b", [_vm._v("Categoria: ")]),
@@ -32629,9 +32688,10 @@ var render = function() {
                                   _vm._v(" "),
                                   _c("b", [_vm._v("Senha:")]),
                                   _vm._v(" "),
-                                  _vm.show
+                                  _vm.show && _vm.view_password
                                     ? _c("span", [_vm._v(_vm._s(pass.senha))])
-                                    : _c(
+                                    : !_vm.show && _vm.view_password
+                                    ? _c(
                                         "a",
                                         {
                                           attrs: { href: "#" },
@@ -32644,6 +32704,7 @@ var render = function() {
                                         },
                                         [_vm._v("Exibir senha")]
                                       )
+                                    : _c("span", [_vm._v("********")])
                                 ]),
                                 _vm._v(" "),
                                 pass.equipamento
@@ -32776,17 +32837,21 @@ var render = function() {
         _vm._v(" "),
         _vm._m(6),
         _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "btn green",
-            attrs: { href: "../artigos/atualizar" + _vm.article.id_artigo }
-          },
-          [
-            _c("i", { staticClass: "material-icons left" }, [_vm._v("edit")]),
-            _vm._v("Editar")
-          ]
-        )
+        _vm.edit_article
+          ? _c(
+              "a",
+              {
+                staticClass: "btn green",
+                attrs: { href: "../artigos/atualizar" + _vm.article.id_artigo }
+              },
+              [
+                _c("i", { staticClass: "material-icons left" }, [
+                  _vm._v("edit")
+                ]),
+                _vm._v("Editar")
+              ]
+            )
+          : _vm._e()
       ],
       2
     )
@@ -32897,9 +32962,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._m(0),
-    _vm._v(" "),
-    _vm._m(1),
+    _vm.create_article
+      ? _c("div", { staticClass: "fixed-action-btn" }, [_vm._m(0)])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "input-field col s12 m6" }, [
       _c("i", { staticClass: "material-icons prefix" }, [_vm._v("search")]),
@@ -33093,19 +33158,25 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("div", { staticClass: "secondary-content" }, [
-                  _c(
-                    "a",
-                    {
-                      attrs: { href: "artigos/atualizar" + article.id_artigo }
-                    },
-                    [
-                      _c("i", { staticClass: "material-icons green-text" }, [
-                        _vm._v("edit")
-                      ])
-                    ]
-                  ),
+                  _vm.edit_article
+                    ? _c(
+                        "a",
+                        {
+                          attrs: {
+                            href: "artigos/atualizar" + article.id_artigo
+                          }
+                        },
+                        [
+                          _c(
+                            "i",
+                            { staticClass: "material-icons green-text" },
+                            [_vm._v("edit")]
+                          )
+                        ]
+                      )
+                    : _vm._e(),
                   _vm._v(" "),
-                  _vm.user_id == article.usuario_autor_id
+                  _vm.user_id == article.usuario_autor_id || _vm.delete_article
                     ? _c(
                         "a",
                         {
@@ -33143,36 +33214,19 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "fixed-action-btn" }, [
-      _c(
-        "a",
-        {
-          staticClass:
-            "btn-floating tooltipped btn-large teal darken-3 modal-trigger",
-          attrs: {
-            href: "artigos/novo",
-            "data-position": "left",
-            "data-tooltip": "Novo!"
-          }
-        },
-        [_c("i", { staticClass: "large material-icons" }, [_vm._v("add")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col s12" }, [
-      _c("h5", { staticClass: "header grey-text" }, [
-        _c("i", { staticClass: "small material-icons" }, [
-          _vm._v("library_books")
-        ]),
-        _vm._v(" Artigos")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "divider" })
-    ])
+    return _c(
+      "a",
+      {
+        staticClass:
+          "btn-floating tooltipped btn-large teal darken-3 modal-trigger",
+        attrs: {
+          href: "artigos/novo",
+          "data-position": "left",
+          "data-tooltip": "Novo!"
+        }
+      },
+      [_c("i", { staticClass: "large material-icons" }, [_vm._v("add")])]
+    )
   }
 ]
 render._withStripped = true
@@ -33201,395 +33255,399 @@ var render = function() {
       ? _c("h5", { staticClass: "header grey-text" }, [_vm._v("Editar Artigo")])
       : _c("h5", { staticClass: "header grey-text" }, [_vm._v("Novo Artigo")]),
     _vm._v(" "),
-    _c("div", { staticClass: "col s12 m8" }, [
-      _c(
-        "form",
-        {
-          attrs: { action: "#", method: "post", id: "form_article" },
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.onSubmit($event)
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "input-field col s12 m7" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.article.titulo,
-                    expression: "article.titulo"
-                  }
-                ],
-                attrs: {
-                  id: "titulo",
-                  type: "text",
-                  name: "titulo",
-                  required: ""
-                },
-                domProps: { value: _vm.article.titulo },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.article, "titulo", $event.target.value)
-                  }
+    _vm.create_article || _vm.edit_article
+      ? _c("div", { staticClass: "col s12 m8" }, [
+          _c(
+            "form",
+            {
+              attrs: { action: "#", method: "post", id: "form_article" },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.onSubmit($event)
                 }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "titulo" } }, [_vm._v("Título")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m5" }, [
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.article.categoria_artigo_id,
-                      expression: "article.categoria_artigo_id"
-                    }
-                  ],
-                  attrs: { name: "categoria", required: "" },
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.$set(
-                        _vm.article,
-                        "categoria_artigo_id",
-                        $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      )
-                    }
-                  }
-                },
-                [
-                  _c(
-                    "option",
-                    { attrs: { value: "", disabled: "", selected: "" } },
-                    [_vm._v("Selecione...")]
-                  ),
-                  _vm._v(" "),
-                  _vm._l(_vm.categories, function(categorie, index) {
-                    return _c(
-                      "option",
-                      {
-                        key: index,
-                        domProps: { value: categorie.id_categoria_artigo }
-                      },
-                      [_vm._v(" " + _vm._s(categorie.nome) + " ")]
-                    )
-                  })
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c("label", [_vm._v("Categoria")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12" }, [
-              _c("textarea", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.article.descricao,
-                    expression: "article.descricao"
-                  }
-                ],
-                staticClass: "materialize-textarea",
-                attrs: { id: "descricao" },
-                domProps: { value: _vm.article.descricao },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.article, "descricao", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "descricao" } }, [
-                _vm._v("Descrição")
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col s12" },
-              [
-                _c("label", { staticStyle: { "font-size": "16px" } }, [
-                  _vm._v("Conteúdo: ")
-                ]),
-                _vm._v(" "),
-                _c("editor", {
-                  attrs: {
-                    name: "conteudo",
-                    "api-key":
-                      "k9nq1pz5sirugp247sm9bg2tb42ks18ttmcxjxni7iknoisv",
-                    init: {
-                      language: "pt_BR",
-                      language_url: "/KnowWeb/public/js/tiny_pt_BR.js",
-                      images_upload_handler: _vm.upload_handler
-                    },
-                    plugins:
-                      "autoresize print preview fullpage searchreplace fullscreen image link \n                            codesample table hr insertdatetime advlist lists imagetools textpattern",
-                    toolbar:
-                      "formatselect | bold italic forecolor backcolor | link image codesample | \n                            alignleft aligncenter alignright alignjustify | numlist bullist outdent indent"
-                  },
-                  model: {
-                    value: _vm.article.conteudo,
-                    callback: function($$v) {
-                      _vm.$set(_vm.article, "conteudo", $$v)
-                    },
-                    expression: "article.conteudo"
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12" }, [
-              _c("p", [
-                _c("label", [
+              }
+            },
+            [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "input-field col s12 m7" }, [
                   _c("input", {
                     directives: [
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.article.publico,
-                        expression: "article.publico"
+                        value: _vm.article.titulo,
+                        expression: "article.titulo"
                       }
                     ],
-                    staticClass: "filled-in",
-                    attrs: { type: "checkbox" },
-                    domProps: {
-                      checked: Array.isArray(_vm.article.publico)
-                        ? _vm._i(_vm.article.publico, null) > -1
-                        : _vm.article.publico
+                    attrs: {
+                      id: "titulo",
+                      type: "text",
+                      name: "titulo",
+                      required: ""
                     },
+                    domProps: { value: _vm.article.titulo },
                     on: {
-                      change: function($event) {
-                        var $$a = _vm.article.publico,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = null,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(
-                                _vm.article,
-                                "publico",
-                                $$a.concat([$$v])
-                              )
-                          } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                _vm.article,
-                                "publico",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                              )
-                          }
-                        } else {
-                          _vm.$set(_vm.article, "publico", $$c)
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
                         }
+                        _vm.$set(_vm.article, "titulo", $event.target.value)
                       }
                     }
                   }),
                   _vm._v(" "),
-                  _c("span", [
-                    _vm._v("Artigo público para usuários convencionais?")
+                  _c("label", { attrs: { for: "titulo" } }, [_vm._v("Título")])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-field col s12 m5" }, [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.article.categoria_artigo_id,
+                          expression: "article.categoria_artigo_id"
+                        }
+                      ],
+                      attrs: { name: "categoria", required: "" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.article,
+                            "categoria_artigo_id",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "option",
+                        { attrs: { value: "", disabled: "", selected: "" } },
+                        [_vm._v("Selecione...")]
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.categories, function(categorie, index) {
+                        return _c(
+                          "option",
+                          {
+                            key: index,
+                            domProps: { value: categorie.id_categoria_artigo }
+                          },
+                          [_vm._v(" " + _vm._s(categorie.nome) + " ")]
+                        )
+                      })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c("label", [_vm._v("Categoria")])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-field col s12" }, [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.article.descricao,
+                        expression: "article.descricao"
+                      }
+                    ],
+                    staticClass: "materialize-textarea",
+                    attrs: { id: "descricao" },
+                    domProps: { value: _vm.article.descricao },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.article, "descricao", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "descricao" } }, [
+                    _vm._v("Descrição")
                   ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col s12" },
+                  [
+                    _c("label", { staticStyle: { "font-size": "16px" } }, [
+                      _vm._v("Conteúdo: ")
+                    ]),
+                    _vm._v(" "),
+                    _c("editor", {
+                      attrs: {
+                        name: "conteudo",
+                        "api-key":
+                          "k9nq1pz5sirugp247sm9bg2tb42ks18ttmcxjxni7iknoisv",
+                        init: {
+                          language: "pt_BR",
+                          language_url: "/KnowWeb/public/js/tiny_pt_BR.js",
+                          images_upload_handler: _vm.upload_handler
+                        },
+                        plugins:
+                          "autoresize print preview fullpage searchreplace fullscreen image link \n                            codesample table hr insertdatetime advlist lists imagetools textpattern",
+                        toolbar:
+                          "formatselect | bold italic forecolor backcolor | link image codesample | \n                            alignleft aligncenter alignright alignjustify | numlist bullist outdent indent"
+                      },
+                      model: {
+                        value: _vm.article.conteudo,
+                        callback: function($$v) {
+                          _vm.$set(_vm.article, "conteudo", $$v)
+                        },
+                        expression: "article.conteudo"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-field col s12" }, [
+                  _c("p", [
+                    _c("label", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.article.publico,
+                            expression: "article.publico"
+                          }
+                        ],
+                        staticClass: "filled-in",
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.article.publico)
+                            ? _vm._i(_vm.article.publico, null) > -1
+                            : _vm.article.publico
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.article.publico,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.article,
+                                    "publico",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.article,
+                                    "publico",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.article, "publico", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", [
+                        _vm._v("Artigo público para usuários convencionais?")
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "chips chips-autocomplete" })
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "chips chips-autocomplete" })
-            ])
-          ]),
-          _vm._v(" "),
-          _vm._m(0)
-        ]
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col s12 m4 form-register" }, [
-      _c("h5", { staticClass: "header grey-text center-align" }, [
-        _vm._v("Associações")
-      ]),
-      _c("div", { staticClass: "divider" }),
-      _vm._v(" "),
-      _vm._m(1),
-      _vm._v(" "),
-      _c("ul", { staticClass: "collapsible" }, [
-        _c("li", [
-          _vm._m(2),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "collapsible-body" },
-            _vm._l(_vm.files, function(file, index) {
-              return _c("div", { key: index }, [
-                file.check
-                  ? _c("div", [
-                      _c("div", [
-                        _c("img", {
-                          staticClass: "icon_files",
-                          attrs: { src: "../" + file.img_ext }
-                        }),
-                        _c("b", [
-                          _c("span", { staticClass: "text_files" }, [
-                            _vm._v(_vm._s(file.nome))
-                          ])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("p", [
-                        _c("b", [_vm._v("Categoria: ")]),
-                        _vm._v(_vm._s(file.categoria)),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("b", [_vm._v("Tamanho: ")]),
-                        _vm._v(_vm._s(file.tamanho))
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "divider" }),
-                      _c("br")
-                    ])
-                  : _vm._e()
-              ])
-            }),
-            0
-          )
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _vm._m(3),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "collapsible-body" },
-            _vm._l(_vm.passwords, function(pass, index) {
-              return _c("div", { key: index }, [
-                pass.check
-                  ? _c("div", [
-                      _c("p", [
-                        _c("b", [_vm._v("Descrição: ")]),
-                        _vm._v(_vm._s(pass.descricao)),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("b", [_vm._v("Login: ")]),
-                        _vm._v(_vm._s(pass.login))
-                      ]),
-                      _vm._v(" "),
-                      pass.equipamento
-                        ? _c("p", [
-                            _c("b", [_vm._v("Equipamento: ")]),
-                            _vm._v(_vm._s(pass.equipamento.descricao))
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "divider" }),
-                      _c("br")
-                    ])
-                  : _vm._e()
-              ])
-            }),
-            0
-          )
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _vm._m(4),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "collapsible-body" },
-            _vm._l(_vm.computers, function(pc, index) {
-              return _c("div", { key: index }, [
-                pc.check
-                  ? _c("div", [
-                      _c("p", [
-                        _c("b", [_vm._v("Placa-mãe: ")]),
-                        _vm._v(_vm._s(pc.placa_mae)),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("b", [_vm._v("Processador: ")]),
-                        _vm._v(_vm._s(pc.processador)),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("b", [_vm._v("RAM: ")]),
-                        _vm._v(_vm._s(pc.memoria_ram)),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("b", [_vm._v("Setor: ")]),
-                        _vm._v(_vm._s(pc.setor)),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("b", [_vm._v("Identificador: ")]),
-                        _vm._v(_vm._s(pc.identificador_computador)),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("b", [_vm._v("Ocorrências: ")]),
-                        _vm._v(_vm._s(pc.count))
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "divider" }),
-                      _c("br")
-                    ])
-                  : _vm._e()
-              ])
-            }),
-            0
-          )
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _vm._m(5),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "collapsible-body" },
-            _vm._l(_vm.equipments, function(equip, index) {
-              return _c("div", { key: index }, [
-                equip.check
-                  ? _c("div", [
-                      _c("p", [
-                        _c("b", [_vm._v("Descrição: ")]),
-                        _vm._v(_vm._s(equip.descricao)),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("b", [_vm._v("Categoria: ")]),
-                        _vm._v(_vm._s(equip.categoria))
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "divider" }),
-                      _c("br")
-                    ])
-                  : _vm._e()
-              ])
-            }),
-            0
+              _vm._m(0)
+            ]
           )
         ])
-      ])
-    ]),
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.create_article || _vm.edit_article
+      ? _c("div", { staticClass: "col s12 m4 form-register" }, [
+          _c("h5", { staticClass: "header grey-text center-align" }, [
+            _vm._v("Associações")
+          ]),
+          _c("div", { staticClass: "divider" }),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _c("ul", { staticClass: "collapsible" }, [
+            _c("li", [
+              _vm._m(2),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "collapsible-body" },
+                _vm._l(_vm.files, function(file, index) {
+                  return _c("div", { key: index }, [
+                    file.check
+                      ? _c("div", [
+                          _c("div", [
+                            _c("img", {
+                              staticClass: "icon_files",
+                              attrs: { src: "../" + file.img_ext }
+                            }),
+                            _c("b", [
+                              _c("span", { staticClass: "text_files" }, [
+                                _vm._v(_vm._s(file.nome))
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("p", [
+                            _c("b", [_vm._v("Categoria: ")]),
+                            _vm._v(_vm._s(file.categoria)),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("b", [_vm._v("Tamanho: ")]),
+                            _vm._v(_vm._s(file.tamanho))
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "divider" }),
+                          _c("br")
+                        ])
+                      : _vm._e()
+                  ])
+                }),
+                0
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", [
+              _vm._m(3),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "collapsible-body" },
+                _vm._l(_vm.passwords, function(pass, index) {
+                  return _c("div", { key: index }, [
+                    pass.check
+                      ? _c("div", [
+                          _c("p", [
+                            _c("b", [_vm._v("Descrição: ")]),
+                            _vm._v(_vm._s(pass.descricao)),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("b", [_vm._v("Login: ")]),
+                            _vm._v(_vm._s(pass.login))
+                          ]),
+                          _vm._v(" "),
+                          pass.equipamento
+                            ? _c("p", [
+                                _c("b", [_vm._v("Equipamento: ")]),
+                                _vm._v(_vm._s(pass.equipamento.descricao))
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "divider" }),
+                          _c("br")
+                        ])
+                      : _vm._e()
+                  ])
+                }),
+                0
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", [
+              _vm._m(4),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "collapsible-body" },
+                _vm._l(_vm.computers, function(pc, index) {
+                  return _c("div", { key: index }, [
+                    pc.check
+                      ? _c("div", [
+                          _c("p", [
+                            _c("b", [_vm._v("Placa-mãe: ")]),
+                            _vm._v(_vm._s(pc.placa_mae)),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("b", [_vm._v("Processador: ")]),
+                            _vm._v(_vm._s(pc.processador)),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("b", [_vm._v("RAM: ")]),
+                            _vm._v(_vm._s(pc.memoria_ram)),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("b", [_vm._v("Setor: ")]),
+                            _vm._v(_vm._s(pc.setor)),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("b", [_vm._v("Identificador: ")]),
+                            _vm._v(_vm._s(pc.identificador_computador)),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("b", [_vm._v("Ocorrências: ")]),
+                            _vm._v(_vm._s(pc.count))
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "divider" }),
+                          _c("br")
+                        ])
+                      : _vm._e()
+                  ])
+                }),
+                0
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", [
+              _vm._m(5),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "collapsible-body" },
+                _vm._l(_vm.equipments, function(equip, index) {
+                  return _c("div", { key: index }, [
+                    equip.check
+                      ? _c("div", [
+                          _c("p", [
+                            _c("b", [_vm._v("Descrição: ")]),
+                            _vm._v(_vm._s(equip.descricao)),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("b", [_vm._v("Categoria: ")]),
+                            _vm._v(_vm._s(equip.categoria))
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "divider" }),
+                          _c("br")
+                        ])
+                      : _vm._e()
+                  ])
+                }),
+                0
+              )
+            ])
+          ])
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c(
       "div",
@@ -35199,70 +35257,72 @@ var render = function() {
     _c("div", { staticClass: "divider" }),
     _c("br"),
     _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col s12 m6 form-register" }, [
-        _c("p", [
-          _c("b", [_vm._v("Placa-mãe: ")]),
-          _vm._v(_vm._s(_vm.computer.placa_mae)),
-          _c("br"),
+    _vm.view_computer
+      ? _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col s12 m6 form-register" }, [
+            _c("p", [
+              _c("b", [_vm._v("Placa-mãe: ")]),
+              _vm._v(_vm._s(_vm.computer.placa_mae)),
+              _c("br"),
+              _vm._v(" "),
+              _c("b", [_vm._v("Processador: ")]),
+              _vm._v(_vm._s(_vm.computer.processador)),
+              _c("br"),
+              _vm._v(" "),
+              _c("b", [_vm._v("Memória RAM: ")]),
+              _vm._v(_vm._s(_vm.computer.memoria_ram)),
+              _c("br"),
+              _vm._v(" "),
+              _c("b", [_vm._v("Armazenamento: ")]),
+              _vm._v(_vm._s(_vm.computer.unidade_armazenamento)),
+              _c("br"),
+              _vm._v(" "),
+              _c("b", [_vm._v("Sistema Operacional: ")]),
+              _vm._v(
+                _vm._s(_vm.computer.so.nome) +
+                  " " +
+                  _vm._s(_vm.computer.so.versao) +
+                  " - " +
+                  _vm._s(_vm.computer.so.arquitetura)
+              ),
+              _c("br"),
+              _vm._v(" "),
+              _c("b", [_vm._v("Senha administrador: ")]),
+              _vm._v(_vm._s(_vm.computer.senha_usuario_adm))
+            ])
+          ]),
           _vm._v(" "),
-          _c("b", [_vm._v("Processador: ")]),
-          _vm._v(_vm._s(_vm.computer.processador)),
-          _c("br"),
+          _c("div", { staticClass: "col s12 m6 form-register" }, [
+            _c("p", [
+              _c("b", [_vm._v("MAC Ethernet: ")]),
+              _vm._v(_vm._s(_vm.computer.mac_ethernet)),
+              _c("br"),
+              _vm._v(" "),
+              _c("b", [_vm._v("MAC Wireless: ")]),
+              _vm._v(_vm._s(_vm.computer.mac_wireless)),
+              _c("br"),
+              _vm._v(" "),
+              _c("b", [_vm._v("Setor: ")]),
+              _vm._v(_vm._s(_vm.computer.setor)),
+              _c("br"),
+              _vm._v(" "),
+              _c("b", [_vm._v("Nome do computador: ")]),
+              _vm._v(_vm._s(_vm.computer.nome_computador)),
+              _c("br"),
+              _vm._v(" "),
+              _c("b", [_vm._v("Identificador do computador: ")]),
+              _vm._v(_vm._s(_vm.computer.identificador_computador))
+            ])
+          ]),
           _vm._v(" "),
-          _c("b", [_vm._v("Memória RAM: ")]),
-          _vm._v(_vm._s(_vm.computer.memoria_ram)),
-          _c("br"),
-          _vm._v(" "),
-          _c("b", [_vm._v("Armazenamento: ")]),
-          _vm._v(_vm._s(_vm.computer.unidade_armazenamento)),
-          _c("br"),
-          _vm._v(" "),
-          _c("b", [_vm._v("Sistema Operacional: ")]),
-          _vm._v(
-            _vm._s(_vm.computer.so.nome) +
-              " " +
-              _vm._s(_vm.computer.so.versao) +
-              " - " +
-              _vm._s(_vm.computer.so.arquitetura)
-          ),
-          _c("br"),
-          _vm._v(" "),
-          _c("b", [_vm._v("Senha administrador: ")]),
-          _vm._v(_vm._s(_vm.computer.senha_usuario_adm))
+          _c("div", { staticClass: "col s12 form-register" }, [
+            _c("p", [
+              _c("b", [_vm._v("Programas específicos: ")]),
+              _vm._v(_vm._s(_vm.computer.programas_especificos))
+            ])
+          ])
         ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col s12 m6 form-register" }, [
-        _c("p", [
-          _c("b", [_vm._v("MAC Ethernet: ")]),
-          _vm._v(_vm._s(_vm.computer.mac_ethernet)),
-          _c("br"),
-          _vm._v(" "),
-          _c("b", [_vm._v("MAC Wireless: ")]),
-          _vm._v(_vm._s(_vm.computer.mac_wireless)),
-          _c("br"),
-          _vm._v(" "),
-          _c("b", [_vm._v("Setor: ")]),
-          _vm._v(_vm._s(_vm.computer.setor)),
-          _c("br"),
-          _vm._v(" "),
-          _c("b", [_vm._v("Nome do computador: ")]),
-          _vm._v(_vm._s(_vm.computer.nome_computador)),
-          _c("br"),
-          _vm._v(" "),
-          _c("b", [_vm._v("Identificador do computador: ")]),
-          _vm._v(_vm._s(_vm.computer.identificador_computador))
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col s12 form-register" }, [
-        _c("p", [
-          _c("b", [_vm._v("Programas específicos: ")]),
-          _vm._v(_vm._s(_vm.computer.programas_especificos))
-        ])
-      ])
-    ]),
+      : _vm._e(),
     _vm._v(" "),
     _vm.articles.length > 0
       ? _c("div", { staticClass: "row" }, [
@@ -35376,117 +35436,132 @@ var render = function() {
   return _c("div", [
     _c("div", { staticClass: "divider" }),
     _vm._v(" "),
-    _vm._m(0),
+    _vm.create_computer
+      ? _c("div", { staticClass: "fixed-action-btn" }, [_vm._m(0)])
+      : _vm._e(),
     _vm._v(" "),
-    _c("div", { staticClass: "col s12" }, [
-      _c("div", { staticClass: "input-field col s12 m6" }, [
-        _c("i", { staticClass: "material-icons prefix" }, [_vm._v("search")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.search_query,
-              expression: "search_query"
-            }
-          ],
-          staticClass: "validate",
-          attrs: { id: "icon_prefix", type: "text" },
-          domProps: { value: _vm.search_query },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+    _vm.list_computers
+      ? _c("div", { staticClass: "col s12" }, [
+          _c("div", { staticClass: "input-field col s12 m6" }, [
+            _c("i", { staticClass: "material-icons prefix" }, [
+              _vm._v("search")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search_query,
+                  expression: "search_query"
+                }
+              ],
+              staticClass: "validate",
+              attrs: { id: "icon_prefix", type: "text" },
+              domProps: { value: _vm.search_query },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search_query = $event.target.value
+                }
               }
-              _vm.search_query = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "icon_prefix" } }, [
-          _vm._v("Buscar computador...")
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "icon_prefix" } }, [
+              _vm._v("Buscar computador...")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("table", { staticClass: "striped" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _vm.computers.length > 0
+              ? _c(
+                  "tbody",
+                  _vm._l(_vm.filteredData, function(pc, index) {
+                    return _c("tr", { key: index }, [
+                      _c("td", [_vm._v(" " + _vm._s(pc.placa_mae) + " ")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(" " + _vm._s(pc.processador) + " ")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(" " + _vm._s(pc.memoria_ram) + " ")]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(" " + _vm._s(pc.unidade_armazenamento) + " ")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(" " + _vm._s(pc.identificador_computador) + " ")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(" " + _vm._s(pc.setor) + " ")]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "row" }, [
+                        _vm.edit_computer
+                          ? _c(
+                              "a",
+                              {
+                                attrs: {
+                                  href:
+                                    "computadores/atualizar/" + pc.id_computador
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("edit")
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.view_computer
+                          ? _c(
+                              "a",
+                              {
+                                staticClass: "green-text",
+                                attrs: {
+                                  href: "computadores/" + pc.id_computador
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("remove_red_eye")
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.delete_computer
+                          ? _c(
+                              "a",
+                              {
+                                staticClass: "red-text",
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.confirmDelete(pc.id_computador)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("delete")
+                                ])
+                              ]
+                            )
+                          : _vm._e()
+                      ])
+                    ])
+                  }),
+                  0
+                )
+              : _c("tbody", [_vm._m(2)])
+          ])
         ])
-      ]),
-      _vm._v(" "),
-      _c("table", { staticClass: "striped" }, [
-        _vm._m(1),
-        _vm._v(" "),
-        _vm.computers.length > 0
-          ? _c(
-              "tbody",
-              _vm._l(_vm.filteredData, function(pc, index) {
-                return _c("tr", { key: index }, [
-                  _c("td", [_vm._v(" " + _vm._s(pc.placa_mae) + " ")]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(" " + _vm._s(pc.processador) + " ")]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(" " + _vm._s(pc.memoria_ram) + " ")]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(" " + _vm._s(pc.unidade_armazenamento) + " ")
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(" " + _vm._s(pc.identificador_computador) + " ")
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(" " + _vm._s(pc.setor) + " ")]),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "row" }, [
-                    _c(
-                      "a",
-                      {
-                        attrs: {
-                          href: "computadores/atualizar/" + pc.id_computador
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("edit")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "green-text",
-                        attrs: { href: "computadores/" + pc.id_computador }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("remove_red_eye")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "red-text",
-                        attrs: { href: "#" },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.confirmDelete(pc.id_computador)
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("delete")
-                        ])
-                      ]
-                    )
-                  ])
-                ])
-              }),
-              0
-            )
-          : _c("tbody", [_vm._m(2)])
-      ])
-    ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -35494,21 +35569,19 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "fixed-action-btn" }, [
-      _c(
-        "a",
-        {
-          staticClass:
-            "btn-floating tooltipped btn-large teal darken-3 modal-trigger",
-          attrs: {
-            href: "computadores/novo",
-            "data-position": "left",
-            "data-tooltip": "Novo!"
-          }
-        },
-        [_c("i", { staticClass: "large material-icons" }, [_vm._v("add")])]
-      )
-    ])
+    return _c(
+      "a",
+      {
+        staticClass:
+          "btn-floating tooltipped btn-large teal darken-3 modal-trigger",
+        attrs: {
+          href: "computadores/novo",
+          "data-position": "left",
+          "data-tooltip": "Novo!"
+        }
+      },
+      [_c("i", { staticClass: "large material-icons" }, [_vm._v("add")])]
+    )
   },
   function() {
     var _vm = this
@@ -35567,531 +35640,291 @@ var render = function() {
   return _c("div", [
     _c("div", { staticClass: "divider" }),
     _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _c("ul", { staticClass: "collapsible" }, [
-        _c("li", [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "collapsible-body" }, [
-            _c("div", { staticClass: "row" }, [
-              _c(
-                "form",
-                {
-                  attrs: { method: "post", action: "#", id: "form_so" },
-                  on: {
-                    submit: function($event) {
-                      $event.preventDefault()
-                      return _vm.onSubmitSO($event)
-                    }
-                  }
-                },
-                [
-                  _c("div", { staticClass: "input-field col s12 m6" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.operSystem.nome,
-                          expression: "operSystem.nome"
-                        }
-                      ],
-                      staticClass: "validate",
-                      attrs: { id: "extensao", type: "text" },
-                      domProps: { value: _vm.operSystem.nome },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.operSystem, "nome", $event.target.value)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        class: { active: _vm.updateSO },
-                        attrs: { for: "extensao" }
-                      },
-                      [_vm._v("Nome")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-field col s12 m3" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.operSystem.versao,
-                          expression: "operSystem.versao"
-                        }
-                      ],
-                      staticClass: "validate",
-                      attrs: { id: "versao", type: "text" },
-                      domProps: { value: _vm.operSystem.versao },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.operSystem,
-                            "versao",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        class: { active: _vm.updateSO },
-                        attrs: { for: "versao" }
-                      },
-                      [_vm._v("Versão")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-field col s12 m3" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.operSystem.arquitetura,
-                          expression: "operSystem.arquitetura"
-                        }
-                      ],
-                      staticClass: "validate",
-                      attrs: { id: "arq", type: "text" },
-                      domProps: { value: _vm.operSystem.arquitetura },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.operSystem,
-                            "arquitetura",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        class: { active: _vm.updateSO },
-                        attrs: { for: "arq" }
-                      },
-                      [_vm._v("Arquitetura")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(1)
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "divider" }),
-              _c("br"),
+    _vm.manage_operational_systems
+      ? _c("div", { staticClass: "row" }, [
+          _c("ul", { staticClass: "collapsible" }, [
+            _c("li", [
+              _vm._m(0),
               _vm._v(" "),
-              _c("table", [
-                _vm._m(2),
+              _c("div", { staticClass: "collapsible-body" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "form",
+                    {
+                      attrs: { method: "post", action: "#", id: "form_so" },
+                      on: {
+                        submit: function($event) {
+                          $event.preventDefault()
+                          return _vm.onSubmitSO($event)
+                        }
+                      }
+                    },
+                    [
+                      _c("div", { staticClass: "input-field col s12 m6" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.operSystem.nome,
+                              expression: "operSystem.nome"
+                            }
+                          ],
+                          staticClass: "validate",
+                          attrs: { id: "extensao", type: "text" },
+                          domProps: { value: _vm.operSystem.nome },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.operSystem,
+                                "nome",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            class: { active: _vm.updateSO },
+                            attrs: { for: "extensao" }
+                          },
+                          [_vm._v("Nome")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "input-field col s12 m3" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.operSystem.versao,
+                              expression: "operSystem.versao"
+                            }
+                          ],
+                          staticClass: "validate",
+                          attrs: { id: "versao", type: "text" },
+                          domProps: { value: _vm.operSystem.versao },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.operSystem,
+                                "versao",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            class: { active: _vm.updateSO },
+                            attrs: { for: "versao" }
+                          },
+                          [_vm._v("Versão")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "input-field col s12 m3" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.operSystem.arquitetura,
+                              expression: "operSystem.arquitetura"
+                            }
+                          ],
+                          staticClass: "validate",
+                          attrs: { id: "arq", type: "text" },
+                          domProps: { value: _vm.operSystem.arquitetura },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.operSystem,
+                                "arquitetura",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            class: { active: _vm.updateSO },
+                            attrs: { for: "arq" }
+                          },
+                          [_vm._v("Arquitetura")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(1)
+                    ]
+                  )
+                ]),
                 _vm._v(" "),
-                _vm.operSystems.length > 0
-                  ? _c(
-                      "tbody",
-                      _vm._l(_vm.operSystems, function(SO, index) {
-                        return _c("tr", { key: index }, [
-                          _c("td", [
-                            _vm._v(
-                              " " + _vm._s(SO.id_sistema_operacional) + " "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(" " + _vm._s(SO.nome) + " ")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(" " + _vm._s(SO.versao) + " ")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(" " + _vm._s(SO.arquitetura) + " ")
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "row" }, [
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.loadFormSO(SO)
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", { staticClass: "material-icons" }, [
-                                  _vm._v("edit")
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "a",
-                              {
-                                staticClass: "red-text",
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.confirmDeleteSO(
-                                      SO.id_sistema_operacional,
-                                      SO.nome
-                                    )
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", { staticClass: "material-icons" }, [
-                                  _vm._v("delete")
-                                ])
-                              ]
-                            )
-                          ])
-                        ])
-                      }),
-                      0
-                    )
-                  : _c("tbody", [_vm._m(3)])
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "divider" }),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("table", [
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _vm.operSystems.length > 0
+                      ? _c(
+                          "tbody",
+                          _vm._l(_vm.operSystems, function(SO, index) {
+                            return _c("tr", { key: index }, [
+                              _c("td", [
+                                _vm._v(
+                                  " " + _vm._s(SO.id_sistema_operacional) + " "
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(" " + _vm._s(SO.nome) + " ")]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(" " + _vm._s(SO.versao) + " ")]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(" " + _vm._s(SO.arquitetura) + " ")
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "row" }, [
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.loadFormSO(SO)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", { staticClass: "material-icons" }, [
+                                      _vm._v("edit")
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "red-text",
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.confirmDeleteSO(
+                                          SO.id_sistema_operacional,
+                                          SO.nome
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", { staticClass: "material-icons" }, [
+                                      _vm._v("delete")
+                                    ])
+                                  ]
+                                )
+                              ])
+                            ])
+                          }),
+                          0
+                        )
+                      : _c("tbody", [_vm._m(3)])
+                  ])
+                ])
               ])
             ])
           ])
         ])
-      ])
-    ]),
+      : _vm._e(),
     _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _vm.updateComputer
-        ? _c("h5", { staticClass: "header grey-text" }, [
-            _vm._v("Editar Computador")
-          ])
-        : _c("h5", { staticClass: "header grey-text" }, [
-            _vm._v("Novo Computador")
-          ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c(
-          "form",
-          {
-            attrs: { method: "post", action: "#", id: "form_computer" },
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.onSubmitComputer($event)
-              }
-            }
-          },
-          [
-            _c("div", { staticClass: "input-field col s12 m4" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.computer.placa_mae,
-                    expression: "computer.placa_mae"
-                  }
-                ],
-                staticClass: "validate",
-                attrs: { id: "placa_mae", type: "text", required: "" },
-                domProps: { value: _vm.computer.placa_mae },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.computer, "placa_mae", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  class: { active: _vm.updateComputer },
-                  attrs: { for: "placa_mae" }
-                },
-                [_vm._v("Placa-mãe")]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m4" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.computer.processador,
-                    expression: "computer.processador"
-                  }
-                ],
-                staticClass: "validate",
-                attrs: { id: "processador", type: "text", required: "" },
-                domProps: { value: _vm.computer.processador },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.computer, "processador", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  class: { active: _vm.updateComputer },
-                  attrs: { for: "processador" }
-                },
-                [_vm._v("Processador")]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m4" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.computer.memoria_ram,
-                    expression: "computer.memoria_ram"
-                  }
-                ],
-                staticClass: "validate",
-                attrs: { id: "ram", type: "text", required: "" },
-                domProps: { value: _vm.computer.memoria_ram },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.computer, "memoria_ram", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  class: { active: _vm.updateComputer },
-                  attrs: { for: "ram" }
-                },
-                [_vm._v("Memória RAM")]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m4" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.computer.unidade_armazenamento,
-                    expression: "computer.unidade_armazenamento"
-                  }
-                ],
-                staticClass: "validate",
-                attrs: { id: "hd", type: "text", required: "" },
-                domProps: { value: _vm.computer.unidade_armazenamento },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(
-                      _vm.computer,
-                      "unidade_armazenamento",
-                      $event.target.value
-                    )
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                { class: { active: _vm.updateComputer }, attrs: { for: "hd" } },
-                [_vm._v("Unidade de armazenamento")]
-              )
-            ]),
-            _vm._v(" "),
+    _vm.create_computer || _vm.edit_computer
+      ? _c("div", { staticClass: "row" }, [
+          _vm.updateComputer
+            ? _c("h5", { staticClass: "header grey-text" }, [
+                _vm._v("Editar Computador")
+              ])
+            : _c("h5", { staticClass: "header grey-text" }, [
+                _vm._v("Novo Computador")
+              ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
             _c(
-              "div",
-              { staticClass: "input-field col s12 m4" },
+              "form",
+              {
+                attrs: { method: "post", action: "#", id: "form_computer" },
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.onSubmitComputer($event)
+                  }
+                }
+              },
               [
-                _c("vue-mask", {
-                  staticClass: "validate",
-                  attrs: {
-                    id: "mac_ethernet",
-                    type: "text",
-                    mask: "AA:AA:AA:AA:AA:AA",
-                    raw: false
-                  },
-                  model: {
-                    value: _vm.computer.mac_ethernet,
-                    callback: function($$v) {
-                      _vm.$set(_vm.computer, "mac_ethernet", $$v)
-                    },
-                    expression: "computer.mac_ethernet"
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "label",
-                  {
-                    class: { active: _vm.updateComputer },
-                    attrs: { for: "mac_ethernet" }
-                  },
-                  [_vm._v("Mac Ethernet")]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "input-field col s12 m4" },
-              [
-                _c("vue-mask", {
-                  staticClass: "validate",
-                  attrs: {
-                    id: "mac_wireless",
-                    type: "text",
-                    mask: "AA:AA:AA:AA:AA:AA",
-                    raw: false
-                  },
-                  model: {
-                    value: _vm.computer.mac_wireless,
-                    callback: function($$v) {
-                      _vm.$set(_vm.computer, "mac_wireless", $$v)
-                    },
-                    expression: "computer.mac_wireless"
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "label",
-                  {
-                    class: { active: _vm.updateComputer },
-                    attrs: { for: "mac_wireless" }
-                  },
-                  [_vm._v("Mac Wireless")]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m4" }, [
-              _c(
-                "i",
-                {
-                  staticClass: "material-icons prefix",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.viewPass($event)
-                    }
-                  }
-                },
-                [_vm._v("visibility")]
-              ),
-              _vm._v(" "),
-              _vm.typePass === "checkbox"
-                ? _c("input", {
+                _c("div", { staticClass: "input-field col s12 m4" }, [
+                  _c("input", {
                     directives: [
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.computer.senha_usuario_adm,
-                        expression: "computer.senha_usuario_adm "
+                        value: _vm.computer.placa_mae,
+                        expression: "computer.placa_mae"
                       }
                     ],
                     staticClass: "validate",
-                    attrs: { id: "senha_adm", type: "checkbox" },
-                    domProps: {
-                      checked: Array.isArray(_vm.computer.senha_usuario_adm)
-                        ? _vm._i(_vm.computer.senha_usuario_adm, null) > -1
-                        : _vm.computer.senha_usuario_adm
-                    },
+                    attrs: { id: "placa_mae", type: "text", required: "" },
+                    domProps: { value: _vm.computer.placa_mae },
                     on: {
-                      change: function($event) {
-                        var $$a = _vm.computer.senha_usuario_adm,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = null,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(
-                                _vm.computer,
-                                "senha_usuario_adm",
-                                $$a.concat([$$v])
-                              )
-                          } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                _vm.computer,
-                                "senha_usuario_adm",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                              )
-                          }
-                        } else {
-                          _vm.$set(_vm.computer, "senha_usuario_adm", $$c)
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
                         }
+                        _vm.$set(_vm.computer, "placa_mae", $event.target.value)
                       }
                     }
-                  })
-                : _vm.typePass === "radio"
-                ? _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.computer.senha_usuario_adm,
-                        expression: "computer.senha_usuario_adm "
-                      }
-                    ],
-                    staticClass: "validate",
-                    attrs: { id: "senha_adm", type: "radio" },
-                    domProps: {
-                      checked: _vm._q(_vm.computer.senha_usuario_adm, null)
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      class: { active: _vm.updateComputer },
+                      attrs: { for: "placa_mae" }
                     },
-                    on: {
-                      change: function($event) {
-                        return _vm.$set(_vm.computer, "senha_usuario_adm", null)
-                      }
-                    }
-                  })
-                : _c("input", {
+                    [_vm._v("Placa-mãe")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-field col s12 m4" }, [
+                  _c("input", {
                     directives: [
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.computer.senha_usuario_adm,
-                        expression: "computer.senha_usuario_adm "
+                        value: _vm.computer.processador,
+                        expression: "computer.processador"
                       }
                     ],
                     staticClass: "validate",
-                    attrs: { id: "senha_adm", type: _vm.typePass },
-                    domProps: { value: _vm.computer.senha_usuario_adm },
+                    attrs: { id: "processador", type: "text", required: "" },
+                    domProps: { value: _vm.computer.processador },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
@@ -36099,267 +35932,533 @@ var render = function() {
                         }
                         _vm.$set(
                           _vm.computer,
-                          "senha_usuario_adm",
+                          "processador",
                           $event.target.value
                         )
                       }
                     }
                   }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  class: { active: _vm.updateComputer },
-                  attrs: { for: "senha_adm" }
-                },
-                [_vm._v("Senha Admin do sistema")]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m4" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.computer.nome_computador,
-                    expression: "computer.nome_computador "
-                  }
-                ],
-                staticClass: "validate",
-                attrs: { id: "nome_pc", type: "text" },
-                domProps: { value: _vm.computer.nome_computador },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(
-                      _vm.computer,
-                      "nome_computador",
-                      $event.target.value
-                    )
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  class: { active: _vm.updateComputer },
-                  attrs: { for: "nome_pc" }
-                },
-                [_vm._v("Nome do computador")]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m4" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.computer.identificador_computador,
-                    expression: "computer.identificador_computador"
-                  }
-                ],
-                staticClass: "validate",
-                attrs: { id: "id_pc", type: "text" },
-                domProps: { value: _vm.computer.identificador_computador },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(
-                      _vm.computer,
-                      "identificador_computador",
-                      $event.target.value
-                    )
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  class: { active: _vm.updateComputer },
-                  attrs: { for: "id_pc" }
-                },
-                [_vm._v("Identificador do computador")]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m6" }, [
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.computer.sistema_operacional_id,
-                      expression: "computer.sistema_operacional_id"
-                    }
-                  ],
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.$set(
-                        _vm.computer,
-                        "sistema_operacional_id",
-                        $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      )
-                    }
-                  }
-                },
-                [
-                  _c(
-                    "option",
-                    { attrs: { value: "", disabled: "", selected: "" } },
-                    [_vm._v("Selecione...")]
-                  ),
                   _vm._v(" "),
-                  _vm._l(_vm.operSystems, function(so, index) {
-                    return _c(
-                      "option",
-                      {
-                        key: index,
-                        domProps: { value: so.id_sistema_operacional }
-                      },
-                      [
-                        _vm._v(
-                          " " +
-                            _vm._s(so.nome) +
-                            " - " +
-                            _vm._s(so.versao) +
-                            " - " +
-                            _vm._s(so.arquitetura) +
-                            " "
-                        )
-                      ]
-                    )
-                  })
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c("label", [_vm._v("Sistema Operacional")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12 m6" }, [
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.computer.setor_id,
-                      expression: "computer.setor_id"
-                    }
-                  ],
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.$set(
-                        _vm.computer,
-                        "setor_id",
-                        $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      )
-                    }
-                  }
-                },
-                [
                   _c(
-                    "option",
-                    { attrs: { value: "", disabled: "", selected: "" } },
-                    [_vm._v("Selecione...")]
-                  ),
-                  _vm._v(" "),
-                  _vm._l(_vm.setores, function(setor, index) {
-                    return _c(
-                      "option",
-                      { key: index, domProps: { value: setor.id_setor } },
-                      [_vm._v(" " + _vm._s(setor.nome) + " ")]
-                    )
-                  })
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c("label", [_vm._v("Setor")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12" }, [
-              _c("textarea", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.computer.programas_especificos,
-                    expression: "computer.programas_especificos"
-                  }
-                ],
-                staticClass: "materialize-textarea",
-                attrs: { id: "programas" },
-                domProps: { value: _vm.computer.programas_especificos },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(
-                      _vm.computer,
-                      "programas_especificos",
-                      $event.target.value
-                    )
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "programas" } }, [
-                _vm._v("Programas específicos")
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _vm._m(4),
-              _vm._v(" "),
-              _vm._m(5),
-              _vm._v(" "),
-              _vm.updateComputer
-                ? _c("a", { staticClass: "btn", attrs: { href: "../" } }, [
-                    _vm._v("voltar")
-                  ])
-                : _c(
-                    "a",
-                    { staticClass: "btn", attrs: { href: "../computadores" } },
-                    [_vm._v("voltar")]
+                    "label",
+                    {
+                      class: { active: _vm.updateComputer },
+                      attrs: { for: "processador" }
+                    },
+                    [_vm._v("Processador")]
                   )
-            ])
-          ]
-        )
-      ])
-    ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-field col s12 m4" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.computer.memoria_ram,
+                        expression: "computer.memoria_ram"
+                      }
+                    ],
+                    staticClass: "validate",
+                    attrs: { id: "ram", type: "text", required: "" },
+                    domProps: { value: _vm.computer.memoria_ram },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.computer,
+                          "memoria_ram",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      class: { active: _vm.updateComputer },
+                      attrs: { for: "ram" }
+                    },
+                    [_vm._v("Memória RAM")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-field col s12 m4" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.computer.unidade_armazenamento,
+                        expression: "computer.unidade_armazenamento"
+                      }
+                    ],
+                    staticClass: "validate",
+                    attrs: { id: "hd", type: "text", required: "" },
+                    domProps: { value: _vm.computer.unidade_armazenamento },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.computer,
+                          "unidade_armazenamento",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      class: { active: _vm.updateComputer },
+                      attrs: { for: "hd" }
+                    },
+                    [_vm._v("Unidade de armazenamento")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "input-field col s12 m4" },
+                  [
+                    _c("vue-mask", {
+                      staticClass: "validate",
+                      attrs: {
+                        id: "mac_ethernet",
+                        type: "text",
+                        mask: "AA:AA:AA:AA:AA:AA",
+                        raw: false
+                      },
+                      model: {
+                        value: _vm.computer.mac_ethernet,
+                        callback: function($$v) {
+                          _vm.$set(_vm.computer, "mac_ethernet", $$v)
+                        },
+                        expression: "computer.mac_ethernet"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        class: { active: _vm.updateComputer },
+                        attrs: { for: "mac_ethernet" }
+                      },
+                      [_vm._v("Mac Ethernet")]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "input-field col s12 m4" },
+                  [
+                    _c("vue-mask", {
+                      staticClass: "validate",
+                      attrs: {
+                        id: "mac_wireless",
+                        type: "text",
+                        mask: "AA:AA:AA:AA:AA:AA",
+                        raw: false
+                      },
+                      model: {
+                        value: _vm.computer.mac_wireless,
+                        callback: function($$v) {
+                          _vm.$set(_vm.computer, "mac_wireless", $$v)
+                        },
+                        expression: "computer.mac_wireless"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        class: { active: _vm.updateComputer },
+                        attrs: { for: "mac_wireless" }
+                      },
+                      [_vm._v("Mac Wireless")]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-field col s12 m4" }, [
+                  _c(
+                    "i",
+                    {
+                      staticClass: "material-icons prefix",
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.viewPass($event)
+                        }
+                      }
+                    },
+                    [_vm._v("visibility")]
+                  ),
+                  _vm._v(" "),
+                  _vm.typePass === "checkbox"
+                    ? _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.computer.senha_usuario_adm,
+                            expression: "computer.senha_usuario_adm "
+                          }
+                        ],
+                        staticClass: "validate",
+                        attrs: { id: "senha_adm", type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.computer.senha_usuario_adm)
+                            ? _vm._i(_vm.computer.senha_usuario_adm, null) > -1
+                            : _vm.computer.senha_usuario_adm
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.computer.senha_usuario_adm,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.computer,
+                                    "senha_usuario_adm",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.computer,
+                                    "senha_usuario_adm",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.computer, "senha_usuario_adm", $$c)
+                            }
+                          }
+                        }
+                      })
+                    : _vm.typePass === "radio"
+                    ? _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.computer.senha_usuario_adm,
+                            expression: "computer.senha_usuario_adm "
+                          }
+                        ],
+                        staticClass: "validate",
+                        attrs: { id: "senha_adm", type: "radio" },
+                        domProps: {
+                          checked: _vm._q(_vm.computer.senha_usuario_adm, null)
+                        },
+                        on: {
+                          change: function($event) {
+                            return _vm.$set(
+                              _vm.computer,
+                              "senha_usuario_adm",
+                              null
+                            )
+                          }
+                        }
+                      })
+                    : _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.computer.senha_usuario_adm,
+                            expression: "computer.senha_usuario_adm "
+                          }
+                        ],
+                        staticClass: "validate",
+                        attrs: { id: "senha_adm", type: _vm.typePass },
+                        domProps: { value: _vm.computer.senha_usuario_adm },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.computer,
+                              "senha_usuario_adm",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      class: { active: _vm.updateComputer },
+                      attrs: { for: "senha_adm" }
+                    },
+                    [_vm._v("Senha Admin do sistema")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-field col s12 m4" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.computer.nome_computador,
+                        expression: "computer.nome_computador "
+                      }
+                    ],
+                    staticClass: "validate",
+                    attrs: { id: "nome_pc", type: "text" },
+                    domProps: { value: _vm.computer.nome_computador },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.computer,
+                          "nome_computador",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      class: { active: _vm.updateComputer },
+                      attrs: { for: "nome_pc" }
+                    },
+                    [_vm._v("Nome do computador")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-field col s12 m4" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.computer.identificador_computador,
+                        expression: "computer.identificador_computador"
+                      }
+                    ],
+                    staticClass: "validate",
+                    attrs: { id: "id_pc", type: "text" },
+                    domProps: { value: _vm.computer.identificador_computador },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.computer,
+                          "identificador_computador",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      class: { active: _vm.updateComputer },
+                      attrs: { for: "id_pc" }
+                    },
+                    [_vm._v("Identificador do computador")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-field col s12 m6" }, [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.computer.sistema_operacional_id,
+                          expression: "computer.sistema_operacional_id"
+                        }
+                      ],
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.computer,
+                            "sistema_operacional_id",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "option",
+                        { attrs: { value: "", disabled: "", selected: "" } },
+                        [_vm._v("Selecione...")]
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.operSystems, function(so, index) {
+                        return _c(
+                          "option",
+                          {
+                            key: index,
+                            domProps: { value: so.id_sistema_operacional }
+                          },
+                          [
+                            _vm._v(
+                              " " +
+                                _vm._s(so.nome) +
+                                " - " +
+                                _vm._s(so.versao) +
+                                " - " +
+                                _vm._s(so.arquitetura) +
+                                " "
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c("label", [_vm._v("Sistema Operacional")])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-field col s12 m6" }, [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.computer.setor_id,
+                          expression: "computer.setor_id"
+                        }
+                      ],
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.computer,
+                            "setor_id",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "option",
+                        { attrs: { value: "", disabled: "", selected: "" } },
+                        [_vm._v("Selecione...")]
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.setores, function(setor, index) {
+                        return _c(
+                          "option",
+                          { key: index, domProps: { value: setor.id_setor } },
+                          [_vm._v(" " + _vm._s(setor.nome) + " ")]
+                        )
+                      })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c("label", [_vm._v("Setor")])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-field col s12" }, [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.computer.programas_especificos,
+                        expression: "computer.programas_especificos"
+                      }
+                    ],
+                    staticClass: "materialize-textarea",
+                    attrs: { id: "programas" },
+                    domProps: { value: _vm.computer.programas_especificos },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.computer,
+                          "programas_especificos",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "programas" } }, [
+                    _vm._v("Programas específicos")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _vm._m(5),
+                  _vm._v(" "),
+                  _vm.updateComputer
+                    ? _c("a", { staticClass: "btn", attrs: { href: "../" } }, [
+                        _vm._v("voltar")
+                      ])
+                    : _c(
+                        "a",
+                        {
+                          staticClass: "btn",
+                          attrs: { href: "../computadores" }
+                        },
+                        [_vm._v("voltar")]
+                      )
+                ])
+              ]
+            )
+          ])
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -37359,7 +37458,10 @@ var render = function() {
                   _c("br")
                 ]),
                 _vm._v(" "),
-                _vm.helpdesk.usuario_solicitante_id != _vm.user_id
+                _vm.helpdesk.usuario_solicitante_id != _vm.user_id &&
+                _vm.user_type !== "Usuario" &&
+                (_vm.helpdesk.status == "Aberto" ||
+                  _vm.helpdesk.status == "Em andamento")
                   ? _c("div", [
                       _c("p", [
                         _vm._v("Prioridade:\n                            "),
@@ -37509,7 +37611,8 @@ var render = function() {
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.helpdesk.status == "Aberto" &&
-                _vm.helpdesk.usuario_solicitante_id != _vm.user_id
+                _vm.helpdesk.usuario_solicitante_id != _vm.user_id &&
+                _vm.user_type !== "Usuario"
                   ? _c(
                       "a",
                       {
@@ -37531,7 +37634,8 @@ var render = function() {
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.helpdesk.usuario_solicitante_id == _vm.user_id ||
-                _vm.helpdesk.atendente_responsavel_id == _vm.user_id
+                _vm.helpdesk.atendente_responsavel_id == _vm.user_id ||
+                _vm.user_type == "Administrador"
                   ? _c("div", [
                       _vm.helpdesk.status == "Em andamento"
                         ? _c(
@@ -37670,9 +37774,24 @@ var render = function() {
               )
             }),
             _vm._v(" "),
-            _vm._m(1),
+            _vm.helpdesk.status == "Aberto" ||
+            _vm.helpdesk.status == "Em andamento"
+              ? _c(
+                  "a",
+                  {
+                    staticClass: "modal-trigger btn green",
+                    attrs: { href: "#modal-response" }
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons left" }, [
+                      _vm._v("create")
+                    ]),
+                    _vm._v("Responder")
+                  ]
+                )
+              : _vm._e(),
             _vm._v(" "),
-            _vm._m(2),
+            _vm._m(1),
             _vm._v(" "),
             _c(
               "div",
@@ -37754,11 +37873,11 @@ var render = function() {
                             })
                           ]),
                           _vm._v(" "),
-                          _vm._m(3)
+                          _vm._m(2)
                         ]
                       ),
                       _vm._v(" "),
-                      _vm._m(4)
+                      _vm._m(3)
                     ])
                   ]
                 )
@@ -37789,22 +37908,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Data")])
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "modal-trigger btn green",
-        attrs: { href: "#modal-response" }
-      },
-      [
-        _c("i", { staticClass: "material-icons left" }, [_vm._v("create")]),
-        _vm._v("Responder")
-      ]
-    )
   },
   function() {
     var _vm = this
@@ -39662,10 +39765,7 @@ var render = function() {
                 "div",
                 { key: index, staticClass: "switch col s12 m4 form-register" },
                 [
-                  _c("b", [_vm._v(_vm._s(perm.nome) + ": ")]),
-                  _vm._v(" "),
-                  _c("label", [
-                    _vm._v("\n                Off\n                "),
+                  _c("label", { staticClass: "right-align" }, [
                     _c("input", {
                       directives: [
                         {
@@ -39707,9 +39807,10 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
-                    _c("span", { staticClass: "lever" }),
-                    _vm._v("\n                On\n            ")
+                    _c("span", { staticClass: "lever" })
                   ]),
+                  _vm._v(" "),
+                  _c("b", [_vm._v(" " + _vm._s(perm.nome) + ": ")]),
                   _c("br"),
                   _c("br")
                 ]

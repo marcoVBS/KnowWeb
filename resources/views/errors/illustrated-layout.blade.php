@@ -244,7 +244,7 @@
         }
 
         .bg-purple-light {
-            background-color: #a779e9;
+            background-color: green;
         }
 
         .bg-no-repeat {
@@ -260,7 +260,7 @@
         }
 
         .hover\:border-grey:hover {
-            border-color: #b8c2cc;
+            border-color: green;
         }
 
         .rounded-lg {
@@ -472,7 +472,7 @@
 
                     <a href="{{ app('router')->has('home') ? route('home') : url('/') }}">
                         <button class="bg-transparent text-grey-darkest font-bold uppercase tracking-wide py-3 px-6 border-2 border-grey-light hover:border-grey rounded-lg">
-                            {{ __('Go Home') }}
+                            {{ __('Home') }}
                         </button>
                     </a>
                 </div>

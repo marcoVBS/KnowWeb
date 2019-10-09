@@ -43,13 +43,11 @@
             <div class="divider"></div><br>
 
              <div v-for="(perm, index) in permissions" :key="index" class="switch col s12 m4 form-register">
-                <b>{{ perm.nome }}: </b>
-                <label>
-                    Off
+                <label class="right-align">
                     <input type="checkbox" v-model="perm.check">
                     <span class="lever"></span>
-                    On
-                </label><br><br>
+                </label>
+                <b> {{ perm.nome }}: </b><br><br>
             </div>
         </div>
         <div v-if="set_user_permissions" class="center-align">

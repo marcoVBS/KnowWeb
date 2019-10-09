@@ -55,7 +55,7 @@
                         <p class="grey-text darken-4">Autor: {{ helpdesk.autor }} - {{ helpdesk.created_at }}<br>
                         Categoria: {{ helpdesk.categoria }}<br></p>
                         
-                        <div v-if="helpdesk.usuario_solicitante_id != user_id">
+                        <div v-if="helpdesk.usuario_solicitante_id != user_id && user_type !== 'Usuario' && (helpdesk.status == 'Aberto' || helpdesk.status == 'Em andamento')">
                             <p>Prioridade:
                                 <label>
                                     <input name="prioridade" type="radio" value="Baixa" v-model="helpdesk.prioridade" @change="changePriority()"/>
@@ -81,10 +81,10 @@
                             <a :href="`download/${arquivo.id_arquivo_atendimento}`" v-for="(arquivo, index) in helpdesk.arquivos" :key="index"> {{ arquivo.nome }} </a>
                         </p>
                         
-                        <a v-if="helpdesk.status == 'Aberto' && helpdesk.usuario_solicitante_id != user_id" @click="changeStatus('Em andamento')" class="waves-effect waves-light green btn secondary-content">
+                        <a v-if="helpdesk.status == 'Aberto' && helpdesk.usuario_solicitante_id != user_id && user_type !== 'Usuario'" @click="changeStatus('Em andamento')" class="waves-effect waves-light green btn secondary-content">
                             <i class="material-icons left">open_in_new</i>Atender</a>
                        
-                        <div v-if="helpdesk.usuario_solicitante_id == user_id || helpdesk.atendente_responsavel_id == user_id">
+                        <div v-if="helpdesk.usuario_solicitante_id == user_id || helpdesk.atendente_responsavel_id == user_id || user_type == 'Administrador'">
                             <a href="#" v-if="helpdesk.status == 'Em andamento'" @click.prevent="confirmAssoc"
                                 class="waves-effect waves-light green btn secondary-content">
                                 <i class="material-icons left">check_box</i>Finalizar</a>
@@ -119,7 +119,7 @@
                         </editor>
                     </li>
 
-                    <a class="modal-trigger btn green" href="#modal-response"><i class="material-icons left">create</i>Responder</a>
+                    <a v-if="helpdesk.status == 'Aberto' || helpdesk.status == 'Em andamento'" class="modal-trigger btn green" href="#modal-response"><i class="material-icons left">create</i>Responder</a>
                     <a class="btn" href="../atendimento"><i class="material-icons left">arrow_back</i>Retornar</a>
                     
                     <div id="modal-response" class="modal">
@@ -166,7 +166,7 @@
 import Editor from '@tinymce/tinymce-vue';
 
 export default {
-    props: ['user_id', 'helpdesk'],
+    props: ['user_id', 'user_type', 'helpdesk'],
     data() {
         return {
             respostas: [],
@@ -196,6 +196,10 @@ export default {
             this.createResponse()
         },
         changePriority(){
+            if(this.user_type == 'Usuario'){
+                return false;
+            }
+
             let vm = this
             axios.post('prioridade', {
                 id_atendimento: vm.helpdesk.id_atendimento,
@@ -215,6 +219,11 @@ export default {
             })
         },
         confirmAssoc(){
+            if(this.user_type == 'Usuario'){
+                this.changeStatus('Finalizado')
+                return true
+            }
+
             let vm = this
             vm.$snotify.confirm('Deseja associar algum artigo a este atendimento?', 'Associar!', {
                 timeout: false,
@@ -245,7 +254,7 @@ export default {
                 if(stored == true){
                     vm.changeStatus('Finalizado')
                 }else{
-                    vm.$snotify.error('Falha ao alterar prioridade!', 'Erro')
+                    vm.$snotify.error('Falha ao associar artigos!', 'Erro')
                 }
             })
             .catch(function(error){

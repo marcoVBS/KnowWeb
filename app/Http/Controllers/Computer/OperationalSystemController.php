@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Computer\Computer;
 use App\Models\Computer\OperationalSystem;
+use Illuminate\Support\Facades\Gate;
 
 class OperationalSystemController extends Controller
 {
@@ -24,6 +25,10 @@ class OperationalSystemController extends Controller
     }
 
     public function create(Request $request){
+        if (Gate::denies('manage-operational-systems')) {
+            return false;
+        }
+
         $operSystem = new OperationalSystem();
         $operSystem->nome = $request->nome;
         $operSystem->versao = $request->versao;
@@ -43,6 +48,10 @@ class OperationalSystemController extends Controller
 
     public function update(Request $request)
     {
+        if (Gate::denies('manage-operational-systems')) {
+            return false;
+        }
+
         $operSystem = OperationalSystem::find($request->id_sistema_operacional);
         $operSystem->nome = $request->nome;
         $operSystem->versao = $request->versao;
@@ -62,6 +71,10 @@ class OperationalSystemController extends Controller
 
     public function delete($id)
     {
+        if (Gate::denies('manage-operational-systems')) {
+            return false;
+        }
+
         if(count(Computer::where('sistema_operacional_id', $id)->get()) == 0){
             $operSystem = OperationalSystem::find($id);
             
