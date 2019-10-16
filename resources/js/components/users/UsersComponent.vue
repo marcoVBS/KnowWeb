@@ -56,6 +56,7 @@
                             <div class="input-field col s12 m6">
                                 <input id="password" type="password" name="password" v-model="user.password">
                                 <label for="password">Nova senha</label>
+                                <span class="helper-text green-text">A senha deve conter no mínimo 8 caracteres!</span>
                             </div>
 
                             <div class="input-field col s12 m6">
@@ -77,7 +78,7 @@
                             <i class="material-icons right">send</i>
                         </button>
 
-                        <button class="btn waves-effect waves-light red" type="reset">Limpar
+                        <button class="modal-close btn waves-effect waves-light red" type="reset">Cancelar
                             <i class="material-icons right">clear</i>
                         </button>
                     </div>
@@ -105,8 +106,7 @@
                             <div class="divider"></div><br>
 
                             <div v-for="(perm, index) in permissions" :key="index" class="chip">
-                                <b>{{ perm.nome }}</b>
-                                <a href="#" @click.prevent="deletePermission(perm.id_permissao)"><i class="close material-icons">close</i></a>
+                                <a href="#" @click.prevent="confirmDeletePermission(perm.id_permissao, perm.nome)"><i class="material-icons right close-tag red-text">close</i></a><b>{{ perm.nome }}</b>
                             </div>
                         </div>
 
@@ -148,11 +148,11 @@
                         <td>{{ user.telefone }}</td>
                         <td>{{ user.tipo_usuario }}</td>
                         <td>{{ user.setor }}</td>
-                        <td class="row">
-                            <a v-if="user.id_usuario !== user_logged.id_usuario && user.tipo_usuario == 'Membro' && set_user_permissions" :href="`usuarios/permissoes/${user.id_usuario}`" class="green-text darken-4"><i class="material-icons">lock</i></a>
+                        <td>
+                            <a v-if="user.id_usuario !== user_logged.id_usuario && user.tipo_usuario == 'Membro' && set_user_permissions" :href="`usuarios/permissoes/${user.id_usuario}`" class="green-text darken-4"><i class="material-icons">lock_open</i></a>
                             <a v-if="edit_user" href="#modaluser" class="modal-trigger" @click.prevent="loadForm(user)"><i class="material-icons">edit</i></a>
-                            <a v-if="user.id_usuario !== user_logged.id_usuario && disable_user && user.status == 1" class="red-text" href="#" @click.prevent="confirmStatus(user)"><i class="material-icons">check</i></a>
-                            <a v-if="user.id_usuario !== user_logged.id_usuario && disable_user && user.status == 0" class="red-text" href="#" @click.prevent="confirmStatus(user)"><i class="material-icons">block</i></a>
+                            <a v-if="user.id_usuario !== user_logged.id_usuario && disable_user && user.status == 1" class="red-text tooltipped" data-position="bottom" data-tooltip="I am a tooltip" href="#" @click.prevent="confirmStatus(user)"><i class="material-icons">block</i></a>
+                            <a v-if="user.id_usuario !== user_logged.id_usuario && disable_user && user.status == 0" class="red-text tooltipped" data-position="bottom" data-tooltip="I am a tooltip" href="#" @click.prevent="confirmStatus(user)"><i class="material-icons">check</i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -243,6 +243,17 @@ export default {
                     this.reset();
                 })
             })    
+        },
+        confirmDeletePermission(id, name){
+            let vm = this
+            vm.$snotify.confirm(`Deseja realmente excluir a permissão ${name}?`, 'Exclusão!', {
+                timeout: false,
+                position: 'centerCenter',
+                buttons:[
+                    {text: 'Sim', action: (toast) => {vm.deletePermission(id); vm.$snotify.remove(toast.id)}},
+                    {text: 'Não', action: (toast) => vm.$snotify.remove(toast.id)},
+                ]
+            })
         },
         deletePermission(id){
             if(!this.manage_permissions){
@@ -463,4 +474,5 @@ export default {
 
 <style scoped>
     .img-user{ width: 2.5em; margin: -12px 0;}
+    .close-tag{ padding: 5px 0 0 0;}
 </style>

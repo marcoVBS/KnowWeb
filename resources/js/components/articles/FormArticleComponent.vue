@@ -8,17 +8,23 @@
             <form @submit.prevent="onSubmit" action="#" method="post" id="form_article">
                 
                 <div class="row">
-                    <div class="input-field col s12 m7">
+                    <div class="input-field col s12">
                         <input id="titulo" type="text" name="titulo" v-model="article.titulo" required>
                         <label for="titulo">Título</label>
                     </div>
 
-                    <div class="input-field col s12 m5">
+                    <div class="input-field col s10">
                         <select v-model="article.categoria_artigo_id" name="categoria" required>
                             <option value="" disabled selected>Selecione...</option>
                             <option v-for="(categorie, index) in categories" :key="index" v-bind:value="categorie.id_categoria_artigo"> {{ categorie.nome }} </option>        
                         </select>
                         <label>Categoria</label>
+                    </div>
+                    
+                    <div class="input-field col s2">
+                        <a class="btn tooltipped waves-effect waves-light teal darken-3" href="../categorias" data-position="left" data-tooltip="Gerenciar">
+                            <i class="material-icons">settings</i>
+                        </a>
                     </div>
 
                    <div class="input-field col s12">

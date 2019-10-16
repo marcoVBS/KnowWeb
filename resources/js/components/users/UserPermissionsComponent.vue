@@ -20,8 +20,7 @@
                             <div class="divider"></div><br>
 
                             <div v-for="(perm, index) in permissions" :key="index" class="chip">
-                                <b>{{ perm.nome }}</b>
-                                <a href="#" @click.prevent="deletePermission(perm.id_permissao)"><i class="close material-icons">close</i></a>
+                                <a href="#" @click.prevent="confirmDeletePermission(perm.id_permissao, perm.nome)"><i class="material-icons right close-tag red-text">close</i></a><b>{{ perm.nome }}</b>
                             </div>
                         </div>
 
@@ -47,7 +46,7 @@
                     <input type="checkbox" v-model="perm.check">
                     <span class="lever"></span>
                 </label>
-                <b> {{ perm.nome }}: </b><br><br>
+                <b> {{ perm.nome }} </b><br><br>
             </div>
         </div>
         <div v-if="set_user_permissions" class="center-align">
@@ -122,6 +121,17 @@ export default {
                 })
             })    
         },
+        confirmDeletePermission(id, name){
+            let vm = this
+            vm.$snotify.confirm(`Deseja realmente excluir a permissão ${name}?`, 'Exclusão!', {
+                timeout: false,
+                position: 'centerCenter',
+                buttons:[
+                    {text: 'Sim', action: (toast) => {vm.deletePermission(id); vm.$snotify.remove(toast.id)}},
+                    {text: 'Não', action: (toast) => vm.$snotify.remove(toast.id)},
+                ]
+            })
+        },
         deletePermission(id){
             if(!this.manage_permissions){
                 return false;
@@ -184,4 +194,5 @@ export default {
 
 <style scoped>
     .img-user{ width: 3.5em; margin-right: 1em;}
+    .close-tag{ padding: 5px 0 0 0;}
 </style>

@@ -2275,6 +2275,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['categories', 'manage_file_extensions', 'list_files', 'upload_files', 'download_files', 'delete_file'],
   data: function data() {
@@ -2456,6 +2461,25 @@ __webpack_require__.r(__webpack_exports__);
       var vm = this;
       axios.get("arquivos/extensao/all").then(function (response) {
         vm.extensions = response.data.extensions;
+      });
+    },
+    confirmDeleteExtension: function confirmDeleteExtension(id, name) {
+      var vm = this;
+      vm.$snotify.confirm("Deseja realmente excluir a extensao ".concat(name, "?"), 'Exclusão!', {
+        timeout: false,
+        position: 'centerCenter',
+        buttons: [{
+          text: 'Sim',
+          action: function action(toast) {
+            vm.deleteExtension(id);
+            vm.$snotify.remove(toast.id);
+          }
+        }, {
+          text: 'Não',
+          action: function action(toast) {
+            return vm.$snotify.remove(toast.id);
+          }
+        }]
       });
     },
     deleteExtension: function deleteExtension(id) {
@@ -2814,6 +2838,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tinymce_tinymce_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @tinymce/tinymce-vue */ "./node_modules/@tinymce/tinymce-vue/lib/es2015/index.js");
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4822,6 +4852,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['categories', 'list_equipments', 'view_equipment', 'create_equipment', 'edit_equipment', 'delete_equipment'],
   data: function data() {
@@ -4850,6 +4884,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    closeModal: function closeModal() {
+      $('.modal').modal('close');
+    },
     onSubmit: function onSubmit() {
       if (this.update == true) {
         this.updateEquipment();
@@ -4860,9 +4897,6 @@ __webpack_require__.r(__webpack_exports__);
     newEquipment: function newEquipment() {
       this.update = false;
       this.equipment = {};
-    },
-    closeModal: function closeModal() {
-      $('#modalequipment').modal('close');
     },
     insertEquipment: function insertEquipment() {
       if (!this.create_equipment) {
@@ -5059,6 +5093,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['categories'],
@@ -5181,6 +5221,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tinymce_tinymce_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @tinymce/tinymce-vue */ "./node_modules/@tinymce/tinymce-vue/lib/es2015/index.js");
+//
 //
 //
 //
@@ -6181,6 +6222,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['sectors', 'user_logged'],
   data: function data() {
@@ -6556,7 +6598,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user', 'manage_permissions', 'set_user_permissions'],
   data: function data() {
@@ -6612,6 +6653,25 @@ __webpack_require__.r(__webpack_exports__);
         $('#form_permission').each(function () {
           this.reset();
         });
+      });
+    },
+    confirmDeletePermission: function confirmDeletePermission(id, name) {
+      var vm = this;
+      vm.$snotify.confirm("Deseja realmente excluir a permiss\xE3o ".concat(name, "?"), 'Exclusão!', {
+        timeout: false,
+        position: 'centerCenter',
+        buttons: [{
+          text: 'Sim',
+          action: function action(toast) {
+            vm.deletePermission(id);
+            vm.$snotify.remove(toast.id);
+          }
+        }, {
+          text: 'Não',
+          action: function action(toast) {
+            return vm.$snotify.remove(toast.id);
+          }
+        }]
       });
     },
     deletePermission: function deletePermission(id) {
@@ -6922,6 +6982,25 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     },
+    confirmDeletePermission: function confirmDeletePermission(id, name) {
+      var vm = this;
+      vm.$snotify.confirm("Deseja realmente excluir a permiss\xE3o ".concat(name, "?"), 'Exclusão!', {
+        timeout: false,
+        position: 'centerCenter',
+        buttons: [{
+          text: 'Sim',
+          action: function action(toast) {
+            vm.deletePermission(id);
+            vm.$snotify.remove(toast.id);
+          }
+        }, {
+          text: 'Não',
+          action: function action(toast) {
+            return vm.$snotify.remove(toast.id);
+          }
+        }]
+      });
+    },
     deletePermission: function deletePermission(id) {
       if (!this.manage_permissions) {
         return false;
@@ -7147,7 +7226,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.icon_files[data-v-5cbce8d9]{\r\n    width: 20px;\n}\n.text_files[data-v-5cbce8d9]{\r\n    padding-left: 10px;\n}\n.campo-busca[data-v-5cbce8d9]{\r\n    margin-top: -15px;\n}\r\n", ""]);
+exports.push([module.i, "\n.icon_files[data-v-5cbce8d9]{\r\n    width: 20px;\n}\n.text_files[data-v-5cbce8d9]{\r\n    padding-left: 10px;\n}\n.campo-busca[data-v-5cbce8d9]{\r\n    margin-top: -15px;\n}\n.close-tag[data-v-5cbce8d9]{\r\n    padding: 5px 0 0 0;\n}\r\n", ""]);
 
 // exports
 
@@ -7261,7 +7340,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.img-user[data-v-2509b1d4]{ width: 3.5em; margin-right: 1em;}\n", ""]);
+exports.push([module.i, "\n.img-user[data-v-2509b1d4]{ width: 3.5em; margin-right: 1em;}\n.close-tag[data-v-2509b1d4]{ padding: 5px 0 0 0;}\n", ""]);
 
 // exports
 
@@ -7280,7 +7359,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.img-user[data-v-f0a534b2]{ width: 2.5em; margin: -12px 0;}\n", ""]);
+exports.push([module.i, "\n.img-user[data-v-f0a534b2]{ width: 2.5em; margin: -12px 0;}\n.close-tag[data-v-f0a534b2]{ padding: 5px 0 0 0;}\n", ""]);
 
 // exports
 
@@ -32084,8 +32163,6 @@ var render = function() {
                     _vm._v(" "),
                     _vm._l(_vm.extensions, function(ext, index) {
                       return _c("div", { key: index, staticClass: "chip" }, [
-                        _c("b", [_vm._v(_vm._s(ext.extensao))]),
-                        _vm._v(" "),
                         _c(
                           "a",
                           {
@@ -32093,18 +32170,25 @@ var render = function() {
                             on: {
                               click: function($event) {
                                 $event.preventDefault()
-                                return _vm.deleteExtension(
-                                  ext.id_extensao_arquivo
+                                return _vm.confirmDeleteExtension(
+                                  ext.id_extensao_arquivo,
+                                  ext.extensao
                                 )
                               }
                             }
                           },
                           [
-                            _c("i", { staticClass: "close material-icons" }, [
-                              _vm._v("close")
-                            ])
+                            _c(
+                              "i",
+                              {
+                                staticClass:
+                                  "material-icons right close-tag red-text"
+                              },
+                              [_vm._v("close")]
+                            )
                           ]
-                        )
+                        ),
+                        _c("b", [_vm._v(_vm._s(ext.extensao))])
                       ])
                     })
                   ],
@@ -32252,7 +32336,7 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "input-field col s12" }, [
+              _c("div", { staticClass: "input-field col s10" }, [
                 _c(
                   "select",
                   {
@@ -32305,6 +32389,8 @@ var render = function() {
                 _c("label", [_vm._v("Categoria")])
               ]),
               _vm._v(" "),
+              _vm._m(3),
+              _vm._v(" "),
               _c("div", { staticClass: "col s12 file-field input-field" }, [
                 _c("div", { staticClass: "btn" }, [
                   _c("span", [_vm._v("Selecionar arquivos...")]),
@@ -32325,7 +32411,7 @@ var render = function() {
                   })
                 ]),
                 _vm._v(" "),
-                _vm._m(3)
+                _vm._m(4)
               ])
             ]),
             _vm._v(" "),
@@ -32336,9 +32422,9 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _vm._m(4),
+              _vm._m(5),
               _vm._v(" "),
-              _vm._m(5)
+              _vm._m(6)
             ])
           ]
         )
@@ -32406,6 +32492,25 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-field col s2" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn tooltipped waves-effect waves-light teal darken-3",
+          attrs: {
+            href: "categorias",
+            "data-position": "left",
+            "data-tooltip": "Gerenciar"
+          }
+        },
+        [_c("i", { staticClass: "material-icons" }, [_vm._v("settings")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "file-path-wrapper" }, [
       _c("input", {
         staticClass: "file-path validate",
@@ -32436,11 +32541,11 @@ var staticRenderFns = [
     return _c(
       "button",
       {
-        staticClass: "btn waves-effect waves-light red",
+        staticClass: "modal-close btn waves-effect waves-light red",
         attrs: { type: "reset" }
       },
       [
-        _vm._v("Limpar\n                        "),
+        _vm._v("cancelar\n                        "),
         _c("i", { staticClass: "material-icons right" }, [_vm._v("clear")])
       ]
     )
@@ -33270,7 +33375,7 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "input-field col s12 m7" }, [
+                _c("div", { staticClass: "input-field col s12" }, [
                   _c("input", {
                     directives: [
                       {
@@ -33300,7 +33405,7 @@ var render = function() {
                   _c("label", { attrs: { for: "titulo" } }, [_vm._v("Título")])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "input-field col s12 m5" }, [
+                _c("div", { staticClass: "input-field col s10" }, [
                   _c(
                     "select",
                     {
@@ -33356,6 +33461,8 @@ var render = function() {
                   _vm._v(" "),
                   _c("label", [_vm._v("Categoria")])
                 ]),
+                _vm._v(" "),
+                _vm._m(0),
                 _vm._v(" "),
                 _c("div", { staticClass: "input-field col s12" }, [
                   _c("textarea", {
@@ -33479,7 +33586,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._m(0)
+              _vm._m(1)
             ]
           )
         ])
@@ -33492,11 +33599,11 @@ var render = function() {
           ]),
           _c("div", { staticClass: "divider" }),
           _vm._v(" "),
-          _vm._m(1),
+          _vm._m(2),
           _vm._v(" "),
           _c("ul", { staticClass: "collapsible" }, [
             _c("li", [
-              _vm._m(2),
+              _vm._m(3),
               _vm._v(" "),
               _c(
                 "div",
@@ -33537,7 +33644,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("li", [
-              _vm._m(3),
+              _vm._m(4),
               _vm._v(" "),
               _c(
                 "div",
@@ -33573,7 +33680,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("li", [
-              _vm._m(4),
+              _vm._m(5),
               _vm._v(" "),
               _c(
                 "div",
@@ -33618,7 +33725,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("li", [
-              _vm._m(5),
+              _vm._m(6),
               _vm._v(" "),
               _c(
                 "div",
@@ -33689,7 +33796,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("table", { staticClass: "highlight" }, [
-            _vm._m(6),
+            _vm._m(7),
             _vm._v(" "),
             _c(
               "tbody",
@@ -33767,7 +33874,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(7)
+        _vm._m(8)
       ]
     ),
     _vm._v(" "),
@@ -33814,7 +33921,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("table", { staticClass: "highlight" }, [
-            _vm._m(8),
+            _vm._m(9),
             _vm._v(" "),
             _c(
               "tbody",
@@ -33888,7 +33995,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(9)
+        _vm._m(10)
       ]
     ),
     _vm._v(" "),
@@ -33935,7 +34042,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("table", { staticClass: "highlight" }, [
-            _vm._m(10),
+            _vm._m(11),
             _vm._v(" "),
             _c(
               "tbody",
@@ -34037,7 +34144,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(11)
+        _vm._m(12)
       ]
     ),
     _vm._v(" "),
@@ -34084,7 +34191,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("table", { staticClass: "highlight" }, [
-            _vm._m(12),
+            _vm._m(13),
             _vm._v(" "),
             _c(
               "tbody",
@@ -34152,12 +34259,31 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(13)
+        _vm._m(14)
       ]
     )
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-field col s2" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn tooltipped waves-effect waves-light teal darken-3",
+          attrs: {
+            href: "../categorias",
+            "data-position": "left",
+            "data-tooltip": "Gerenciar"
+          }
+        },
+        [_c("i", { staticClass: "material-icons" }, [_vm._v("settings")])]
+      )
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -35220,11 +35346,11 @@ var staticRenderFns = [
       _c(
         "button",
         {
-          staticClass: "btn waves-effect waves-light red",
+          staticClass: "modal-close btn waves-effect waves-light red",
           attrs: { type: "reset" }
         },
         [
-          _vm._v("Limpar\n                "),
+          _vm._v("cancelar\n                "),
           _c("i", { staticClass: "material-icons right" }, [_vm._v("clear")])
         ]
       )
@@ -36750,7 +36876,7 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "input-field col s12" }, [
+              _c("div", { staticClass: "input-field col s10" }, [
                 _c(
                   "select",
                   {
@@ -36805,10 +36931,12 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c("label", [_vm._v("Categoria")])
-              ])
+              ]),
+              _vm._v(" "),
+              _vm._m(1)
             ]),
             _vm._v(" "),
-            _vm._m(1)
+            _vm._m(2)
           ]
         )
       ])
@@ -36849,7 +36977,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("table", { staticClass: "striped" }, [
-            _vm._m(2),
+            _vm._m(3),
             _vm._v(" "),
             _vm.equipments.length > 0
               ? _c(
@@ -36929,7 +37057,7 @@ var render = function() {
                   }),
                   0
                 )
-              : _c("tbody", [_vm._m(3)])
+              : _c("tbody", [_vm._m(4)])
           ])
         ])
       : _vm._e()
@@ -36955,6 +37083,25 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-field col s2" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn tooltipped waves-effect waves-light teal darken-3",
+          attrs: {
+            href: "categorias",
+            "data-position": "left",
+            "data-tooltip": "Gerenciar"
+          }
+        },
+        [_c("i", { staticClass: "material-icons" }, [_vm._v("settings")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row center-align" }, [
       _c(
         "button",
@@ -36971,11 +37118,11 @@ var staticRenderFns = [
       _c(
         "button",
         {
-          staticClass: "btn waves-effect waves-light red",
+          staticClass: "modal-close btn waves-effect waves-light red",
           attrs: { type: "reset" }
         },
         [
-          _vm._v("Limpar\n                        "),
+          _vm._v("cancelar\n                        "),
           _c("i", { staticClass: "material-icons right" }, [_vm._v("clear")])
         ]
       )
@@ -37076,7 +37223,7 @@ var render = function() {
               _c("label", { attrs: { for: "titulo" } }, [_vm._v("Título")])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "input-field col s12" }, [
+            _c("div", { staticClass: "input-field col s10" }, [
               _c(
                 "select",
                 {
@@ -37128,6 +37275,8 @@ var render = function() {
               _vm._v(" "),
               _c("label", [_vm._v("Categoria")])
             ]),
+            _vm._v(" "),
+            _vm._m(0),
             _vm._v(" "),
             _c(
               "div",
@@ -37184,20 +37333,39 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
-              _vm._m(0)
+              _vm._m(1)
             ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "divider" }),
           _c("br"),
           _vm._v(" "),
-          _vm._m(1)
+          _vm._m(2)
         ]
       )
     ])
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-field col s2" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn tooltipped waves-effect waves-light teal darken-3",
+          attrs: {
+            href: "../categorias",
+            "data-position": "left",
+            "data-tooltip": "Gerenciar"
+          }
+        },
+        [_c("i", { staticClass: "material-icons" }, [_vm._v("settings")])]
+      )
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -37393,7 +37561,7 @@ var render = function() {
           _c(
             "a",
             {
-              staticClass: "modal-close waves-effect waves-green btn-flat",
+              staticClass: "btn green modal-close waves-effect waves-green",
               attrs: { href: "#" },
               on: {
                 click: function($event) {
@@ -37402,8 +37570,15 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("Concluir")]
-          )
+            [
+              _c("i", { staticClass: "material-icons right" }, [
+                _vm._v("send")
+              ]),
+              _vm._v("Concluir")
+            ]
+          ),
+          _vm._v(" "),
+          _vm._m(1)
         ])
       ]
     ),
@@ -37791,7 +37966,7 @@ var render = function() {
                 )
               : _vm._e(),
             _vm._v(" "),
-            _vm._m(1),
+            _vm._m(2),
             _vm._v(" "),
             _c(
               "div",
@@ -37873,11 +38048,11 @@ var render = function() {
                             })
                           ]),
                           _vm._v(" "),
-                          _vm._m(2)
+                          _vm._m(3)
                         ]
                       ),
                       _vm._v(" "),
-                      _vm._m(3)
+                      _vm._m(4)
                     ])
                   ]
                 )
@@ -37908,6 +38083,22 @@ var staticRenderFns = [
         _c("th", [_vm._v("Data")])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "btn red modal-close waves-effect waves-green",
+        attrs: { href: "#" }
+      },
+      [
+        _c("i", { staticClass: "material-icons right" }, [_vm._v("clear")]),
+        _vm._v("cancelar")
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -38811,11 +39002,11 @@ var staticRenderFns = [
       _c(
         "button",
         {
-          staticClass: "btn waves-effect waves-light red",
+          staticClass: "modal-close btn waves-effect waves-light red",
           attrs: { type: "reset" }
         },
         [
-          _vm._v("Limpar\n                        "),
+          _vm._v("cancelar\n                        "),
           _c("i", { staticClass: "material-icons right" }, [_vm._v("clear")])
         ]
       )
@@ -39205,6 +39396,10 @@ var render = function() {
               _vm._v(" "),
               _c("label", { attrs: { for: "nova_senha" } }, [
                 _vm._v("Nova senha")
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "helper-text green-text" }, [
+                _vm._v("A nova senha deve ter no mínimo 8 caracteres!")
               ])
             ]),
             _vm._v(" "),
@@ -39586,11 +39781,11 @@ var staticRenderFns = [
       _c(
         "button",
         {
-          staticClass: "btn waves-effect waves-light red",
+          staticClass: "modal-close btn waves-effect waves-light red",
           attrs: { type: "reset" }
         },
         [
-          _vm._v("Limpar\n                        "),
+          _vm._v("cancelar\n                        "),
           _c("i", { staticClass: "material-icons right" }, [_vm._v("clear")])
         ]
       )
@@ -39695,8 +39890,6 @@ var render = function() {
                     _vm._v(" "),
                     _vm._l(_vm.permissions, function(perm, index) {
                       return _c("div", { key: index, staticClass: "chip" }, [
-                        _c("b", [_vm._v(_vm._s(perm.nome))]),
-                        _vm._v(" "),
                         _c(
                           "a",
                           {
@@ -39704,16 +39897,25 @@ var render = function() {
                             on: {
                               click: function($event) {
                                 $event.preventDefault()
-                                return _vm.deletePermission(perm.id_permissao)
+                                return _vm.confirmDeletePermission(
+                                  perm.id_permissao,
+                                  perm.nome
+                                )
                               }
                             }
                           },
                           [
-                            _c("i", { staticClass: "close material-icons" }, [
-                              _vm._v("close")
-                            ])
+                            _c(
+                              "i",
+                              {
+                                staticClass:
+                                  "material-icons right close-tag red-text"
+                              },
+                              [_vm._v("close")]
+                            )
                           ]
-                        )
+                        ),
+                        _c("b", [_vm._v(_vm._s(perm.nome))])
                       ])
                     })
                   ],
@@ -39810,7 +40012,7 @@ var render = function() {
                     _c("span", { staticClass: "lever" })
                   ]),
                   _vm._v(" "),
-                  _c("b", [_vm._v(" " + _vm._s(perm.nome) + ": ")]),
+                  _c("b", [_vm._v(" " + _vm._s(perm.nome) + " ")]),
                   _c("br"),
                   _c("br")
                 ]
@@ -40213,6 +40415,10 @@ var render = function() {
                       _vm._v(" "),
                       _c("label", { attrs: { for: "password" } }, [
                         _vm._v("Nova senha")
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "helper-text green-text" }, [
+                        _vm._v("A senha deve conter no mínimo 8 caracteres!")
                       ])
                     ]),
                     _vm._v(" "),
@@ -40379,8 +40585,6 @@ var render = function() {
                     _vm._v(" "),
                     _vm._l(_vm.permissions, function(perm, index) {
                       return _c("div", { key: index, staticClass: "chip" }, [
-                        _c("b", [_vm._v(_vm._s(perm.nome))]),
-                        _vm._v(" "),
                         _c(
                           "a",
                           {
@@ -40388,16 +40592,25 @@ var render = function() {
                             on: {
                               click: function($event) {
                                 $event.preventDefault()
-                                return _vm.deletePermission(perm.id_permissao)
+                                return _vm.confirmDeletePermission(
+                                  perm.id_permissao,
+                                  perm.nome
+                                )
                               }
                             }
                           },
                           [
-                            _c("i", { staticClass: "close material-icons" }, [
-                              _vm._v("close")
-                            ])
+                            _c(
+                              "i",
+                              {
+                                staticClass:
+                                  "material-icons right close-tag red-text"
+                              },
+                              [_vm._v("close")]
+                            )
                           ]
-                        )
+                        ),
+                        _c("b", [_vm._v(_vm._s(perm.nome))])
                       ])
                     })
                   ],
@@ -40477,7 +40690,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(user.setor))]),
                   _vm._v(" "),
-                  _c("td", { staticClass: "row" }, [
+                  _c("td", [
                     user.id_usuario !== _vm.user_logged.id_usuario &&
                     user.tipo_usuario == "Membro" &&
                     _vm.set_user_permissions
@@ -40491,7 +40704,7 @@ var render = function() {
                           },
                           [
                             _c("i", { staticClass: "material-icons" }, [
-                              _vm._v("lock")
+                              _vm._v("lock_open")
                             ])
                           ]
                         )
@@ -40524,8 +40737,12 @@ var render = function() {
                       ? _c(
                           "a",
                           {
-                            staticClass: "red-text",
-                            attrs: { href: "#" },
+                            staticClass: "red-text tooltipped",
+                            attrs: {
+                              "data-position": "bottom",
+                              "data-tooltip": "I am a tooltip",
+                              href: "#"
+                            },
                             on: {
                               click: function($event) {
                                 $event.preventDefault()
@@ -40535,7 +40752,7 @@ var render = function() {
                           },
                           [
                             _c("i", { staticClass: "material-icons" }, [
-                              _vm._v("check")
+                              _vm._v("block")
                             ])
                           ]
                         )
@@ -40547,8 +40764,12 @@ var render = function() {
                       ? _c(
                           "a",
                           {
-                            staticClass: "red-text",
-                            attrs: { href: "#" },
+                            staticClass: "red-text tooltipped",
+                            attrs: {
+                              "data-position": "bottom",
+                              "data-tooltip": "I am a tooltip",
+                              href: "#"
+                            },
                             on: {
                               click: function($event) {
                                 $event.preventDefault()
@@ -40558,7 +40779,7 @@ var render = function() {
                           },
                           [
                             _c("i", { staticClass: "material-icons" }, [
-                              _vm._v("block")
+                              _vm._v("check")
                             ])
                           ]
                         )
@@ -40594,11 +40815,11 @@ var staticRenderFns = [
       _c(
         "button",
         {
-          staticClass: "btn waves-effect waves-light red",
+          staticClass: "modal-close btn waves-effect waves-light red",
           attrs: { type: "reset" }
         },
         [
-          _vm._v("Limpar\n                        "),
+          _vm._v("Cancelar\n                        "),
           _c("i", { staticClass: "material-icons right" }, [_vm._v("clear")])
         ]
       )

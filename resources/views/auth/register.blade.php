@@ -60,6 +60,8 @@
 
                             @if ($errors->has('password'))
                                 <span class="helper-text red-text">{{ $errors->first('password') }}</span>
+                            @else
+                                <span class="helper-text green-text">A senha deve conter no mínimo 8 caracteres!</span>
                             @endif
 
                         </div>
@@ -67,6 +69,7 @@
                         <div class="input-field col s12 m6">
                             <input id="password-confirm" type="password" name="password_confirmation" required class="validate">
                             <label for="password-confirm">Confirme a senha</label>
+                            <span class="helper-text green-text"></span>
                         </div>
 
                         <div class="input-field col s12 m6">

@@ -95,6 +95,7 @@
                     <div class="input-field col s12">
                         <input id="nova_senha" type="password" v-model="new_pass" name="nova_senha" required>
                         <label for="nova_senha">Nova senha</label>
+                        <span class="helper-text green-text">A nova senha deve ter no mínimo 8 caracteres!</span>
                     </div>
 
                     <div class="input-field col s12">

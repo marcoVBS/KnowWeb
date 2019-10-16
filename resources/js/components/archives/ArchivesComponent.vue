@@ -21,8 +21,7 @@
                             <div class="divider"></div><br>
 
                             <div v-for="(ext, index) in extensions" :key="index" class="chip">
-                                <b>{{ ext.extensao }}</b>
-                                <a href="#" @click.prevent="deleteExtension(ext.id_extensao_arquivo)"><i class="close material-icons">close</i></a>
+                                <a href="#" @click.prevent="confirmDeleteExtension(ext.id_extensao_arquivo, ext.extensao)"><i class="material-icons right close-tag red-text">close</i></a><b>{{ ext.extensao }}</b>
                             </div>
                         </div>
 
@@ -81,12 +80,18 @@
 
                 <form @submit.prevent="onSubmitFile" action="#"  method="post" id="form_files">
                     <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s10">
                             <select v-model="categoria_id" name="categoria" required>
                                     <option value="" disabled selected>Selecione...</option>
                                     <option v-for="(categorie, index) in categories" :key="index" v-bind:value="categorie.id_categoria_arquivo"> {{ categorie.nome }} </option>        
                             </select>
                             <label>Categoria</label>
+                        </div>
+
+                        <div class="input-field col s2">
+                            <a class="btn tooltipped waves-effect waves-light teal darken-3" href="categorias" data-position="left" data-tooltip="Gerenciar">
+                                <i class="material-icons">settings</i>
+                            </a>
                         </div>
 
                         <div class="col s12 file-field input-field">
@@ -109,7 +114,7 @@
                             <i class="material-icons right">send</i>
                         </button>
 
-                        <button class="btn waves-effect waves-light red" type="reset">Limpar
+                        <button class="modal-close btn waves-effect waves-light red" type="reset">cancelar
                             <i class="material-icons right">clear</i>
                         </button>
                     </div>
@@ -309,7 +314,19 @@ export default {
                 vm.extensions = response.data.extensions
             })
         },
+        confirmDeleteExtension(id, name){
+            let vm = this
+            vm.$snotify.confirm(`Deseja realmente excluir a extensao ${name}?`, 'Exclusão!', {
+                timeout: false,
+                position: 'centerCenter',
+                buttons:[
+                    {text: 'Sim', action: (toast) => {vm.deleteExtension(id); vm.$snotify.remove(toast.id)}},
+                    {text: 'Não', action: (toast) => vm.$snotify.remove(toast.id)},
+                ]
+            })
+        },
         deleteExtension(id){
+            
             if(!this.manage_file_extensions){
                 return false;
             }
@@ -346,5 +363,8 @@ export default {
 }
 .campo-busca{
     margin-top: -15px;
+}
+.close-tag{
+    padding: 5px 0 0 0;
 }
 </style>

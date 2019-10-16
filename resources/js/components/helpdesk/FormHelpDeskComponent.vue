@@ -9,12 +9,18 @@
                             <label for="titulo">Título</label>
                         </div>
 
-                        <div class="input-field col s12">
-                                <select v-model="categoria_id" name="categoria" required>
-                                    <option value="" disabled selected>Selecione...</option>
-                                    <option v-for="(categorie, index) in categories" :key="index" v-bind:value="categorie.id_categoria_atendimento"> {{ categorie.nome }} </option>        
-                                </select>
-                                <label>Categoria</label>
+                        <div class="input-field col s10">
+                            <select v-model="categoria_id" name="categoria" required>
+                                <option value="" disabled selected>Selecione...</option>
+                                <option v-for="(categorie, index) in categories" :key="index" v-bind:value="categorie.id_categoria_atendimento"> {{ categorie.nome }} </option>        
+                            </select>
+                            <label>Categoria</label>
+                        </div>
+
+                        <div class="input-field col s2">
+                            <a class="btn tooltipped waves-effect waves-light teal darken-3" href="../categorias" data-position="left" data-tooltip="Gerenciar">
+                                <i class="material-icons">settings</i>
+                            </a>
                         </div>
 
                         <div class="col s12">

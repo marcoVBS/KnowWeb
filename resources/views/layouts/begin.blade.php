@@ -20,22 +20,21 @@
             <nav class="light-green lighten-3">
                 <div class="nav-wrapper">
                     <ul class="right">
-                    
-                    @if (Route::has('login'))
                         <div>
                             @auth
                                 <li><a class="green-text darken-4" href="{{ url('/home') }}"><b>Home</b></a></li>
                             @else
-                                <li><a class="green-text darken-4" href="{{ route('login') }}"><b>
-                                    <i class="material-icons left">lock_open</i> Login</b></a></li>
-        
-                                @if (Route::has('register'))
+                                @if (Request::route()->getName() == 'register')
+                                    <li><a class="green-text darken-4" href="{{ route('login') }}"><b>
+                                        <i class="material-icons left">lock_open</i> Login</b></a></li>
+                                @endif
+
+                                @if (Request::route()->getName() == 'login')
                                     <li><a class="green-text darken-4" href="{{ route('register') }}"><b> 
                                         <i class="material-icons left">person_add</i> Register</b></a></li>
                                 @endif
                             @endauth
                         </div>
-                    @endif
                     </ul>
                 </div>
             </nav>

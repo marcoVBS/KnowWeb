@@ -38,7 +38,8 @@
             </table>
             </div>
             <div class="modal-footer">
-                <a href="#" @click.prevent="saveAssocs()" class="modal-close waves-effect waves-green btn-flat">Concluir</a>
+                <a href="#" @click.prevent="saveAssocs()" class="btn green modal-close waves-effect waves-green"><i class="material-icons right">send</i>Concluir</a>
+                <a href="#" class="btn red modal-close waves-effect waves-green"><i class="material-icons right">clear</i>cancelar</a>
             </div>
         </div>
 

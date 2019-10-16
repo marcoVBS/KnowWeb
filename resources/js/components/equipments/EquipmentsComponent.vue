@@ -19,8 +19,7 @@
             <div class="modal-footer">
                 <a href="#!" class="modal-close waves-effect waves-green btn-flat red-text">fechar</a>
             </div>
-        </div>
-          
+        </div>       
 
         <div id="modalequipment" class="modal">
             <div class="modal-content">
@@ -41,12 +40,17 @@
                             <label for="caracteristicas" v-bind:class="{active: update}">Características do equipamento</label>
                         </div>
 
-                        <div class="input-field col s12">
+                        <div class="input-field col s10">
                             <select v-model="equipment.categoria_equipamento_id" required>
                                     <option value="" disabled>Selecione...</option>
                                     <option v-for="(categorie, index) in categories" :key="index" :value="categorie.id_categoria_equipamento"> {{categorie.nome}} </option>        
                             </select>
                             <label>Categoria</label>
+                        </div>
+                        <div class="input-field col s2">
+                            <a class="btn tooltipped waves-effect waves-light teal darken-3" href="categorias" data-position="left" data-tooltip="Gerenciar">
+                                <i class="material-icons">settings</i>
+                            </a>
                         </div>
 
                     </div>
@@ -56,7 +60,7 @@
                             <i class="material-icons right">send</i>
                         </button>
 
-                        <button class="btn waves-effect waves-light red" type="reset">Limpar
+                        <button class="modal-close btn waves-effect waves-light red" type="reset">cancelar
                             <i class="material-icons right">clear</i>
                         </button>
                     </div>
@@ -101,6 +105,7 @@
 </template>
 
 <script>
+
 export default {
     props: ['categories', 'list_equipments', 'view_equipment', 'create_equipment', 'edit_equipment', 'delete_equipment'],
     data() {
@@ -127,6 +132,9 @@ export default {
         }
     },
     methods: {
+        closeModal(){
+                $('.modal').modal('close')
+        },
         onSubmit(){
             if(this.update == true){
                 this.updateEquipment();
@@ -137,9 +145,6 @@ export default {
         newEquipment(){
             this.update = false
             this.equipment = {}
-        },
-        closeModal(){
-            $('#modalequipment').modal('close')
         },
         insertEquipment(){
             if(!this.create_equipment){

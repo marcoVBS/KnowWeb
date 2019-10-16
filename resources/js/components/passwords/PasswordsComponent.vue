@@ -84,7 +84,7 @@
                             <i class="material-icons right">send</i>
                         </button>
 
-                        <button class="btn waves-effect waves-light red" type="reset">Limpar
+                        <button class="modal-close btn waves-effect waves-light red" type="reset">cancelar
                             <i class="material-icons right">clear</i>
                         </button>
                     </div>
