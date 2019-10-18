@@ -6598,6 +6598,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user', 'manage_permissions', 'set_user_permissions'],
   data: function data() {
@@ -6634,7 +6643,8 @@ __webpack_require__.r(__webpack_exports__);
 
       var vm = this;
       axios.post('create', {
-        permissao: vm.permission.label
+        permissao: vm.permission.label,
+        descricao: vm.permission.description
       }).then(function (response) {
         var stored = response.data.stored;
         var message = response.data.message;
@@ -6643,9 +6653,11 @@ __webpack_require__.r(__webpack_exports__);
         if (stored == true) {
           vm.$snotify.success(message, 'Sucesso');
           vm.permission.label = "";
+          vm.permission.description = "";
         } else {
           vm.$snotify.error(message, 'Erro');
           vm.permission.label = "";
+          vm.permission.description = "";
         }
       }).catch(function (error) {
         vm.$snotify.error('Falha ao cadastrar permissão!', 'Erro');
@@ -6904,6 +6916,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user_logged', 'sectors', 'manage_permissions', 'set_user_permissions', 'list_users', 'create_user', 'disable_user', 'edit_user'],
   data: function data() {
@@ -6961,7 +6983,8 @@ __webpack_require__.r(__webpack_exports__);
 
       var vm = this;
       axios.post('usuarios/permissoes/create', {
-        permissao: vm.permission.label
+        permissao: vm.permission.label,
+        descricao: vm.permission.description
       }).then(function (response) {
         var stored = response.data.stored;
         var message = response.data.message;
@@ -6970,9 +6993,11 @@ __webpack_require__.r(__webpack_exports__);
         if (stored == true) {
           vm.$snotify.success(message, 'Sucesso');
           vm.permission.label = "";
+          vm.permission.description = "";
         } else {
           vm.$snotify.error(message, 'Erro');
           vm.permission.label = "";
+          vm.permission.description = "";
         }
       }).catch(function (error) {
         vm.$snotify.error('Falha ao cadastrar permissão!', 'Erro');
@@ -7302,7 +7327,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.card-helpdesk-title[data-v-32afa23e]{\r\n    font-size: 1.4em;\n}\r\n", ""]);
+exports.push([module.i, "\n.card-helpdesk-title[data-v-32afa23e]{\r\n    font-size: 1.4em;\n}\n.collection .collection-item.active[data-v-32afa23e] {\r\n  background-color: #43a047  ;\r\n  color: #fff;\n}\n.collection .collection-item.active .secondary-content[data-v-32afa23e] {\r\n  color: #fff;\n}\n.collection a.collection-item[data-v-32afa23e]{\r\n  color: #004d40;\n}\n.collection a.collection-item .secondary-content[data-v-32afa23e]{\r\n  color: #004d40;\n}\r\n", ""]);
 
 // exports
 
@@ -7340,7 +7365,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.img-user[data-v-2509b1d4]{ width: 3.5em; margin-right: 1em;}\n.close-tag[data-v-2509b1d4]{ padding: 5px 0 0 0;}\n", ""]);
+exports.push([module.i, "\n.img-user[data-v-2509b1d4]{ width: 3.5em; margin-right: 1em;}\n.close-tag[data-v-2509b1d4]{ padding: 5px 0 0 0;}\n.switch-permission[data-v-2509b1d4]{padding: 0.5em;}\n", ""]);
 
 // exports
 
@@ -33511,9 +33536,9 @@ var render = function() {
                           images_upload_handler: _vm.upload_handler
                         },
                         plugins:
-                          "autoresize print preview fullpage searchreplace fullscreen image link \n                            codesample table hr insertdatetime advlist lists imagetools textpattern",
+                          "autoresize print preview fullpage searchreplace fullscreen image media link \n                            codesample table hr insertdatetime advlist lists imagetools textpattern",
                         toolbar:
-                          "formatselect | bold italic forecolor backcolor | link image codesample | \n                            alignleft aligncenter alignright alignjustify | numlist bullist outdent indent"
+                          "formatselect | bold italic forecolor backcolor | link image media codesample | \n                            alignleft aligncenter alignright alignjustify | numlist bullist outdent indent"
                       },
                       model: {
                         value: _vm.article.conteudo,
@@ -37674,7 +37699,7 @@ var render = function() {
                             }
                           }),
                           _vm._v(" "),
-                          _c("span", [_vm._v("Baixa")])
+                          _vm._m(2)
                         ]),
                         _vm._v(
                           " - \n                        \n                            "
@@ -37713,7 +37738,7 @@ var render = function() {
                             }
                           }),
                           _vm._v(" "),
-                          _c("span", [_vm._v("Média")])
+                          _vm._m(3)
                         ]),
                         _vm._v(
                           " - \n                        \n                            "
@@ -37752,13 +37777,14 @@ var render = function() {
                             }
                           }),
                           _vm._v(" "),
-                          _c("span", [_vm._v("Alta")])
+                          _vm._m(4)
                         ])
                       ])
                     ])
                   : _c("div", [
                       _c("p", [
-                        _vm._v("Prioridade: " + _vm._s(_vm.helpdesk.prioridade))
+                        _vm._v("Prioridade: "),
+                        _c("b", [_vm._v(_vm._s(_vm.helpdesk.prioridade))])
                       ])
                     ]),
                 _vm._v(" "),
@@ -37966,7 +37992,7 @@ var render = function() {
                 )
               : _vm._e(),
             _vm._v(" "),
-            _vm._m(2),
+            _vm._m(5),
             _vm._v(" "),
             _c(
               "div",
@@ -38048,11 +38074,11 @@ var render = function() {
                             })
                           ]),
                           _vm._v(" "),
-                          _vm._m(3)
+                          _vm._m(6)
                         ]
                       ),
                       _vm._v(" "),
-                      _vm._m(4)
+                      _vm._m(7)
                     ])
                   ]
                 )
@@ -38099,6 +38125,28 @@ var staticRenderFns = [
         _vm._v("cancelar")
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "green-text" }, [
+      _c("b", [_vm._v("Baixa")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "lime-text darken-4" }, [
+      _c("b", [_vm._v("Média")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "red-text" }, [_c("b", [_vm._v("Alta")])])
   },
   function() {
     var _vm = this
@@ -38342,7 +38390,23 @@ var render = function() {
                                 _c("b", [_vm._v("Status:")]),
                                 _vm._v(" " + _vm._s(helpdesk.status) + " - "),
                                 _c("b", [_vm._v("Prioridade:")]),
-                                _vm._v(" " + _vm._s(helpdesk.prioridade))
+                                _vm._v(" "),
+                                _c(
+                                  "span",
+                                  {
+                                    class:
+                                      helpdesk.prioridade == "Baixa"
+                                        ? "green-text"
+                                        : helpdesk.prioridade == "Média"
+                                        ? "lime-text darken-4"
+                                        : "red-text"
+                                  },
+                                  [
+                                    _c("b", [
+                                      _vm._v(_vm._s(helpdesk.prioridade))
+                                    ])
+                                  ]
+                                )
                               ]),
                               _vm._v(" "),
                               helpdesk.responsavel
@@ -38375,7 +38439,7 @@ var staticRenderFns = [
       _c(
         "a",
         {
-          staticClass: "waves-effect waves-light btn btn-large green darken-3",
+          staticClass: "waves-effect waves-light btn btn-large teal darken-3",
           attrs: { href: "atendimento/novo" }
         },
         [
@@ -39822,6 +39886,8 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "collapsible-body" }, [
                 _c("div", { staticClass: "row" }, [
+                  _c("h5", [_vm._v("Adicionar nova permissão")]),
+                  _vm._v(" "),
                   _c(
                     "form",
                     {
@@ -39838,11 +39904,7 @@ var render = function() {
                       }
                     },
                     [
-                      _c("div", { staticClass: "input-field" }, [
-                        _c("i", { staticClass: "material-icons prefix" }, [
-                          _vm._v("add_circle")
-                        ]),
-                        _vm._v(" "),
+                      _c("div", { staticClass: "input-field col s12 m4" }, [
                         _c("input", {
                           directives: [
                             {
@@ -39870,9 +39932,43 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("label", { attrs: { for: "permissao" } }, [
-                          _vm._v("Nova permissão. Ex: create-user")
+                          _vm._v("Permissão. Ex: create-user")
                         ])
-                      ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "input-field col s12 m6" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.permission.description,
+                              expression: "permission.description"
+                            }
+                          ],
+                          staticClass: "validate",
+                          attrs: { id: "permissao", type: "text" },
+                          domProps: { value: _vm.permission.description },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.permission,
+                                "description",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: "permissao" } }, [
+                          _vm._v("Descrição")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(1)
                     ]
                   )
                 ]),
@@ -39950,13 +40046,8 @@ var render = function() {
                 ]),
             _vm._v(" "),
             _c("h5", [
-              _vm._v("Permissões de "),
+              _vm._v("Permissões do usuário "),
               _c("b", [_vm._v(_vm._s(_vm.user.nome))])
-            ]),
-            _vm._v(" "),
-            _c("h6", { staticClass: "header grey-text" }, [
-              _c("b", [_vm._v("Tipo do usuário: ")]),
-              _vm._v(_vm._s(_vm.user.tipo_usuario))
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "divider" }),
@@ -39965,7 +40056,11 @@ var render = function() {
             _vm._l(_vm.permissions, function(perm, index) {
               return _c(
                 "div",
-                { key: index, staticClass: "switch col s12 m4 form-register" },
+                {
+                  key: index,
+                  staticClass:
+                    "switch col s12 m4 form-register switch-permission"
+                },
                 [
                   _c("label", { staticClass: "right-align" }, [
                     _c("input", {
@@ -40011,10 +40106,9 @@ var render = function() {
                     _vm._v(" "),
                     _c("span", { staticClass: "lever" })
                   ]),
-                  _vm._v(" "),
-                  _c("b", [_vm._v(" " + _vm._s(perm.nome) + " ")]),
-                  _c("br"),
-                  _c("br")
+                  _vm._v(
+                    "\n            " + _vm._s(perm.descricao) + "\n        "
+                  )
                 ]
               )
             })
@@ -40028,7 +40122,7 @@ var render = function() {
           _c("div", { staticClass: "divider" }),
           _c("br"),
           _vm._v(" "),
-          _vm._m(1),
+          _vm._m(2),
           _vm._v(" "),
           _c(
             "a",
@@ -40064,6 +40158,24 @@ var staticRenderFns = [
         _vm._v("Gerenciar permissões do sistema")
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-field col s12 m2" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn waves-effect waves-light green",
+          attrs: { type: "submit" }
+        },
+        [
+          _vm._v("Enviar\n                                    "),
+          _c("i", { staticClass: "material-icons right" }, [_vm._v("send")])
+        ]
+      )
+    ])
   },
   function() {
     var _vm = this
@@ -40517,6 +40629,8 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "collapsible-body" }, [
                 _c("div", { staticClass: "row" }, [
+                  _c("h5", [_vm._v("Adicionar nova permissão")]),
+                  _vm._v(" "),
                   _c(
                     "form",
                     {
@@ -40533,11 +40647,7 @@ var render = function() {
                       }
                     },
                     [
-                      _c("div", { staticClass: "input-field" }, [
-                        _c("i", { staticClass: "material-icons prefix" }, [
-                          _vm._v("add_circle")
-                        ]),
-                        _vm._v(" "),
+                      _c("div", { staticClass: "input-field col s12 m4" }, [
                         _c("input", {
                           directives: [
                             {
@@ -40565,9 +40675,43 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("label", { attrs: { for: "permissao" } }, [
-                          _vm._v("Nova permissão. Ex: create-user")
+                          _vm._v("Permissão. Ex: create-user")
                         ])
-                      ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "input-field col s12 m6" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.permission.description,
+                              expression: "permission.description"
+                            }
+                          ],
+                          staticClass: "validate",
+                          attrs: { id: "permissao", type: "text" },
+                          domProps: { value: _vm.permission.description },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.permission,
+                                "description",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: "permissao" } }, [
+                          _vm._v("Descrição")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(2)
                     ]
                   )
                 ]),
@@ -40657,7 +40801,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("table", [
-            _vm._m(2),
+            _vm._m(3),
             _vm._v(" "),
             _c(
               "tbody",
@@ -40737,12 +40881,8 @@ var render = function() {
                       ? _c(
                           "a",
                           {
-                            staticClass: "red-text tooltipped",
-                            attrs: {
-                              "data-position": "bottom",
-                              "data-tooltip": "I am a tooltip",
-                              href: "#"
-                            },
+                            staticClass: "red-text",
+                            attrs: { href: "#" },
                             on: {
                               click: function($event) {
                                 $event.preventDefault()
@@ -40764,12 +40904,8 @@ var render = function() {
                       ? _c(
                           "a",
                           {
-                            staticClass: "red-text tooltipped",
-                            attrs: {
-                              "data-position": "bottom",
-                              "data-tooltip": "I am a tooltip",
-                              href: "#"
-                            },
+                            staticClass: "red-text",
+                            attrs: { href: "#" },
                             on: {
                               click: function($event) {
                                 $event.preventDefault()
@@ -40779,7 +40915,7 @@ var render = function() {
                           },
                           [
                             _c("i", { staticClass: "material-icons" }, [
-                              _vm._v("check")
+                              _vm._v("check_circle")
                             ])
                           ]
                         )
@@ -40837,6 +40973,24 @@ var staticRenderFns = [
         _vm._v("Gerenciar permissões do sistema")
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-field col s12 m2" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn waves-effect waves-light green",
+          attrs: { type: "submit" }
+        },
+        [
+          _vm._v("Enviar\n                                    "),
+          _c("i", { staticClass: "material-icons right" }, [_vm._v("send")])
+        ]
+      )
+    ])
   },
   function() {
     var _vm = this

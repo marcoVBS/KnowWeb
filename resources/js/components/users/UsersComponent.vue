@@ -92,12 +92,22 @@
                     <div class="collapsible-header green-text darken-4"><i class="material-icons">settings</i>Gerenciar permissões do sistema</div>
                     <div class="collapsible-body">
                         <div class="row">
+                            <h5>Adicionar nova permissão</h5>
                             <form @submit.prevent="onSubmitPermission" method="post" action="#" id="form_permission">
-                                <div class="input-field">
-                                    <i class="material-icons prefix">add_circle</i>
+                                <div class="input-field col s12 m4">
                                     <input id="permissao" type="text" v-model="permission.label" class="validate">
-                                    <label for="permissao">Nova permissão. Ex: create-user</label>
+                                    <label for="permissao">Permissão. Ex: create-user</label>
                                 </div>
+                                <div class="input-field col s12 m6">
+                                    <input id="permissao" type="text" v-model="permission.description" class="validate">
+                                    <label for="permissao">Descrição</label>
+                                </div>
+                                <div class="input-field col s12 m2">
+                                    <button class="btn waves-effect waves-light green" type="submit">Enviar
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
+                                
                             </form>
                         </div>
 
@@ -151,8 +161,8 @@
                         <td>
                             <a v-if="user.id_usuario !== user_logged.id_usuario && user.tipo_usuario == 'Membro' && set_user_permissions" :href="`usuarios/permissoes/${user.id_usuario}`" class="green-text darken-4"><i class="material-icons">lock_open</i></a>
                             <a v-if="edit_user" href="#modaluser" class="modal-trigger" @click.prevent="loadForm(user)"><i class="material-icons">edit</i></a>
-                            <a v-if="user.id_usuario !== user_logged.id_usuario && disable_user && user.status == 1" class="red-text tooltipped" data-position="bottom" data-tooltip="I am a tooltip" href="#" @click.prevent="confirmStatus(user)"><i class="material-icons">block</i></a>
-                            <a v-if="user.id_usuario !== user_logged.id_usuario && disable_user && user.status == 0" class="red-text tooltipped" data-position="bottom" data-tooltip="I am a tooltip" href="#" @click.prevent="confirmStatus(user)"><i class="material-icons">check</i></a>
+                            <a v-if="user.id_usuario !== user_logged.id_usuario && disable_user && user.status == 1" class="red-text" href="#" @click.prevent="confirmStatus(user)"><i class="material-icons">block</i></a>
+                            <a v-if="user.id_usuario !== user_logged.id_usuario && disable_user && user.status == 0" class="red-text" href="#" @click.prevent="confirmStatus(user)"><i class="material-icons">check_circle</i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -220,6 +230,7 @@ export default {
             
             axios.post('usuarios/permissoes/create', {
                 permissao: vm.permission.label,
+                descricao: vm.permission.description
             })
             .then(function(response){
                 let stored = response.data.stored
@@ -230,9 +241,11 @@ export default {
                 if(stored == true){
                     vm.$snotify.success(message, 'Sucesso')
                     vm.permission.label = ""
+                    vm.permission.description = ""
                 }else{
                     vm.$snotify.error(message, 'Erro')
                     vm.permission.label = ""
+                    vm.permission.description = ""
                 }
             })
             .catch(function(error){

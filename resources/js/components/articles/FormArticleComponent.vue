@@ -39,10 +39,10 @@
                             :init="{language: 'pt_BR', language_url: '/KnowWeb/public/js/tiny_pt_BR.js', 
                             images_upload_handler: upload_handler}"
                             
-                            plugins="autoresize print preview fullpage searchreplace fullscreen image link 
+                            plugins="autoresize print preview fullpage searchreplace fullscreen image media link 
                                 codesample table hr insertdatetime advlist lists imagetools textpattern" 
                             
-                            toolbar="formatselect | bold italic forecolor backcolor | link image codesample | 
+                            toolbar="formatselect | bold italic forecolor backcolor | link image media codesample | 
                                 alignleft aligncenter alignright alignjustify | numlist bullist outdent indent">
                         </editor>
                     </div>

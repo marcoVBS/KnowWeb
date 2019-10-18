@@ -6,12 +6,22 @@
                     <div class="collapsible-header green-text darken-4"><i class="material-icons">settings</i>Gerenciar permissões do sistema</div>
                     <div class="collapsible-body">
                         <div class="row">
+                            <h5>Adicionar nova permissão</h5>
                             <form @submit.prevent="onSubmitPermission" method="post" action="#" id="form_permission">
-                                <div class="input-field">
-                                    <i class="material-icons prefix">add_circle</i>
+                                <div class="input-field col s12 m4">
                                     <input id="permissao" type="text" v-model="permission.label" class="validate">
-                                    <label for="permissao">Nova permissão. Ex: create-user</label>
+                                    <label for="permissao">Permissão. Ex: create-user</label>
                                 </div>
+                                <div class="input-field col s12 m6">
+                                    <input id="permissao" type="text" v-model="permission.description" class="validate">
+                                    <label for="permissao">Descrição</label>
+                                </div>
+                                <div class="input-field col s12 m2">
+                                    <button class="btn waves-effect waves-light green" type="submit">Enviar
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
+                                
                             </form>
                         </div>
 
@@ -37,16 +47,15 @@
                 <img src="/KnowWeb/public/img/app/usuario-icon.png" alt="imagem_usuario" class="circle img-user left">
             </div>
 
-            <h5>Permissões de <b>{{ user.nome }}</b></h5>
-            <h6 class="header grey-text"><b>Tipo do usuário: </b>{{user.tipo_usuario}}</h6>
+            <h5>Permissões do usuário <b>{{ user.nome }}</b></h5>
             <div class="divider"></div><br>
 
-             <div v-for="(perm, index) in permissions" :key="index" class="switch col s12 m4 form-register">
+             <div v-for="(perm, index) in permissions" :key="index" class="switch col s12 m4 form-register switch-permission">
                 <label class="right-align">
                     <input type="checkbox" v-model="perm.check">
                     <span class="lever"></span>
                 </label>
-                <b> {{ perm.nome }} </b><br><br>
+                {{ perm.descricao }}
             </div>
         </div>
         <div v-if="set_user_permissions" class="center-align">
@@ -97,6 +106,7 @@ export default {
             
             axios.post('create', {
                 permissao: vm.permission.label,
+                descricao: vm.permission.description
             })
             .then(function(response){
                 let stored = response.data.stored
@@ -107,9 +117,11 @@ export default {
                 if(stored == true){
                     vm.$snotify.success(message, 'Sucesso')
                     vm.permission.label = ""
+                    vm.permission.description = ""
                 }else{
                     vm.$snotify.error(message, 'Erro')
                     vm.permission.label = ""
+                    vm.permission.description = ""
                 }
             })
             .catch(function(error){
@@ -195,4 +207,5 @@ export default {
 <style scoped>
     .img-user{ width: 3.5em; margin-right: 1em;}
     .close-tag{ padding: 5px 0 0 0;}
+    .switch-permission{padding: 0.5em;}
 </style>

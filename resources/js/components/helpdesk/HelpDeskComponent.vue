@@ -60,22 +60,22 @@
                             <p>Prioridade:
                                 <label>
                                     <input name="prioridade" type="radio" value="Baixa" v-model="helpdesk.prioridade" @change="changePriority()"/>
-                                    <span>Baixa</span>
+                                    <span class="green-text"><b>Baixa</b></span>
                                 </label> - 
                             
                                 <label>
                                     <input name="prioridade" type="radio" value="Média" v-model="helpdesk.prioridade" @change="changePriority()"/>
-                                    <span>Média</span>
+                                    <span class="lime-text darken-4"><b>Média</b></span>
                                 </label> - 
                             
                                 <label>
                                     <input name="prioridade" type="radio" value="Alta" v-model="helpdesk.prioridade" @change="changePriority()"/>
-                                    <span>Alta</span>
+                                    <span class="red-text"><b>Alta</b></span>
                                 </label>
                             </p>
                         </div>
                         <div v-else>
-                            <p>Prioridade: {{ helpdesk.prioridade }}</p>
+                            <p>Prioridade: <b>{{ helpdesk.prioridade }}</b></p>
                         </div>
 
                         <p v-if="helpdesk.arquivos.length > 0">Arquivos: 

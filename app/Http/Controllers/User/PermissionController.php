@@ -67,6 +67,7 @@ class PermissionController extends Controller
         }else{
             $permissao = new Permission();
             $permissao->nome = $request->permissao;
+            $permissao->descricao = $request->descricao;
             if($permissao->save()){
                 return response()->json([
                     'message' => "Permissão {$request->permissao} cadastrada com sucesso!",

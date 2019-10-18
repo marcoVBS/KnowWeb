@@ -51,7 +51,7 @@ class HelpDeskController extends Controller
         $helpdesk = new HelpDesk();
         $helpdesk->titulo = $request->titulo;
         $helpdesk->descricao = $request->descricao;
-        $helpdesk->prioridade = 'Média';
+        $helpdesk->prioridade = 'Baixa';
         $helpdesk->status = 'Aberto';
         $helpdesk->categoria_atendimento_id = $request->categoria_id;
         $helpdesk->usuario_solicitante_id = Auth::id();

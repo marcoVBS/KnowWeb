@@ -31,7 +31,7 @@
 
                                 @if (Request::route()->getName() == 'login')
                                     <li><a class="green-text darken-4" href="{{ route('register') }}"><b> 
-                                        <i class="material-icons left">person_add</i> Register</b></a></li>
+                                        <i class="material-icons left">person_add</i> Registrar-se</b></a></li>
                                 @endif
                             @endauth
                         </div>
