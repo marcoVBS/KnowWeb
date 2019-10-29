@@ -159,10 +159,10 @@
                         <td>{{ user.tipo_usuario }}</td>
                         <td>{{ user.setor }}</td>
                         <td>
-                            <a v-if="user.id_usuario !== user_logged.id_usuario && user.tipo_usuario == 'Membro' && set_user_permissions" :href="`usuarios/permissoes/${user.id_usuario}`" class="green-text darken-4"><i class="material-icons">lock_open</i></a>
+                            <a title="Permissões" v-if="user.id_usuario !== user_logged.id_usuario && user.tipo_usuario == 'Membro' && set_user_permissions" :href="`usuarios/permissoes/${user.id_usuario}`" class="green-text darken-4"><i class="material-icons">lock_open</i></a>
                             <a v-if="edit_user" href="#modaluser" class="modal-trigger" @click.prevent="loadForm(user)"><i class="material-icons">edit</i></a>
-                            <a v-if="user.id_usuario !== user_logged.id_usuario && disable_user && user.status == 1" class="red-text" href="#" @click.prevent="confirmStatus(user)"><i class="material-icons">block</i></a>
-                            <a v-if="user.id_usuario !== user_logged.id_usuario && disable_user && user.status == 0" class="red-text" href="#" @click.prevent="confirmStatus(user)"><i class="material-icons">check_circle</i></a>
+                            <a title="Desabilitar" v-if="user.id_usuario !== user_logged.id_usuario && disable_user && user.status == 1" class="red-text" href="#" @click.prevent="confirmStatus(user)"><i class="material-icons">block</i></a>
+                            <a title="Habilitar" v-if="user.id_usuario !== user_logged.id_usuario && disable_user && user.status == 0" class="red-text" href="#" @click.prevent="confirmStatus(user)"><i class="material-icons">check_circle</i></a>
                         </td>
                     </tr>
                 </tbody>

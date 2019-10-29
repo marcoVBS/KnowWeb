@@ -12,15 +12,15 @@
   .tab {
     a {
       color: green;
-      &.active {color: green;}
-      &:hover {color: green;}
+      &.active {color: green; background-color: #c8e6c9 ;}
+      &:hover {color: green; background-color: #c8e6c9 ;}
       &:focus {
         background-color: #EFE9E9;
-        &.active{background-color:#EFE9E9;}
+        &.active{background-color:#c8e6c9 ;}
       }
     }
   }
-  .indicator {background-color: gray;}
+  .indicator {background-color: black;}
 }
 
 //Snotify

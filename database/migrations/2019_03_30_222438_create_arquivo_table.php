@@ -15,9 +15,9 @@ class CreateArquivoTable extends Migration
     {
         Schema::create('tb_arquivo', function (Blueprint $table) {
             $table->increments('id_arquivo');
-            $table->string('caminho', 100);
+            $table->string('caminho', 300);
             $table->string('tamanho', 20);
-            $table->string('nome', 50);
+            $table->string('nome', 150);
             $table->integer('extensao_arquivo_id')->unsigned();
             $table->foreign('extensao_arquivo_id')->references('id_extensao_arquivo')->on('tb_extensao_arquivo')
                 ->onDelete('cascade')->onUpdate('cascade');

@@ -11,6 +11,7 @@ use App\Models\Archive\ArchiveExtension;
 use Illuminate\Support\Facades\Storage;
 use App\User;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
 class ArchiveController extends Controller
 {
@@ -61,6 +62,18 @@ class ArchiveController extends Controller
         ]);
     }
 
+    public function sanitizeString($str) 
+    {
+        $str = preg_replace('/[áàãâä]/ui', 'a', $str);
+        $str = preg_replace('/[éèêë]/ui', 'e', $str);
+        $str = preg_replace('/[íìîï]/ui', 'i', $str);
+        $str = preg_replace('/[óòõôö]/ui', 'o', $str);
+        $str = preg_replace('/[úùûü]/ui', 'u', $str);
+        $str = preg_replace('/[ç]/ui', 'c', $str);
+        $str = preg_replace('/[^a-z0-9.]/i', '_', $str);
+        return $str;
+    }
+
     public function create(Request $request){
         if (Gate::denies('upload-files')) {
             return false;
@@ -69,14 +82,15 @@ class ArchiveController extends Controller
         $file = $request->file('file');
 
         $name = \strtolower($file->getClientOriginalName());
+        $name = $this->sanitizeString($name);
         
         if(Storage::exists('/arquivos/'. $name)){
             $i = 0;
             do {
                 $i++;
-                $tmp = "($i) ".$name;
+                $tmp = "($i)_".$name;
             } while (Storage::exists('arquivos/'.$tmp));
-            $name = "($i) ".$name;
+            $name = "($i)_".$name;
         }
         $path = '/arquivos/'. $name;
         

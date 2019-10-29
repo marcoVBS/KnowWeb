@@ -21,8 +21,8 @@ class CreateArquivoAtendimentoTable extends Migration
             $table->integer('resposta_atendimento_id')->unsigned()->nullable();
             $table->foreign('resposta_atendimento_id')->references('id_resposta_atendimento')->on('tb_resposta_atendimento')
                 ->onDelete('cascade')->onUpdate('cascade');
-            $table->string('nome', 45);
-            $table->string('caminho', 100);
+            $table->string('nome', 150);
+            $table->string('caminho', 300);
             $table->string('tipo', 10);
         });
     }

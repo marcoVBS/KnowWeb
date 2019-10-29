@@ -48,15 +48,153 @@
             </div>
 
             <h5>Permissões do usuário <b>{{ user.nome }}</b></h5>
-            <div class="divider"></div><br>
+            <div class="divider"></div><br>   
 
-             <div v-for="(perm, index) in permissions" :key="index" class="switch col s12 m4 form-register switch-permission">
-                <label class="right-align">
-                    <input type="checkbox" v-model="perm.check">
-                    <span class="lever"></span>
-                </label>
-                {{ perm.descricao }}
+            <div class="row card-panel">
+                <div class="card grey lighten-5">
+                    <div class="card-content col s12">
+                    <span class="card-title">Arquivos</span>
+                        <div v-for="(perm, index) in grupo_arquivos" :key="index">
+                            <div class="switch switch-permission col s12 m4">
+                                <label class="right-align">
+                                    <input type="checkbox" v-model="perm.check">
+                                    <span class="lever"></span>
+                                </label>
+                                {{ perm.descricao }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <div class="row card-panel">
+                <div class="card grey lighten-5">
+                    <div class="card-content col s12">
+                    <span class="card-title">Senhas</span>
+                        <div v-for="(perm, index) in grupo_senhas" :key="index">
+                            <div class="switch switch-permission col s12 m4">
+                                <label class="right-align">
+                                    <input type="checkbox" v-model="perm.check">
+                                    <span class="lever"></span>
+                                </label>
+                                {{ perm.descricao }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row card-panel">
+                <div class="card grey lighten-5">
+                    <div class="card-content col s12">
+                    <span class="card-title">Equipamentos</span>
+                        <div v-for="(perm, index) in grupo_equipamentos" :key="index">
+                            <div class="switch switch-permission col s12 m4">
+                                <label class="right-align">
+                                    <input type="checkbox" v-model="perm.check">
+                                    <span class="lever"></span>
+                                </label>
+                                {{ perm.descricao }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row card-panel">
+                <div class="card grey lighten-5">
+                    <div class="card-content col s12">
+                    <span class="card-title">Computadores</span>
+                        <div v-for="(perm, index) in grupo_computadores" :key="index">
+                            <div class="switch switch-permission col s12 m4">
+                                <label class="right-align">
+                                    <input type="checkbox" v-model="perm.check">
+                                    <span class="lever"></span>
+                                </label>
+                                {{ perm.descricao }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row card-panel">
+                <div class="card grey lighten-5">
+                    <div class="card-content col s12">
+                    <span class="card-title">Artigos</span>
+                        <div v-for="(perm, index) in grupo_artigos" :key="index">
+                            <div class="switch switch-permission col s12 m4">
+                                <label class="right-align">
+                                    <input type="checkbox" v-model="perm.check">
+                                    <span class="lever"></span>
+                                </label>
+                                {{ perm.descricao }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row card-panel">
+                <div class="card grey lighten-5">
+                    <div class="card-content col s12">
+                    <span class="card-title">Usuários</span>
+                        <div v-for="(perm, index) in grupo_usuarios" :key="index">
+                            <div class="switch switch-permission col s12 m4">
+                                <label class="right-align">
+                                    <input type="checkbox" v-model="perm.check">
+                                    <span class="lever"></span>
+                                </label>
+                                {{ perm.descricao }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           </div>
+            <div class="row card-panel">
+                <div class="card grey lighten-5">
+                    <div class="card-content col s12">
+                    <span class="card-title">Permissões</span>
+                        <div v-for="(perm, index) in grupo_permissoes" :key="index">
+                            <div class="switch switch-permission col s12 m4">
+                                <label class="right-align">
+                                    <input type="checkbox" v-model="perm.check">
+                                    <span class="lever"></span>
+                                </label>
+                                {{ perm.descricao }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row card-panel">
+                <div class="card grey lighten-5">
+                    <div class="card-content col s12">
+                    <span class="card-title">Categorias</span>
+                        <div v-for="(perm, index) in grupo_categorias" :key="index">
+                            <div class="switch switch-permission col s12 m4">
+                                <label class="right-align">
+                                    <input type="checkbox" v-model="perm.check">
+                                    <span class="lever"></span>
+                                </label>
+                                {{ perm.descricao }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row card-panel">
+                <div class="card grey lighten-5">
+                    <div class="card-content col s12">
+                    <span class="card-title">Setores</span>
+                        <div v-for="(perm, index) in grupo_setores" :key="index">
+                            <div class="switch switch-permission col s12 m4">
+                                <label class="right-align">
+                                    <input type="checkbox" v-model="perm.check">
+                                    <span class="lever"></span>
+                                </label>
+                                {{ perm.descricao }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div v-if="set_user_permissions" class="center-align">
             <div class="divider"></div><br>
@@ -74,8 +212,73 @@ export default {
             permissions: [],
             permission: {
                 label: ""
-            },
+            }
         }
+    },
+    computed: {
+        grupo_permissoes(){
+            var dataFilter = this.permissions
+            dataFilter = dataFilter.filter(function(e){
+                return e.grupo == "Permissões"
+            })
+            return dataFilter
+        },
+        grupo_usuarios(){
+            var dataFilter = this.permissions
+            dataFilter = dataFilter.filter(function(e){
+                return e.grupo == "Usuários"
+            })
+            return dataFilter
+        },
+        grupo_setores(){
+            var dataFilter = this.permissions
+            dataFilter = dataFilter.filter(function(e){
+                return e.grupo == "Setores"
+            })
+            return dataFilter
+        },
+        grupo_categorias(){
+            var dataFilter = this.permissions
+            dataFilter = dataFilter.filter(function(e){
+                return e.grupo == "Categorias"
+            })
+            return dataFilter
+        },
+        grupo_senhas(){
+            var dataFilter = this.permissions
+            dataFilter = dataFilter.filter(function(e){
+                return e.grupo == "Senhas"
+            })
+            return dataFilter
+        },
+        grupo_equipamentos(){
+            var dataFilter = this.permissions
+            dataFilter = dataFilter.filter(function(e){
+                return e.grupo == "Equipamentos"
+            })
+            return dataFilter
+        },
+        grupo_arquivos(){
+            var dataFilter = this.permissions
+            dataFilter = dataFilter.filter(function(e){
+                return e.grupo == "Arquivos"
+            })
+            return dataFilter
+        },
+        grupo_computadores(){
+            var dataFilter = this.permissions
+            dataFilter = dataFilter.filter(function(e){
+                return e.grupo == "Computadores"
+            })
+            return dataFilter
+        },
+        grupo_artigos(){
+            var dataFilter = this.permissions
+            dataFilter = dataFilter.filter(function(e){
+                return e.grupo == "Artigos"
+            })
+            return dataFilter
+        },
     },
     methods: {
         getPermissions(){
@@ -207,5 +410,7 @@ export default {
 <style scoped>
     .img-user{ width: 3.5em; margin-right: 1em;}
     .close-tag{ padding: 5px 0 0 0;}
-    .switch-permission{padding: 0.5em;}
+    .switch-permission{padding: 0.4em;}
+    .card-title{margin-top: -40px; font-size: 1.4em;}
+    .card-panel{padding: 10px 0 0 0;}
 </style>

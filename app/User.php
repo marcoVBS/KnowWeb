@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\Permission\Permission;
 use App\Models\Permission\UserPermission;
+use App\Notifications\ResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -51,6 +52,11 @@ class User extends Authenticatable
         }else{
             return false;
         }
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPassword($token));
     }
 
 }

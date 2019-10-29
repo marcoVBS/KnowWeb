@@ -17,6 +17,7 @@ class CreatePermissaoTable extends Migration
             $table->increments('id_permissao');
             $table->string('nome', 45);
             $table->string('descricao', 100)->nullable();
+            $table->string('grupo', 100)->nullable();
         });
 
         

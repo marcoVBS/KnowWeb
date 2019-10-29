@@ -5310,7 +5310,7 @@ small {
 
 .tabs .tab a:hover,
 .tabs .tab a.active {
-  background-color: transparent;
+  background-color: #272727;
   color: #ee6e73;
 }
 
@@ -9275,10 +9275,12 @@ input[type=range]::-ms-thumb {
 
 .tabs .tab a.active {
   color: green;
+  background-color: #c8e6c9;
 }
 
 .tabs .tab a:hover {
   color: green;
+  background-color: #c8e6c9;
 }
 
 .tabs .tab a:focus {
@@ -9286,11 +9288,11 @@ input[type=range]::-ms-thumb {
 }
 
 .tabs .tab a:focus.active {
-  background-color: #EFE9E9;
+  background-color: #c8e6c9;
 }
 
 .tabs .indicator {
-  background-color: gray;
+  background-color: black;
 }
 
 .snotifyToast {
