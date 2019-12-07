@@ -6724,27 +6724,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user', 'manage_permissions', 'set_user_permissions'],
   data: function data() {
@@ -6756,13 +6735,6 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
-    grupo_permissoes: function grupo_permissoes() {
-      var dataFilter = this.permissions;
-      dataFilter = dataFilter.filter(function (e) {
-        return e.grupo == "Permissões";
-      });
-      return dataFilter;
-    },
     grupo_usuarios: function grupo_usuarios() {
       var dataFilter = this.permissions;
       dataFilter = dataFilter.filter(function (e) {
@@ -7568,7 +7540,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.img-user[data-v-2509b1d4]{ width: 3.5em; margin-right: 1em;}\n.close-tag[data-v-2509b1d4]{ padding: 5px 0 0 0;}\n.switch-permission[data-v-2509b1d4]{padding: 0.4em;}\n.card-title[data-v-2509b1d4]{margin-top: -40px; font-size: 1.4em;}\n.card-panel[data-v-2509b1d4]{padding: 10px 0 0 0;}\n", ""]);
+exports.push([module.i, "\n.img-user[data-v-2509b1d4]{ width: 3.5em; margin-right: 1em;}\n.close-tag[data-v-2509b1d4]{ padding: 5px 0 0 0;}\n.switch-permission[data-v-2509b1d4]{padding: 0.4em;}\n.card[data-v-2509b1d4]{padding-bottom: 20px;}\n.card-title[data-v-2509b1d4]{margin-top: -10px; font-size: 1.4em;}\n", ""]);
 
 // exports
 
@@ -40253,11 +40225,11 @@ var render = function() {
           _c("div", { staticClass: "divider" }),
           _c("br"),
           _vm._v(" "),
-          _c("div", { staticClass: "row card-panel" }, [
-            _c("div", { staticClass: "card grey lighten-5" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "card grey lighten-5 col s12 m4" }, [
               _c(
                 "div",
-                { staticClass: "card-content col s12" },
+                { staticClass: "card-content" },
                 [
                   _c("span", { staticClass: "card-title" }, [
                     _vm._v("Arquivos")
@@ -40267,7 +40239,7 @@ var render = function() {
                     return _c("div", { key: index }, [
                       _c(
                         "div",
-                        { staticClass: "switch switch-permission col s12 m4" },
+                        { staticClass: "switch switch-permission col s12" },
                         [
                           _c("label", { staticClass: "right-align" }, [
                             _c("input", {
@@ -40331,14 +40303,12 @@ var render = function() {
                 ],
                 2
               )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row card-panel" }, [
-            _c("div", { staticClass: "card grey lighten-5" }, [
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card grey lighten-5 col s12 m4" }, [
               _c(
                 "div",
-                { staticClass: "card-content col s12" },
+                { staticClass: "card-content" },
                 [
                   _c("span", { staticClass: "card-title" }, [_vm._v("Senhas")]),
                   _vm._v(" "),
@@ -40346,7 +40316,7 @@ var render = function() {
                     return _c("div", { key: index }, [
                       _c(
                         "div",
-                        { staticClass: "switch switch-permission col s12 m4" },
+                        { staticClass: "switch switch-permission col s12" },
                         [
                           _c("label", { staticClass: "right-align" }, [
                             _c("input", {
@@ -40410,14 +40380,12 @@ var render = function() {
                 ],
                 2
               )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row card-panel" }, [
-            _c("div", { staticClass: "card grey lighten-5" }, [
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card grey lighten-5 col s12 m4" }, [
               _c(
                 "div",
-                { staticClass: "card-content col s12" },
+                { staticClass: "card-content" },
                 [
                   _c("span", { staticClass: "card-title" }, [
                     _vm._v("Equipamentos")
@@ -40427,7 +40395,7 @@ var render = function() {
                     return _c("div", { key: index }, [
                       _c(
                         "div",
-                        { staticClass: "switch switch-permission col s12 m4" },
+                        { staticClass: "switch switch-permission col s12" },
                         [
                           _c("label", { staticClass: "right-align" }, [
                             _c("input", {
@@ -40494,11 +40462,11 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "row card-panel" }, [
-            _c("div", { staticClass: "card grey lighten-5" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "card grey lighten-5 col s12 m4" }, [
               _c(
                 "div",
-                { staticClass: "card-content col s12" },
+                { staticClass: "card-content" },
                 [
                   _c("span", { staticClass: "card-title" }, [
                     _vm._v("Computadores")
@@ -40508,7 +40476,7 @@ var render = function() {
                     return _c("div", { key: index }, [
                       _c(
                         "div",
-                        { staticClass: "switch switch-permission col s12 m4" },
+                        { staticClass: "switch switch-permission col s12" },
                         [
                           _c("label", { staticClass: "right-align" }, [
                             _c("input", {
@@ -40572,95 +40540,12 @@ var render = function() {
                 ],
                 2
               )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row card-panel" }, [
-            _c("div", { staticClass: "card grey lighten-5" }, [
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card grey lighten-5 col s12 m4" }, [
               _c(
                 "div",
-                { staticClass: "card-content col s12" },
-                [
-                  _c("span", { staticClass: "card-title" }, [
-                    _vm._v("Artigos")
-                  ]),
-                  _vm._v(" "),
-                  _vm._l(_vm.grupo_artigos, function(perm, index) {
-                    return _c("div", { key: index }, [
-                      _c(
-                        "div",
-                        { staticClass: "switch switch-permission col s12 m4" },
-                        [
-                          _c("label", { staticClass: "right-align" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: perm.check,
-                                  expression: "perm.check"
-                                }
-                              ],
-                              attrs: { type: "checkbox" },
-                              domProps: {
-                                checked: Array.isArray(perm.check)
-                                  ? _vm._i(perm.check, null) > -1
-                                  : perm.check
-                              },
-                              on: {
-                                change: function($event) {
-                                  var $$a = perm.check,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = null,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        _vm.$set(
-                                          perm,
-                                          "check",
-                                          $$a.concat([$$v])
-                                        )
-                                    } else {
-                                      $$i > -1 &&
-                                        _vm.$set(
-                                          perm,
-                                          "check",
-                                          $$a
-                                            .slice(0, $$i)
-                                            .concat($$a.slice($$i + 1))
-                                        )
-                                    }
-                                  } else {
-                                    _vm.$set(perm, "check", $$c)
-                                  }
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "lever" })
-                          ]),
-                          _vm._v(
-                            "\n                            " +
-                              _vm._s(perm.descricao) +
-                              "\n                        "
-                          )
-                        ]
-                      )
-                    ])
-                  })
-                ],
-                2
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row card-panel" }, [
-            _c("div", { staticClass: "card grey lighten-5" }, [
-              _c(
-                "div",
-                { staticClass: "card-content col s12" },
+                { staticClass: "card-content" },
                 [
                   _c("span", { staticClass: "card-title" }, [
                     _vm._v("Usuários")
@@ -40670,7 +40555,7 @@ var render = function() {
                     return _c("div", { key: index }, [
                       _c(
                         "div",
-                        { staticClass: "switch switch-permission col s12 m4" },
+                        { staticClass: "switch switch-permission col s12" },
                         [
                           _c("label", { staticClass: "right-align" }, [
                             _c("input", {
@@ -40734,24 +40619,22 @@ var render = function() {
                 ],
                 2
               )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row card-panel" }, [
-            _c("div", { staticClass: "card grey lighten-5" }, [
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card grey lighten-5 col s12 m4" }, [
               _c(
                 "div",
-                { staticClass: "card-content col s12" },
+                { staticClass: "card-content" },
                 [
                   _c("span", { staticClass: "card-title" }, [
-                    _vm._v("Permissões")
+                    _vm._v("Artigos")
                   ]),
                   _vm._v(" "),
-                  _vm._l(_vm.grupo_permissoes, function(perm, index) {
+                  _vm._l(_vm.grupo_artigos, function(perm, index) {
                     return _c("div", { key: index }, [
                       _c(
                         "div",
-                        { staticClass: "switch switch-permission col s12 m4" },
+                        { staticClass: "switch switch-permission col s12" },
                         [
                           _c("label", { staticClass: "right-align" }, [
                             _c("input", {
@@ -40818,11 +40701,11 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "row card-panel" }, [
-            _c("div", { staticClass: "card grey lighten-5" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "card grey lighten-5 col s12 m4" }, [
               _c(
                 "div",
-                { staticClass: "card-content col s12" },
+                { staticClass: "card-content" },
                 [
                   _c("span", { staticClass: "card-title" }, [
                     _vm._v("Categorias")
@@ -40832,7 +40715,7 @@ var render = function() {
                     return _c("div", { key: index }, [
                       _c(
                         "div",
-                        { staticClass: "switch switch-permission col s12 m4" },
+                        { staticClass: "switch switch-permission col s12" },
                         [
                           _c("label", { staticClass: "right-align" }, [
                             _c("input", {
@@ -40896,14 +40779,12 @@ var render = function() {
                 ],
                 2
               )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row card-panel" }, [
-            _c("div", { staticClass: "card grey lighten-5" }, [
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card grey lighten-5 col s12 m4" }, [
               _c(
                 "div",
-                { staticClass: "card-content col s12" },
+                { staticClass: "card-content" },
                 [
                   _c("span", { staticClass: "card-title" }, [
                     _vm._v("Setores")
@@ -40913,7 +40794,7 @@ var render = function() {
                     return _c("div", { key: index }, [
                       _c(
                         "div",
-                        { staticClass: "switch switch-permission col s12 m4" },
+                        { staticClass: "switch switch-permission col s12" },
                         [
                           _c("label", { staticClass: "right-align" }, [
                             _c("input", {

@@ -28,8 +28,8 @@ class DatabaseSeeder extends Seeder
             'setor_id' => 1,
         ]);
         
-        DB::table('tb_permissao')->insert(['nome' => 'manage-permissions', 'descricao' => 'Gerenciar', 'grupo' => 'Permissões']);
-        DB::table('tb_permissao')->insert(['nome' => 'set-user-permissions', 'descricao' => 'De usuários', 'grupo' => 'Permissões']);
+        DB::table('tb_permissao')->insert(['nome' => 'manage-permissions', 'descricao' => 'Gerenciar permissões', 'grupo' => 'Usuários']);
+        DB::table('tb_permissao')->insert(['nome' => 'set-user-permissions', 'descricao' => 'Permissões de usuários', 'grupo' => 'Usuários']);
         DB::table('tb_permissao')->insert(['nome' => 'list-users', 'descricao' => 'Listar', 'grupo' => 'Usuários']);
         DB::table('tb_permissao')->insert(['nome' => 'create-user', 'descricao' => 'Cadastrar', 'grupo' => 'Usuários']);
         DB::table('tb_permissao')->insert(['nome' => 'edit-user', 'descricao' => 'Editar', 'grupo' => 'Usuários']);
